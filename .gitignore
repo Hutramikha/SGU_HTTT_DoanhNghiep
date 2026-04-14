@@ -1,0 +1,52 @@
+# Build directories (generated, don't commit)
+build/
+dist/
+*.class
+*.jar
+*.war
+
+# IDE-specific files
+.vscode/
+.idea/
+*.iml
+nbproject/private/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Temp files
+*.tmp
+*.temp
+*.bak
+~*
+
+# Database connection (may contain sensitive info)
+connect.txt  # Each team member has different DB credentials
+
+# IDE output cache
+.classpath
+.project
+.settings/
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Gradle
+.gradle
+gradlew
+gradlew.bat
+
+# Cache
+.cache/
+*.cache

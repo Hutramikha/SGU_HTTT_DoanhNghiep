@@ -1,5 +1,16 @@
 {
     "java.project.referencedLibraries": [
-        "src/lib/**/*.jar",
-    ]
+        "src/Lib/**/*.jar"
+    ],
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.outputPath": "build/classes",
+    "java.debug.settings": {
+        "showHex": true
+    },
+    "[java]": {
+        "editor.defaultFormatter": "redhat.java",
+        "editor.formatOnSave": true
+    }
 }

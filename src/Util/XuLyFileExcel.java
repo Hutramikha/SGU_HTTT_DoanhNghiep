@@ -109,7 +109,7 @@ public class XuLyFileExcel {
                 dtmtbl.setRowCount(0);
                 for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                     Row row = sheet.getRow(i);
-                    Vector vec = new Vector();
+                    Vector<Object> vec = new Vector<>();
                     for (int j = 0; j < row.getLastCellNum(); j++) {
                         if (dtmtbl.getColumnCount() != row.getLastCellNum()) {
                             new dialog("Nhập file thất bại!", dialog.ERROR_DIALOG);

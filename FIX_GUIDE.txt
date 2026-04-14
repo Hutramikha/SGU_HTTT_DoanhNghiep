@@ -1,0 +1,118 @@
+/**
+ * PERFORMANCE FIX CHECKLIST & MIGRATION GUIDE
+ * 
+ * ==== PATTERN 1: Replace Class-Level Connection ====
+ * 
+ * BEFORE (DAO file):
+ * ---
+ * public class n10_ThongKeDAO {
+ *     Connection c = JDBCUtil.getConnection();  // ❌ STATIC CONNECTION - LEAK!
+ *     
+ *     public int TongtienHoadonngay(Date date) {
+ *         try {
+ *             String sql = "SELECT ...";
+ *             PreparedStatement pstmt = c.prepareStatement(sql);
+ *             ResultSet rs = pstmt.executeQuery();
+ *             if (rs.next()) { return rs.getInt(...); }
+ *         } catch (SQLException e) { }
+ *         return 0;
+ *     }
+ * }
+ * ---
+ * 
+ * AFTER (Using Try-With-Resources):
+ * ---
+ * public class n10_ThongKeDAO {
+ *     // ✅ REMOVE class-level connection!
+ *     
+ *     public int TongtienHoadonngay(Date date) {
+ *         String sql = "SELECT SUM(TongTienHoaDon) AS Tong FROM HoaDon WHERE NgayLapHoaDon = ?";
+ *         
+ *         try (Connection c = JDBCUtil.getConnection();
+ *              PreparedStatement pstmt = c.prepareStatement(sql)) {
+ *             pstmt.setDate(1, date);
+ *             try (ResultSet rs = pstmt.executeQuery()) {
+ *                 if (rs.next()) {
+ *                     return rs.getInt("Tong");
+ *                 }
+ *             }
+ *         } catch (SQLException e) {
+ *             e.printStackTrace();
+ *         }
+ *         return 0;
+ *     }
+ * }
+ * ---
+ * 
+ * ==== PATTERN 2: Using QueryExecutor Utility (Cleaner) ====
+ * 
+ * BEFORE:
+ * ---
+ * public int SoluongKH() {
+ *     int count = 0;
+ *     try {
+ *         String sql = "SELECT COUNT(*) AS Soluong FROM KhachHang";
+ *         PreparedStatement pstmt = c.prepareStatement(sql);
+ *         ResultSet rs = pstmt.executeQuery();
+ *         if (rs.next()) { count = rs.getInt("Soluong"); }
+ *     } catch (SQLException e) { }
+ *     return count;
+ * }
+ * ---
+ * 
+ * AFTER (Using QueryExecutor):
+ * ---
+ * public int SoluongKH() {
+ *     final int[] count = {0};
+ *     String sql = "SELECT COUNT(*) AS Soluong FROM KhachHang";
+ *     QueryExecutor.executeQuery(sql, rs -> {
+ *         if (rs.next()) { count[0] = rs.getInt("Soluong"); }
+ *     });
+ *     return count[0];
+ * }
+ * ---
+ * 
+ * ==== PRIORITY FIXES ====
+ * 
+ * 🔴 CRITICAL (Fix first):
+ * [ ] src/DAO/n10_ThongKeDAO.java - Remove Connection c = ... at line 21
+ * [ ] src/DAO/n1_HoaDonDAO.java - Remove class-level connection
+ * [ ] src/DAO/NhanVienDAO.java - Remove class-level connection
+ * [ ] src/DAO/NhapHangDAO.java - Remove class-level connection
+ * 
+ * 🟠 HIGH (After critical):
+ * [ ] src/GUI/n10_ThongkePanel.java - Move DB queries to background thread
+ * [ ] Fix all loops with getlist() N+1 query pattern
+ * [ ] Fix BUS constructor lazy initialization
+ * 
+ * 🟡 MEDIUM:
+ * [ ] Convert all DAO files to try-with-resources
+ * [ ] Add connection pooling (HikariCP)
+ * [ ] Fix Excel export to background thread
+ * 
+ * ==== STEP-BY-STEP FIX ====
+ * 
+ * 1. Remove this line from EVERY DAO class:
+ *    Connection c = JDBCUtil.getConnection();
+ * 
+ * 2. Replace each method with try-with-resources pattern:
+ *    try (Connection c = JDBCUtil.getConnection();
+ *         Statement statement = c.createStatement()) {
+ *        // Query code
+ *    } catch (SQLException e) { e.printStackTrace(); }
+ * 
+ * 3. Close ResultSet properly:
+ *    try (ResultSet rs = statement.executeQuery()) {
+ *        while (rs.next()) { ... }
+ *    }  // Auto-close! 
+ * 
+ * ==== VALIDATION ====
+ * 
+ * After fixes, test:
+ * - [ ] Open application - should not freeze
+ * - [ ] Click Statistics tab - should load in <2 seconds
+ * - [ ] Export 1000 items to Excel - <5 seconds
+ * - [ ] No "Connection lost" errors
+ * - [ ] Database connections don't pile up
+ * 
+ */

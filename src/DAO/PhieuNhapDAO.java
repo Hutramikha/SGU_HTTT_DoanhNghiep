@@ -20,65 +20,61 @@ public class PhieuNhapDAO {
     public PhieuNhapDAO() {
     }
 
-    // Hàm này trả về một danh sách các mảng Object[], mỗi mảng Object[] chứa thông tin của một phiếu nhập
+    // Hàm này trả về một danh sách các mảng Object[], mỗi mảng Object[] chứa thông
+    // tin của một phiếu nhập
     public ArrayList<Object[]> getDataFromDatabase() {
         ArrayList<Object[]> data = new ArrayList<>();
-        try (Connection c = JDBCUtil.getConnection()) {
-            Statement stmt = c.createStatement();
-            
-            String sql = "SELECT MaPhieuNhap, NgayLapPhieuNhap, TongTienPhieuNhap, MaNhanVien, MaNhaCungCap " +
-                         "FROM PhieuNhap " +
-                         "ORDER BY CAST(SUBSTRING(MaPhieuNhap, 3, LEN(MaPhieuNhap) - 2) AS INT) DESC";
-            ResultSet rs = stmt.executeQuery(sql);
+        try (Connection c = JDBCUtil.getConnection();
+                Statement stmt = c.createStatement();
+                ResultSet rs = stmt.executeQuery(
+                        "SELECT MaPhieuNhap, NgayLapPhieuNhap, TongTienPhieuNhap, MaNhanVien, MaNhaCungCap " +
+                                "FROM PhieuNhap " +
+                                "ORDER BY CAST(SUBSTRING(MaPhieuNhap, 3, LEN(MaPhieuNhap) - 2) AS INT) DESC")) {
             while (rs.next()) {
                 String maPhieuNhap = rs.getString("MaPhieuNhap");
                 Date ngayLapPhieuNhap = rs.getDate("NgayLapPhieuNhap");
                 int tongTienPhieuNhap = rs.getInt("TongTienPhieuNhap");
                 String maNhanVien = rs.getString("MaNhanVien");
                 String maNhaCungCap = rs.getString("MaNhaCungCap");
-                data.add(new Object[]{maPhieuNhap, ngayLapPhieuNhap, tongTienPhieuNhap, maNhanVien, maNhaCungCap});
+                data.add(new Object[] { maPhieuNhap, ngayLapPhieuNhap, tongTienPhieuNhap, maNhanVien, maNhaCungCap });
                 System.out.println("maPhieuNhap: " + maPhieuNhap);
             }
-            rs.close();
-            stmt.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return data;
     }
 
-
     public ArrayList<Object[]> searchPhieuNhapByMa(String maPhieuNhap) {
         ArrayList<Object[]> data = new ArrayList<>();
-        try (Connection c = JDBCUtil.getConnection()) {
-            Statement stmt = c.createStatement();
-            String sql = "SELECT MaPhieuNhap, NgayLapPhieuNhap, TongTienPhieuNhap, MaNhanVien, MaNhaCungCap " +
-                         "FROM PhieuNhap " +
-                         "WHERE MaPhieuNhap LIKE '%" + maPhieuNhap + "%' " +
-                         "ORDER BY CAST(SUBSTRING(MaPhieuNhap, 3, LEN(MaPhieuNhap) - 2) AS INT) DESC";
-            ResultSet rs = stmt.executeQuery(sql);
+        try (Connection c = JDBCUtil.getConnection();
+                Statement stmt = c.createStatement();
+                ResultSet rs = stmt.executeQuery(
+                        "SELECT MaPhieuNhap, NgayLapPhieuNhap, TongTienPhieuNhap, MaNhanVien, MaNhaCungCap " +
+                                "FROM PhieuNhap " +
+                                "WHERE MaPhieuNhap LIKE '%" + maPhieuNhap + "%' " +
+                                "ORDER BY CAST(SUBSTRING(MaPhieuNhap, 3, LEN(MaPhieuNhap) - 2) AS INT) DESC")) {
             while (rs.next()) {
                 String maPhieuNhapResult = rs.getString("MaPhieuNhap");
                 Date ngayLapPhieuNhap = rs.getDate("NgayLapPhieuNhap");
                 int tongTienPhieuNhap = rs.getInt("TongTienPhieuNhap");
                 String maNhanVien = rs.getString("MaNhanVien");
                 String maNhaCungCap = rs.getString("MaNhaCungCap");
-                data.add(new Object[]{maPhieuNhapResult, ngayLapPhieuNhap, tongTienPhieuNhap, maNhanVien, maNhaCungCap});
+                data.add(new Object[] { maPhieuNhapResult, ngayLapPhieuNhap, tongTienPhieuNhap, maNhanVien,
+                        maNhaCungCap });
             }
-            rs.close();
-            stmt.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return data;
     }
 
-
-    ///////tìm kiếm phiếu nhập theo ngày và giá
+    /////// tìm kiếm phiếu nhập theo ngày và giá
     public ArrayList<Object[]> searchPhieuNhap(Date tuNgay, Date denNgay, Integer giaTu, Integer giaDen) {
         ArrayList<Object[]> data = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT MaPhieuNhap, NgayLapPhieuNhap, TongTienPhieuNhap, MaNhanVien, MaNhaCungCap FROM PhieuNhap WHERE 1=1");
-    
+        StringBuilder sql = new StringBuilder(
+                "SELECT MaPhieuNhap, NgayLapPhieuNhap, TongTienPhieuNhap, MaNhanVien, MaNhaCungCap FROM PhieuNhap WHERE 1=1");
+
         // Thêm điều kiện động dựa trên các tham số không null
         if (tuNgay != null) {
             sql.append(" AND NgayLapPhieuNhap >= ?");
@@ -92,12 +88,12 @@ public class PhieuNhapDAO {
         if (giaDen != null) {
             sql.append(" AND TongTienPhieuNhap <= ?");
         }
-    
+
         sql.append(" ORDER BY CAST(SUBSTRING(MaPhieuNhap, 3, LEN(MaPhieuNhap) - 2) AS INT) DESC");
-    
+
         try (Connection c = JDBCUtil.getConnection();
-             PreparedStatement pstmt = c.prepareStatement(sql.toString())) {
-    
+                PreparedStatement pstmt = c.prepareStatement(sql.toString())) {
+
             int paramIndex = 1;
             if (tuNgay != null) {
                 pstmt.setDate(paramIndex++, new java.sql.Date(tuNgay.getTime()));
@@ -111,13 +107,11 @@ public class PhieuNhapDAO {
             if (giaDen != null) {
                 pstmt.setInt(paramIndex, giaDen);
             }
-    
+
             ResultSet rs = pstmt.executeQuery();
             SimpleDateFormat ngayThangNam = new SimpleDateFormat("dd-MM-yyyy");
             Locale locale = new Locale.Builder().setLanguage("vi").setRegion("VN").build();
             NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
-
-
 
             while (rs.next()) {
                 String maPhieuNhap = rs.getString("MaPhieuNhap");
@@ -127,7 +121,8 @@ public class PhieuNhapDAO {
                 String tongTienPhieuNhapStr = numberFormat.format(tongTienPhieuNhap) + "đ";
                 String maNhanVien = rs.getString("MaNhanVien");
                 String maNhaCungCap = rs.getString("MaNhaCungCap");
-                data.add(new Object[]{maPhieuNhap, ngayLapPhieuNhapStr, tongTienPhieuNhapStr, maNhanVien, maNhaCungCap});
+                data.add(new Object[] { maPhieuNhap, ngayLapPhieuNhapStr, tongTienPhieuNhapStr, maNhanVien,
+                        maNhaCungCap });
             }
             rs.close();
         } catch (Exception e) {
@@ -135,25 +130,24 @@ public class PhieuNhapDAO {
         }
         return data;
     }
-    public String getMaxMaPhieuNhap() throws SQLException{
-        Connection c = JDBCUtil.getConnection();
-        PreparedStatement pstms = null;
-        ResultSet rs = null;
-        String maxMaPhieuNhap = null;
-        try{
-          String sql = "select max(maPhieuNhap) AS maxMaPhieuNhap from PhieuNhap";
-          pstms = c.prepareStatement(sql);
-          rs = pstms.executeQuery();
-          if(rs.next()){
-            maxMaPhieuNhap = rs.getString("maxMaPhieuNhap");
-          }
-        }catch(SQLException e){
-            e.printStackTrace();
 
+    public String getMaxMaPhieuNhap() throws SQLException {
+        String maxMaPhieuNhap = null;
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement pstms = c
+                        .prepareStatement("select max(maPhieuNhap) AS maxMaPhieuNhap from PhieuNhap");
+                ResultSet rs = pstms.executeQuery()) {
+            if (rs.next()) {
+                maxMaPhieuNhap = rs.getString("maxMaPhieuNhap");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return maxMaPhieuNhap;
-      }
-      public String addPhieuNhap(String maPhieuNhap, String ngayLapPhieuNhap, int tongTienPhieuNhap, String maNhaCungCap, String maNhanVien) throws SQLException {
+    }
+
+    public String addPhieuNhap(String maPhieuNhap, String ngayLapPhieuNhap, int tongTienPhieuNhap, String maNhaCungCap,
+            String maNhanVien) throws SQLException {
         Connection c = JDBCUtil.getConnection();
         PreparedStatement pstms = null;
 
@@ -170,11 +164,17 @@ public class PhieuNhapDAO {
             e.printStackTrace();
             throw e;
         } finally {
-            if (pstms != null) try { pstms.close(); } catch (SQLException e) { e.printStackTrace(); }
+            if (pstms != null)
+                try {
+                    pstms.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             JDBCUtil.closeConnection(c);
         }
         return maPhieuNhap;
     }
+
     public boolean isMaNhanVienExists(String maNhanVien) throws SQLException {
         Connection c = JDBCUtil.getConnection();
         PreparedStatement pstms = null;
@@ -189,34 +189,40 @@ public class PhieuNhapDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if (rs != null) rs.close();
-            if (pstms != null) pstms.close();
+            if (rs != null)
+                rs.close();
+            if (pstms != null)
+                pstms.close();
             JDBCUtil.closeConnection(c);
         }
         return exists;
     }
-    public String getMaNhanVien (String MaNhanVien) throws SQLException{
+
+    public String getMaNhanVien(String MaNhanVien) throws SQLException {
         Connection c = JDBCUtil.getConnection();
         PreparedStatement pstms = null;
         ResultSet rs = null;
         String maNhanVien = null;
-        try{
+        try {
             String sql = "SELECT MaNhanVien FROM NhanVien WHERE MaNhanVien = ?";
             pstms = c.prepareStatement(sql);
             pstms.setString(1, MaNhanVien);
             rs = pstms.executeQuery();
-            if(rs.next()){
-            maNhanVien = rs.getString("MaNhanVien");
+            if (rs.next()) {
+                maNhanVien = rs.getString("MaNhanVien");
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-        }finally{
-            if(rs != null) rs.close();
-            if(pstms != null) pstms.close();
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (pstms != null)
+                pstms.close();
             JDBCUtil.closeConnection(c);
         }
         return maNhanVien;
     }
+
     public String getMaNhaCungCap(String tenNhaCungCap) throws SQLException {
         Connection c = JDBCUtil.getConnection();
         PreparedStatement pstms = null;
@@ -233,10 +239,12 @@ public class PhieuNhapDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if (rs != null) rs.close();
-            if (pstms != null) pstms.close();
+            if (rs != null)
+                rs.close();
+            if (pstms != null)
+                pstms.close();
             JDBCUtil.closeConnection(c);
         }
         return maNhaCungCap;
-      }
+    }
 }

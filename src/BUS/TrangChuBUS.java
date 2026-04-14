@@ -31,7 +31,7 @@ public class TrangChuBUS {
             lich = "Thứ " + (dayOfWeek.getValue() + 1) + ", " + ngay + " tháng " + thang + " năm " + nam;
         }
 
-//        System.out.println(lich);
+        // System.out.println(lich);
         LabelDate.setText(lich);
     }
 
@@ -39,10 +39,5 @@ public class TrangChuBUS {
         NhanVienDAO dao = new NhanVienDAO();
         NhanVienDTO nv = dao.getNhanVien(Ma);
         return nv;
-    }
-
-    public static void main(String[] args) {
-        JLabel LabelDate = new JLabel();
-        TrangChuBUS.getInstance().hienThi_NgayHienTai(LabelDate);
     }
 }

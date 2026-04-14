@@ -61,11 +61,11 @@ public class TaiKhoanBUS {
         if (taiKhoan == null) {
             return false;
         }
-        if (taiKhoan.getTrangThaiTaiKhoan() >=0 ) {
+        if (taiKhoan.getTrangThaiTaiKhoan() >= 0) {
             new dialog("Nhân viên đã có tài khoản", dialog.ERROR_DIALOG);
             return true;
         }
-       
+
         return true;
     }
 
@@ -74,19 +74,20 @@ public class TaiKhoanBUS {
         return Date.valueOf(localDate);
     }
 
-    // public boolean  updateNgayNghiViecTaiKhoan(String ma){
-    //     Date currentDate = getCurrentDate();
-    //     TaiKhoanDTO tk = new TaiKhoanDTO(null,"tenDangNhap","tenDangNhap", "maQuyen",ma,null,currentDate, 1);
-    //     boolean flag = taiKhoanDAO.insert(tk);
-    //     return flag;
+    // public boolean updateNgayNghiViecTaiKhoan(String ma){
+    // Date currentDate = getCurrentDate();
+    // TaiKhoanDTO tk = new TaiKhoanDTO(null,"tenDangNhap","tenDangNhap",
+    // "maQuyen",ma,null,currentDate, 1);
+    // boolean flag = taiKhoanDAO.insert(tk);
+    // return flag;
     // }
 
-    // public boolean  updateNgayMoKhoaTaiKhoan(String ma){
-    //     TaiKhoanDTO tk = new TaiKhoanDTO(null,"tenDangNhap","tenDangNhap", "maQuyen",ma,null,null, 1);
-    //     boolean flag = taiKhoanDAO.updateMoKhoaTK(tk);
-    //     return flag;
+    // public boolean updateNgayMoKhoaTaiKhoan(String ma){
+    // TaiKhoanDTO tk = new TaiKhoanDTO(null,"tenDangNhap","tenDangNhap",
+    // "maQuyen",ma,null,null, 1);
+    // boolean flag = taiKhoanDAO.updateMoKhoaTK(tk);
+    // return flag;
     // }
-    
 
     public boolean themTaiKhoan(String ma, String tenDangNhap, String tenQuyen) {
         // int maNV = Integer.parseInt(ma);
@@ -99,12 +100,13 @@ public class TaiKhoanBUS {
             return false;
         }
         // if (kiemTraTrungTenDangNhap(tenDangNhap)) {
-        //     dialog dlg = new dialog("Tên đăng nhập bị trùng!\nCó thể tài khoản bị khoá,\nthực hiện mở khoá?", dialog.WARNING_DIALOG);
-        //     if (dlg.getAction() == dialog.OK_OPTION) {
-        //         moKhoaTaiKhoan(ma);
-        //         return true;
-        //     }
-        //     return false;
+        // dialog dlg = new dialog("Tên đăng nhập bị trùng!\nCó thể tài khoản bị
+        // khoá,\nthực hiện mở khoá?", dialog.WARNING_DIALOG);
+        // if (dlg.getAction() == dialog.OK_OPTION) {
+        // moKhoaTaiKhoan(ma);
+        // return true;
+        // }
+        // return false;
         // }
 
         String maQuyen = phanQuyenDAO.getIdByName(tenQuyen); // tìm mã quyền bằng tên quyền
@@ -113,17 +115,17 @@ public class TaiKhoanBUS {
             return false;
         }
 
-        if(ma.equals(taiKhoanDAO.getIdNV(ma))){
-            if(taiKhoanDAO.getTrangThai(ma) == 0)
+        if (ma.equals(taiKhoanDAO.getIdNV(ma))) {
+            if (taiKhoanDAO.getTrangThai(ma) == 0)
                 new dialog("Tài khoản đang bị khóa,\nthực hiện mở khóa?", 0);
             else {
                 new dialog("Tài khoản đã tồn tại không thể thực hiện thao tác thêm", dialog.ERROR_DIALOG);
                 return false;
             }
         }
-        
+
         Date currentDate = getCurrentDate();
-        TaiKhoanDTO tk = new TaiKhoanDTO(null,tenDangNhap,tenDangNhap, maQuyen,ma,currentDate,null, 1);
+        TaiKhoanDTO tk = new TaiKhoanDTO(null, tenDangNhap, tenDangNhap, maQuyen, ma, currentDate, null, 1);
         boolean flag = taiKhoanDAO.insert(tk);
         if (flag) {
             new dialog("Cấp tài khoản thành công! Mật khẩu là " + tenDangNhap, dialog.SUCCESS_DIALOG);
@@ -137,7 +139,7 @@ public class TaiKhoanBUS {
         // int maNV = Integer.parseInt(ma);
         String manv = ma.trim();
         int ttNV = nvDAO.getTrangThai(manv);
-        if (ttNV==0) {
+        if (ttNV == 0) {
             boolean flag3 = taiKhoanDAO.moKhoaTaiKhoan(manv);
             boolean flag4 = nvDAO.moKhoaNhanVien(manv);
             dialog dlg = new dialog("Tài khoản hiện đang bị khóa, \n tiến hành mở khóa ?", dialog.WARNING_DIALOG);
@@ -149,11 +151,10 @@ public class TaiKhoanBUS {
             } else {
                 new dialog("Mở khóa tài khoản thất bại!", dialog.ERROR_DIALOG);
             }
-        }
-        else if (ttNV==1) {
+        } else if (ttNV == 1) {
             boolean flag = nvDAO.deleteNhanVien(manv);
             boolean flag1 = taiKhoanDAO.khoaTaiKhoan(manv);
-            if(flag && flag1)
+            if (flag && flag1)
                 new dialog("Khoá tài khoản thành công!", dialog.SUCCESS_DIALOG);
         } else {
             new dialog("Khoá tài khoản thất bại!", dialog.ERROR_DIALOG);
@@ -170,13 +171,13 @@ public class TaiKhoanBUS {
         }
     }
 
-    public String getMatKhauByMaNV(String ma){
+    public String getMatKhauByMaNV(String ma) {
         return taiKhoanDAO.getMkByMaNhanVien(ma);
     }
 
     public boolean doiMatKhau(String matKhauMoi, String matKhauCu, String maNV) {
-        
-        boolean flag = taiKhoanDAO.doiMatKhauAdmin(matKhauMoi, matKhauCu,maNV);
+
+        boolean flag = taiKhoanDAO.doiMatKhauAdmin(matKhauMoi, matKhauCu, maNV);
         if (flag) {
             new dialog("Đổi thành công!", dialog.SUCCESS_DIALOG);
         } else {
@@ -188,10 +189,4 @@ public class TaiKhoanBUS {
     public int getTrangThai(String maNV) {
         return taiKhoanDAO.getTrangThai(maNV);
     }
-
-    public static void main(String[] args){
-        TaiKhoanBUS t = new TaiKhoanBUS();
-        t.khoaTaiKhoan("NV001");
-    }
 }
-

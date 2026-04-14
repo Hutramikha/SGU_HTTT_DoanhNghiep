@@ -150,8 +150,8 @@ public class BanHangBUS {
 
         ArrayList<KhachHangDTO> ds = n6_CaLamDAO.getInstance().getData_KhachHang();
         for (KhachHangDTO kh : ds) {
-            model.addRow(new Object[]{kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getSoDienThoaiKhachHang(),
-                Util.LichLam_CaLam.yyyy_mm_dd__to__dd_mm_yyyy(String.valueOf(kh.getNgaySinhKhachHang()))
+            model.addRow(new Object[] { kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getSoDienThoaiKhachHang(),
+                    Util.LichLam_CaLam.yyyy_mm_dd__to__dd_mm_yyyy(String.valueOf(kh.getNgaySinhKhachHang()))
             });
         }
     }
@@ -165,8 +165,8 @@ public class BanHangBUS {
 
         ArrayList<KhachHangDTO> ds = n6_CaLamDAO.getInstance().getData_KhachHang_theoTen(ten);
         for (KhachHangDTO kh : ds) {
-            model.addRow(new Object[]{kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getSoDienThoaiKhachHang(),
-                Util.LichLam_CaLam.yyyy_mm_dd__to__dd_mm_yyyy(String.valueOf(kh.getNgaySinhKhachHang()))
+            model.addRow(new Object[] { kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getSoDienThoaiKhachHang(),
+                    Util.LichLam_CaLam.yyyy_mm_dd__to__dd_mm_yyyy(String.valueOf(kh.getNgaySinhKhachHang()))
             });
         }
     }
@@ -189,13 +189,14 @@ public class BanHangBUS {
     public String set_UuDaiThanhVien(int chiTieu, JLabel uuDai) {
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         Date date = Date.valueOf(today);
-//        System.out.println("Bán hàng bus" + chiTieu + "" + date);
+        // System.out.println("Bán hàng bus" + chiTieu + "" + date);
         UuDaiThanhVienDTO dto = n6_CaLamDAO.getInstance().get_UuDai_theoChiTieu(chiTieu, date);
         uuDai.setText(dto.getTenUuDai());
         return dto.getMaUuDai();
     }
 
-    public boolean insert_hoaDon(String maHoaDon, java.sql.Date ngayLapHoaDon, int tien, String maNhanVien, String maKhachHang, String maUuDai, String maKhuyenMai) {
+    public boolean insert_hoaDon(String maHoaDon, java.sql.Date ngayLapHoaDon, int tien, String maNhanVien,
+            String maKhachHang, String maUuDai, String maKhuyenMai) {
         HoaDonDTO hd = new HoaDonDTO(maHoaDon, ngayLapHoaDon, tien, maNhanVien, maKhachHang, maUuDai, maKhuyenMai);
         boolean tao_thanhCong = false;
         try {
@@ -226,7 +227,8 @@ public class BanHangBUS {
         dao.addCTHoaDon(cthd);
     }
 
-    public void insert_KhachHang(JTextField ma, JTextField ten, JTextField sdt, JComboBox gioiTinh, JDateChooser ngaySinh, JTable table) {
+    public void insert_KhachHang(JTextField ma, JTextField ten, JTextField sdt, JComboBox gioiTinh,
+            JDateChooser ngaySinh, JTable table) {
         if (ten.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập tên !", "FAIL", JOptionPane.ERROR_MESSAGE);
             ten.requestFocus();
@@ -240,14 +242,16 @@ public class BanHangBUS {
         }
 
         if (!sdt.getText().matches("^0\\d{9}$")) {
-            JOptionPane.showMessageDialog(null, "Vui lòng nhập số điện thoại có 10 số và bắt đầu là số 0 !", "FAIL", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập số điện thoại có 10 số và bắt đầu là số 0 !", "FAIL",
+                    JOptionPane.ERROR_MESSAGE);
             sdt.requestFocus();
             return;
         }
-        
+
         KhachHangBUS bus = new KhachHangBUS();
         if (!bus.checkSDT(sdt.getText())) {
-            JOptionPane.showMessageDialog(null, "Số điện thoại đã được đăng ký vào hệ thống !", "FAIL", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Số điện thoại đã được đăng ký vào hệ thống !", "FAIL",
+                    JOptionPane.ERROR_MESSAGE);
             sdt.requestFocus();
             return;
         }
@@ -266,9 +270,10 @@ public class BanHangBUS {
         kh.setTenKhachHang(ten.getText());
         kh.setGioiTinhKhachHang(gioiTinh.getSelectedItem().toString());
         kh.setSoDienThoaiKhachHang(sdt.getText());
-        kh.setNgaySinhKhachHang(new java.sql.Date(ngaySinh.getDate().getTime()));  // Chuyển đổi từ Date sang java.sql.Date
+        kh.setNgaySinhKhachHang(new java.sql.Date(ngaySinh.getDate().getTime())); // Chuyển đổi từ Date sang
+                                                                                  // java.sql.Date
         kh.setChiTieuKhachHang(0);
-//        System.out.println(kh.toString());
+        // System.out.println(kh.toString());
         KhachHangDAO khDAO = new KhachHangDAO();
 
         boolean flag = khDAO.themKhachHang(kh);
@@ -283,10 +288,6 @@ public class BanHangBUS {
         } else {
             JOptionPane.showMessageDialog(null, "Thêm khách hàng thất bại !", "FAIL", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    public static void main(String[] args) {
-        BanHangBUS.getInstance().check_Sl("44", "10");
     }
 
     public String getMa() {

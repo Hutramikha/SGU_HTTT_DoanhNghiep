@@ -41,8 +41,8 @@ public class n6_CaLamDAO {
 
             JDBCUtil.closeConnection(c);
         } catch (SQLException ex) {
-//            ex.printStackTrace();
-//            System.out.println("Tạo mã off thất bại (DAO)");
+            // ex.printStackTrace();
+            // System.out.println("Tạo mã off thất bại (DAO)");
         }
     }
 
@@ -131,9 +131,11 @@ public class n6_CaLamDAO {
                 oldThoiGianVaoCaLam = oldThoiGianVaoCaLam.substring(0, 5);
                 String oldThoiGianRaCaLam = rs.getString("ThoiGianRaCaLam");
                 oldThoiGianRaCaLam = oldThoiGianRaCaLam.substring(0, 5);
-//                System.out.println("tên ca: " + oldTenCaLam + " " + calam.getTenCaLam());
-//                System.out.println("giờ vào: " + oldThoiGianVaoCaLam.substring(0, 5) + " " + calam.getThoiGianVaoCaLam());
-//                System.out.println("giờ ra: " + oldThoiGianRaCaLam.substring(0, 5) + " " + calam.getThoiGianRaCaLam());
+                // System.out.println("tên ca: " + oldTenCaLam + " " + calam.getTenCaLam());
+                // System.out.println("giờ vào: " + oldThoiGianVaoCaLam.substring(0, 5) + " " +
+                // calam.getThoiGianVaoCaLam());
+                // System.out.println("giờ ra: " + oldThoiGianRaCaLam.substring(0, 5) + " " +
+                // calam.getThoiGianRaCaLam());
 
                 // So sánh dữ liệu
                 if (oldTenCaLam.equals(calam.getTenCaLam())
@@ -221,29 +223,19 @@ public class n6_CaLamDAO {
         String sql = "UPDATE KhachHang "
                 + "SET ChiTieuKhachHang = ChiTieuKhachHang + ? "
                 + "WHERE MaKhachHang = ?";
-        try {
-            Connection c = JDBCUtil.getConnection();
-            PreparedStatement st = c.prepareStatement(sql);
-
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql)) {
             st.setInt(1, tien);
             st.setString(2, Ma);
-
             int kq = st.executeUpdate();
-
-//            if (kq > 0) {
-//                System.out.println("Cập nhật thành công! Số dòng bị ảnh hưởng: " + kq);
-//            } else {
-//                System.out.println("Không tìm thấy khách hàng với mã: " + Ma);
-//            }
-            st.close();
-            JDBCUtil.closeConnection(c);
         } catch (SQLException e) {
             System.out.println("Lỗi khi cập nhật chi tiêu khách hàng:");
-            e.printStackTrace(); // In chi tiết lỗi
+            e.printStackTrace();
         }
     }
 
-    public ArrayList<CaLamDTO> search(String MaCaLam, String TenCaLam, String ThoiGianVaoCaLam, String ThoiGianRaCaLam) {
+    public ArrayList<CaLamDTO> search(String MaCaLam, String TenCaLam, String ThoiGianVaoCaLam,
+            String ThoiGianRaCaLam) {
         ArrayList<CaLamDTO> list = new ArrayList<>();
         String sql = "select * from CaLam where MaCaLam like ? and TenCaLam like ? and "
                 + "(ThoiGianVaoCaLam like ? OR ThoiGianRaCaLam like ?) and TrangThaiCaLam = 1 and MaCaLam != 'CL000'";
@@ -268,7 +260,8 @@ public class n6_CaLamDAO {
         return list;
     }
 
-//    /////////////////////////////////////////////////////////// Khuyến Mãi - Ưu Đãi
+    // /////////////////////////////////////////////////////////// Khuyến Mãi - Ưu
+    // Đãi
     public ArrayList<KhuyenMaiDTO> getAll_KhuyenMai(int tongTien, Date date) {
         ArrayList<KhuyenMaiDTO> list = new ArrayList<>();
         String sql = "SELECT * FROM [KhuyenMai] WHERE DieuKienKhuyenMai <= ? AND NgayBatDauKhuyenMai <= ? AND NgayKetThucKhuyenMai >= ?";
@@ -280,7 +273,8 @@ public class n6_CaLamDAO {
             st.setDate(3, date);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                KhuyenMaiDTO dto = new KhuyenMaiDTO(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4), rs.getFloat(5), rs.getInt(6));
+                KhuyenMaiDTO dto = new KhuyenMaiDTO(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4),
+                        rs.getFloat(5), rs.getInt(6));
                 list.add(dto);
             }
         } catch (Exception e) {
@@ -295,27 +289,22 @@ public class n6_CaLamDAO {
         String sql = "SELECT TOP 1 * FROM [KhuyenMai] "
                 + "WHERE DieuKienKhuyenMai <= ? AND NgayBatDauKhuyenMai <= ? AND NgayKetThucKhuyenMai >= ? "
                 + "ORDER BY PhanTramKhuyenMai DESC";
-        try {
-            Connection c = JDBCUtil.getConnection();
-            PreparedStatement st = c.prepareStatement(sql);
-            st.setInt(1, tongTien); // Điều kiện tổng tiền đủ áp dụng
-            st.setDate(2, date);    // Ngày bắt đầu <= ngày hiện tại
-            st.setDate(3, date);    // Ngày kết thúc >= ngày hiện tại
-
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                bestKhuyenMai = new KhuyenMaiDTO(
-                        rs.getString(1), // Mã khuyến mãi
-                        rs.getString(2), // Tên khuyến mãi
-                        rs.getDate(3), // Ngày bắt đầu
-                        rs.getDate(4), // Ngày kết thúc
-                        rs.getFloat(5), // Phần trăm khuyến mãi
-                        rs.getInt(6) // Điều kiện khuyến mãi
-                );
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql)) {
+            st.setInt(1, tongTien);
+            st.setDate(2, date);
+            st.setDate(3, date);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    bestKhuyenMai = new KhuyenMaiDTO(
+                            rs.getString(1),
+                            rs.getString(2),
+                            rs.getDate(3),
+                            rs.getDate(4),
+                            rs.getFloat(5),
+                            rs.getInt(6));
+                }
             }
-            rs.close();
-            st.close();
-            c.close();
         } catch (Exception e) {
             System.out.println("Không lấy được khuyến mãi tối ưu (DAO)");
             System.out.println(e);
@@ -336,7 +325,8 @@ public class n6_CaLamDAO {
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                dto = new KhuyenMaiDTO(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4), rs.getFloat(5), rs.getInt(6));
+                dto = new KhuyenMaiDTO(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4), rs.getFloat(5),
+                        rs.getInt(6));
             }
         } catch (Exception e) {
             System.out.println("Không lấy được dữ liệu cần tìm của khuyến mãi (DAO)");
@@ -362,7 +352,8 @@ public class n6_CaLamDAO {
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                dto = new UuDaiThanhVienDTO(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4), rs.getFloat(5), rs.getInt(6));
+                dto = new UuDaiThanhVienDTO(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4),
+                        rs.getFloat(5), rs.getInt(6));
             }
         } catch (Exception e) {
             System.out.println("Không lấy được dữ liệu cần tìm của ưu đãi (DAO)");
@@ -391,8 +382,9 @@ public class n6_CaLamDAO {
         return null;
     }
 
-//    /////////////////////////////////////////////////////////// Khuyến Mãi - Ưu Đãi
-//    /////////////////////////////////////////////////////////// Khách Hàng
+    // /////////////////////////////////////////////////////////// Khuyến Mãi - Ưu
+    // Đãi
+    // /////////////////////////////////////////////////////////// Khách Hàng
     public ArrayList<KhachHangDTO> getData_KhachHang() {
         ArrayList<KhachHangDTO> list = new ArrayList<>();
         String sql = "SELECT *\n"
@@ -465,8 +457,9 @@ public class n6_CaLamDAO {
         return null;
     }
 
-//    /////////////////////////////////////////////////////////// Khách HÀNG
-    ////////////////////////////////////////////////////////////////////////  Sơn Vũ Xài
+    // /////////////////////////////////////////////////////////// Khách HÀNG
+    //////////////////////////////////////////////////////////////////////// Sơn
+    /// Vũ Xài
     public ArrayList<MonDTO> getAll_theo_LoaiMon(String MaLoaiMon) {
         ArrayList<MonDTO> listMon = new ArrayList<>();
         try {
@@ -550,7 +543,7 @@ public class n6_CaLamDAO {
                 float KhoiLuongNguyenLieu = rs.getFloat(5);
                 int SoLy = (int) (KhoiLuongNguyenLieu / KhoiLuong);
 
-                ds.add(new Object[]{MaMon, MaNguyenLieu, TenNguyenLieu, KhoiLuong, KhoiLuongNguyenLieu, SoLy});
+                ds.add(new Object[] { MaMon, MaNguyenLieu, TenNguyenLieu, KhoiLuong, KhoiLuongNguyenLieu, SoLy });
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -558,8 +551,9 @@ public class n6_CaLamDAO {
         int min = 1000000000;
         for (Object[] row : ds) {
             if (min > (int) row[5]) {
-//                System.out.println("MaMon: " + row[0] + "; MaNguyenLieu: " + row[1]
-//                        + "; TenNguyenLieu: " + row[2] + "; KhoiLuong: " + row[3] + "; KhoiLuongNguyenLieu: " + row[4] + "; Số Ly: " + row[5]);
+                // System.out.println("MaMon: " + row[0] + "; MaNguyenLieu: " + row[1]
+                // + "; TenNguyenLieu: " + row[2] + "; KhoiLuong: " + row[3] + ";
+                // KhoiLuongNguyenLieu: " + row[4] + "; Số Ly: " + row[5]);
                 min = (int) row[5];
             }
         }
@@ -592,8 +586,8 @@ public class n6_CaLamDAO {
         return listMon;
     }
 
-//////////////////////////////////////////////////////////////////////  Sơn Vũ Xài
-//    /////////////////////////////////////////////////////////// Nguyên Liệu
+    ////////////////////////////////////////////////////////////////////// Sơn Vũ
+    /// Xài /////////////////////////////////////////////////////////// Nguyên Liệu
     public void update_reload_NguyenLieu(ArrayList<Object[]> cart) {
         String sql = "UPDATE b\n"
                 + "SET b.KhoiLuongNguyenLieu = round(b.KhoiLuongNguyenLieu + (a.KhoiLuong * ?), 2)\n"
@@ -606,12 +600,12 @@ public class n6_CaLamDAO {
             PreparedStatement st = c.prepareStatement(sql);
 
             for (Object[] item : cart) {
-                st.setInt(1, (int) item[3]);    // Giả định sl ở vị trí thứ 4 trong mảng `item`
+                st.setInt(1, (int) item[3]); // Giả định sl ở vị trí thứ 4 trong mảng `item`
                 st.setString(2, (String) item[0]); // Giả định id ở vị trí đầu tiên trong mảng `item`
                 st.addBatch(); // Thêm câu lệnh vào batch
             }
 
-            int[] results = st.executeBatch();  // Thực thi tất cả lệnh trong batch cùng một lúc
+            int[] results = st.executeBatch(); // Thực thi tất cả lệnh trong batch cùng một lúc
             System.out.println("Số lượng bản ghi được cập nhật: " + results.length);
 
             JDBCUtil.closeConnection(c);
@@ -632,10 +626,10 @@ public class n6_CaLamDAO {
             Connection c = JDBCUtil.getConnection();
             PreparedStatement st = c.prepareStatement(sql);
 
-            st.setInt(1, (int) item[3]);    // Giả định sl ở vị trí thứ 4 trong mảng `item`
+            st.setInt(1, (int) item[3]); // Giả định sl ở vị trí thứ 4 trong mảng `item`
             st.setString(2, (String) item[0]); // Giả định id ở vị trí đầu tiên trong mảng `item`
 
-            int results = st.executeUpdate();  // Thực thi tất cả lệnh trong batch cùng một lúc
+            int results = st.executeUpdate(); // Thực thi tất cả lệnh trong batch cùng một lúc
 
             JDBCUtil.closeConnection(c);
         } catch (SQLException e) {
@@ -655,10 +649,10 @@ public class n6_CaLamDAO {
             Connection c = JDBCUtil.getConnection();
             PreparedStatement st = c.prepareStatement(sql);
 
-            st.setInt(1, (int) item[3]);    // Giả định sl ở vị trí thứ 4 trong mảng `item`
+            st.setInt(1, (int) item[3]); // Giả định sl ở vị trí thứ 4 trong mảng `item`
             st.setString(2, (String) item[0]); // Giả định id ở vị trí đầu tiên trong mảng `item`
 
-            int results = st.executeUpdate();  // Thực thi tất cả lệnh trong batch cùng một lúc
+            int results = st.executeUpdate(); // Thực thi tất cả lệnh trong batch cùng một lúc
 
             JDBCUtil.closeConnection(c);
         } catch (SQLException e) {
@@ -667,7 +661,7 @@ public class n6_CaLamDAO {
         }
     }
 
-//    /////////////////////////////////////////////////////////// Nguyên Liệu
+    // /////////////////////////////////////////////////////////// Nguyên Liệu
     public static void main(String args[]) {
         UuDaiThanhVienDTO dto = n6_CaLamDAO.getInstance().get_UuDai_theoChiTieu(500000, Date.valueOf("2024-12-11"));
         System.out.println(dto);
