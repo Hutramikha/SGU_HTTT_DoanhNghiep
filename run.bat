@@ -1,6 +1,15 @@
 @echo off
-cd %~dp0
-javac -cp "src/Lib/*" -sourcepath src -d build/classes -source 11 -target 11 src/Main/Main.java
+setlocal enabledelayedexpansion
+cd /d "%~dp0"
+
+if not exist "build\classes" mkdir "build\classes"
+
+set "SOURCES="
+for /r "src" %%f in (*.java) do (
+    set "SOURCES=!SOURCES! "%%f""
+)
+
+javac -encoding UTF-8 -source 17 -target 17 -cp "src;src/Lib/*" -d build/classes !SOURCES!
 if errorlevel 1 (
     echo Compile failed!
     pause

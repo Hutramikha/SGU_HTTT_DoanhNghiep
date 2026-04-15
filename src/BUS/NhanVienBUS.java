@@ -19,7 +19,8 @@ public class NhanVienBUS {
     private NhanVienDAO nvDAO = new NhanVienDAO();
 
     public NhanVienBUS() {
-        docDanhSach();
+        // Don't load data in constructor - use lazy loading instead
+        // This prevents UI freezing when creating BUS instance
     }
 
     public void docDanhSach() {

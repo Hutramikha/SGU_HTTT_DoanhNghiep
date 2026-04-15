@@ -42,7 +42,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         CardLayout cardLayout4 = new CardLayout();
         ThongkeBUS TK = new ThongkeBUS();
         NhanVienBUS listnv = new NhanVienBUS();
-        ArrayList<NhanVienDTO> list = listnv.getlistNV();
+        ArrayList<NhanVienDTO> list = new ArrayList<>();
         Date date = new Date(System.currentTimeMillis());
         n5_NguyenLieuBUS NLBUS = new n5_NguyenLieuBUS();
 
@@ -56,6 +56,9 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         }
 
         public void initUI() {
+                if (list == null || list.isEmpty()) {
+                        list = listnv.getlistNV();
+                }
                 ////////////////// dữ liệu
                 String Dthungay = (toCurrency(TK.getTongTienHoaDonngay(date)));
                 txtDthungay.setText(Dthungay);
@@ -78,7 +81,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 String SoluongPhieunhap = String.valueOf(TK.getsoluongPN());
                 String SoluongNL = String.valueOf(TK.getsluongNL());
                 String SoluongNCC = String.valueOf(TK.getsluongNCC());
-                ////////
+                ///////
                 jTextField6.setText(Dthungay);
                 jTextField7.setText(Dthuthang);
                 jTextField8.setText(Dthnam);
@@ -94,7 +97,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 jTextField15.setText(SoluongPhieunhap + " Phiếu nhập");
                 jTextField16.setText(SoluongNL + " Nguyên liệu");
                 jTextField17.setText(SoluongNCC + " Nhà Cung Cấp");
-                ////////
+                ///////
                 txtDthungay.setText(Dthungay);
                 txtSLHoadonngay.setText(SoLuongHoaDon + " Hóa đơn");
                 Slmondabanngay.setText(Soluongmon + " Món");
@@ -896,7 +899,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 headerPanel.add(KhMoiPn);
 
-                //////////////
+                /////////////
                 jTextField6.setText("jTextField6");
                 jTextField6.setMinimumSize(new java.awt.Dimension(200, 22));
                 jTextField6.setPreferredSize(new java.awt.Dimension(195, 50));
@@ -1460,7 +1463,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 TK_chiphi.setBackground(new java.awt.Color(219, 189, 142));
                 TK_chiphi.setPreferredSize(new java.awt.Dimension(1120, 450));
 
-                ///////////////
+                //////////////
                 jTextField9.setText("jTextField6");
                 jTextField9.setMinimumSize(new java.awt.Dimension(200, 22));
                 jTextField9.setPreferredSize(new java.awt.Dimension(195, 50));
@@ -1738,7 +1741,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 TK_loinhuan.setBackground(new java.awt.Color(219, 189, 142));
                 TK_loinhuan.setPreferredSize(new java.awt.Dimension(1120, 450));
 
-                ///////////////
+                //////////////
                 jTextField18.setText("jTextField18");
                 jTextField18.setPreferredSize(new java.awt.Dimension(195, 50));
                 jTextField19.setText("jTextField18");
@@ -2005,7 +2008,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 TK_luong.setBackground(new java.awt.Color(219, 189, 142));
                 TK_luong.setPreferredSize(new java.awt.Dimension(1120, 450));
-                ///////////////////
+                //////////////////
                 jTextField12.setText("jTextField12");
                 jTextField12.setMinimumSize(new java.awt.Dimension(195, 50));
                 jTextField12.setPreferredSize(new java.awt.Dimension(195, 55));
@@ -2273,7 +2276,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 TK_khohang.setBackground(new java.awt.Color(219, 189, 142));
                 TK_khohang.setPreferredSize(new java.awt.Dimension(1120, 450));
-                /////////////////////
+                ////////////////////
                 jTextField15.setText("jTextField15");
                 jTextField15.setMinimumSize(new java.awt.Dimension(195, 50));
                 jTextField15.setPreferredSize(new java.awt.Dimension(195, 55));

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import Util.UIHelper;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -17,12 +18,13 @@ public class TableHeaderCustomCellRender extends DefaultTableCellRenderer {
     }
 
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+            int row, int column) {
         Component com = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         setBorder(new EmptyBorder(8, 10, 8, 10));
         com.setFont(table.getTableHeader().getFont());
-        com.setBackground(new Color(219, 189, 142));
-//        com.setBackground(table.getTableHeader().getBackground());
+        com.setBackground(UIHelper.PRIMARY_GREEN);
+        // com.setBackground(table.getTableHeader().getBackground());
         return com;
     }
 

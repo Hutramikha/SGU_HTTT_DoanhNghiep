@@ -10,6 +10,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import Util.UIHelper;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -33,9 +34,9 @@ public class n1_BanHang_ListSanPham extends javax.swing.JPanel {
             Object[] a = banHangFrame.listCart.get(i);
 
             if (mon.getMaMon().equals((String) a[0])) {
-//                System.out.println(mon.getMaMon());
-//                System.out.println((String) a[0] + "");
-//                System.out.println("Trùng");
+                // System.out.println(mon.getMaMon());
+                // System.out.println((String) a[0] + "");
+                // System.out.println("Trùng");
                 BanHangBUS.getInstance().update_cong_NguyenLieu(a);
                 banHangFrame.TongTien = banHangFrame.TongTien - (int) a[4];
                 banHangFrame.listCart.remove(i);
@@ -45,7 +46,8 @@ public class n1_BanHang_ListSanPham extends javax.swing.JPanel {
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         ScrollPane = new javax.swing.JScrollPane();
@@ -68,13 +70,11 @@ public class n1_BanHang_ListSanPham extends javax.swing.JPanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ScrollPane, javax.swing.GroupLayout.Alignment.TRAILING)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(ScrollPane, javax.swing.GroupLayout.Alignment.TRAILING));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(ScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE));
     }// </editor-fold>//GEN-END:initComponents
 
     public void addSanPham(ArrayList<MonDTO> ds) {
@@ -101,9 +101,9 @@ public class n1_BanHang_ListSanPham extends javax.swing.JPanel {
             // Tải ảnh và thiết lập icon
             // BufferedImage img = Util.BanHang.testLoadImage(Path);
             // if (img != null) {
-            //     labelAnh.setIcon(new javax.swing.ImageIcon(img));
+            // labelAnh.setIcon(new javax.swing.ImageIcon(img));
             // } else {
-            //     labelAnh.setIcon(null);  // Hoặc có thể thêm ảnh mặc định thay thế
+            // labelAnh.setIcon(null); // Hoặc có thể thêm ảnh mặc định thay thế
             // }
             labelAnh.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -111,7 +111,7 @@ public class n1_BanHang_ListSanPham extends javax.swing.JPanel {
             tenMon.setFont(new Font("Arial", Font.BOLD, 15));
 
             JLabel giaTien = new JLabel(DonGiaMon, SwingConstants.CENTER);
-            giaTien.setForeground(new Color(0, 102, 0));
+            giaTien.setForeground(UIHelper.PRIMARY_GREEN);
 
             panelSanPham.add(labelAnh, BorderLayout.NORTH);
             panelSanPham.add(tenMon, BorderLayout.CENTER);

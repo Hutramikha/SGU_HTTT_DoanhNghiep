@@ -18,7 +18,8 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         PanelTong = new javax.swing.JPanel();
@@ -121,27 +122,33 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
         javax.swing.GroupLayout PanelThuocTinhLayout = new javax.swing.GroupLayout(PanelThuocTinh);
         PanelThuocTinh.setLayout(PanelThuocTinhLayout);
         PanelThuocTinhLayout.setHorizontalGroup(
-            PanelThuocTinhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ThoiGianRa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(PanelThuocTinhLayout.createSequentialGroup()
-                .addGroup(PanelThuocTinhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(MaCa, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TenCa, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ThoiGianVao))
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+                PanelThuocTinhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(ThoiGianRa, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(PanelThuocTinhLayout.createSequentialGroup()
+                                .addGroup(PanelThuocTinhLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(MaCa, javax.swing.GroupLayout.PREFERRED_SIZE, 72,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(TenCa, javax.swing.GroupLayout.PREFERRED_SIZE, 72,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(ThoiGianVao))
+                                .addGap(0, 0, Short.MAX_VALUE)));
         PanelThuocTinhLayout.setVerticalGroup(
-            PanelThuocTinhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelThuocTinhLayout.createSequentialGroup()
-                .addComponent(MaCa, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(TenCa, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(ThoiGianVao, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(ThoiGianRa, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
+                PanelThuocTinhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelThuocTinhLayout.createSequentialGroup()
+                                .addComponent(MaCa, javax.swing.GroupLayout.PREFERRED_SIZE, 39,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(TenCa, javax.swing.GroupLayout.PREFERRED_SIZE, 39,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(ThoiGianVao, javax.swing.GroupLayout.PREFERRED_SIZE, 39,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(ThoiGianRa, javax.swing.GroupLayout.PREFERRED_SIZE, 39,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(18, Short.MAX_VALUE)));
 
         PanelCacText.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -174,68 +181,86 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
         javax.swing.GroupLayout PanelCacTextLayout = new javax.swing.GroupLayout(PanelCacText);
         PanelCacText.setLayout(PanelCacTextLayout);
         PanelCacTextLayout.setHorizontalGroup(
-            PanelCacTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelCacTextLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(PanelCacTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(line2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TextTenCa, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TextThoiGianVaoCa, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TextThoiGianRa, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(line3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(line4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(PanelCacTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(TextMaCa, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(line1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))))
-        );
+                PanelCacTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelCacTextLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(PanelCacTextLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(line2, javax.swing.GroupLayout.PREFERRED_SIZE, 75,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(TextTenCa, javax.swing.GroupLayout.PREFERRED_SIZE, 93,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(TextThoiGianVaoCa, javax.swing.GroupLayout.PREFERRED_SIZE, 93,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(TextThoiGianRa, javax.swing.GroupLayout.PREFERRED_SIZE, 93,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(line3, javax.swing.GroupLayout.PREFERRED_SIZE, 75,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(line4, javax.swing.GroupLayout.PREFERRED_SIZE, 75,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(PanelCacTextLayout
+                                                .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(TextMaCa, javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(line1, javax.swing.GroupLayout.Alignment.LEADING,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)))));
         PanelCacTextLayout.setVerticalGroup(
-            PanelCacTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelCacTextLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(TextMaCa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(line1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
-                .addComponent(TextTenCa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(line2, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(TextThoiGianVaoCa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(line3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
-                .addComponent(TextThoiGianRa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(line4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+                PanelCacTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelCacTextLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(TextMaCa, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(line1, javax.swing.GroupLayout.PREFERRED_SIZE, 10,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(8, 8, 8)
+                                .addComponent(TextTenCa, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(line2, javax.swing.GroupLayout.PREFERRED_SIZE, 8,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addComponent(TextThoiGianVaoCa, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(line3, javax.swing.GroupLayout.PREFERRED_SIZE, 10,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(8, 8, 8)
+                                .addComponent(TextThoiGianRa, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(line4, javax.swing.GroupLayout.PREFERRED_SIZE, 10,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
         javax.swing.GroupLayout PanelNoiDungThongTinLayout = new javax.swing.GroupLayout(PanelNoiDungThongTin);
         PanelNoiDungThongTin.setLayout(PanelNoiDungThongTinLayout);
         PanelNoiDungThongTinLayout.setHorizontalGroup(
-            PanelNoiDungThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelNoiDungThongTinLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(PanelThuocTinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(PanelCacText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
-            .addGroup(PanelNoiDungThongTinLayout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(LabelTieuDe)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+                PanelNoiDungThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelNoiDungThongTinLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(PanelThuocTinh, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(PanelCacText, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(44, 44, 44))
+                        .addGroup(PanelNoiDungThongTinLayout.createSequentialGroup()
+                                .addGap(45, 45, 45)
+                                .addComponent(LabelTieuDe)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
         PanelNoiDungThongTinLayout.setVerticalGroup(
-            PanelNoiDungThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelNoiDungThongTinLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(LabelTieuDe)
-                .addGap(29, 29, 29)
-                .addGroup(PanelNoiDungThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(PanelCacText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PanelThuocTinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(26, Short.MAX_VALUE))
-        );
+                PanelNoiDungThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelNoiDungThongTinLayout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(LabelTieuDe)
+                                .addGap(29, 29, 29)
+                                .addGroup(PanelNoiDungThongTinLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(PanelCacText, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(PanelThuocTinh, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap(26, Short.MAX_VALUE)));
 
         PanelThongTin.add(PanelNoiDungThongTin);
 
@@ -251,15 +276,14 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
         javax.swing.GroupLayout PanelSuaLayout = new javax.swing.GroupLayout(PanelSua);
         PanelSua.setLayout(PanelSuaLayout);
         PanelSuaLayout.setHorizontalGroup(
-            PanelSuaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelSuaLayout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(Sua))
-        );
+                PanelSuaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelSuaLayout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addComponent(Sua)));
         PanelSuaLayout.setVerticalGroup(
-            PanelSuaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Sua, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-        );
+                PanelSuaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(Sua, javax.swing.GroupLayout.Alignment.TRAILING,
+                                javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE));
 
         PanelTao.setBackground(new java.awt.Color(0, 0, 0));
         PanelTao.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -273,15 +297,14 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
         javax.swing.GroupLayout PanelTaoLayout = new javax.swing.GroupLayout(PanelTao);
         PanelTao.setLayout(PanelTaoLayout);
         PanelTaoLayout.setHorizontalGroup(
-            PanelTaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelTaoLayout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(Tao))
-        );
+                PanelTaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelTaoLayout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addComponent(Tao)));
         PanelTaoLayout.setVerticalGroup(
-            PanelTaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Tao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-        );
+                PanelTaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(Tao, javax.swing.GroupLayout.Alignment.TRAILING,
+                                javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE));
 
         PanelXoa.setBackground(new java.awt.Color(0, 0, 0));
         PanelXoa.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -295,15 +318,14 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
         javax.swing.GroupLayout PanelXoaLayout = new javax.swing.GroupLayout(PanelXoa);
         PanelXoa.setLayout(PanelXoaLayout);
         PanelXoaLayout.setHorizontalGroup(
-            PanelXoaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelXoaLayout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(Xoa))
-        );
+                PanelXoaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelXoaLayout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addComponent(Xoa)));
         PanelXoaLayout.setVerticalGroup(
-            PanelXoaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Xoa, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-        );
+                PanelXoaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(Xoa, javax.swing.GroupLayout.Alignment.TRAILING,
+                                javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE));
 
         PanelTimKiem.setBackground(new java.awt.Color(0, 0, 0));
         PanelTimKiem.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -317,69 +339,97 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
         javax.swing.GroupLayout PanelTimKiemLayout = new javax.swing.GroupLayout(PanelTimKiem);
         PanelTimKiem.setLayout(PanelTimKiemLayout);
         PanelTimKiemLayout.setHorizontalGroup(
-            PanelTimKiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelTimKiemLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(LabelTimKiem))
-        );
+                PanelTimKiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelTimKiemLayout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addComponent(LabelTimKiem)));
         PanelTimKiemLayout.setVerticalGroup(
-            PanelTimKiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(LabelTimKiem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-        );
+                PanelTimKiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(LabelTimKiem, javax.swing.GroupLayout.Alignment.TRAILING,
+                                javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE));
 
         javax.swing.GroupLayout PanelInputLayout = new javax.swing.GroupLayout(PanelInput);
         PanelInput.setLayout(PanelInputLayout);
         PanelInputLayout.setHorizontalGroup(
-            PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelInputLayout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
-                .addGroup(PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(PanelThongTin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(PanelInputLayout.createSequentialGroup()
-                        .addGroup(PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(PanelInputLayout.createSequentialGroup()
-                                .addComponent(PanelTao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInputLayout.createSequentialGroup()
-                                .addComponent(PanelSua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(37, 37, 37)))
-                        .addGroup(PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(PanelXoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(PanelTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(31, 31, 31))
-        );
+                PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelInputLayout.createSequentialGroup()
+                                .addContainerGap(35, Short.MAX_VALUE)
+                                .addGroup(PanelInputLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(PanelThongTin, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(PanelInputLayout.createSequentialGroup()
+                                                .addGroup(PanelInputLayout
+                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(PanelInputLayout.createSequentialGroup()
+                                                                .addComponent(PanelTao,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(
+                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        Short.MAX_VALUE))
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                PanelInputLayout.createSequentialGroup()
+                                                                        .addComponent(PanelSua,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addGap(37, 37, 37)))
+                                                .addGroup(PanelInputLayout
+                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(PanelXoa, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(PanelTimKiem,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(31, 31, 31)));
         PanelInputLayout.setVerticalGroup(
-            PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInputLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(PanelThongTin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PanelXoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PanelTao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addGroup(PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PanelSua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PanelTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(46, 46, 46))
-        );
+                PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInputLayout.createSequentialGroup()
+                                .addGap(0, 0, 0)
+                                .addComponent(PanelThongTin, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(
+                                        PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(PanelXoa, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(PanelTao, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(30, 30, 30)
+                                .addGroup(
+                                        PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(PanelSua, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(PanelTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(46, 46, 46)));
 
         ScrollPane.setPreferredSize(new java.awt.Dimension(800, 440));
 
         Table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object[][] {
 
-            },
-            new String [] {
-                "STT", "Mã Ca", "Tên Ca", "Giờ Vào Ca", "Giờ Ra Ca"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                },
+                new String[] {
+                        "STT", "Mã Ca", "Tên Ca", "Giờ Vào Ca", "Giờ Ra Ca"
+                }) {
+            boolean[] canEdit = new boolean[] {
+                    false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         ScrollPane.setViewportView(Table);
@@ -410,23 +460,26 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
         javax.swing.GroupLayout PanelTimKiem1Layout = new javax.swing.GroupLayout(PanelTimKiem1);
         PanelTimKiem1.setLayout(PanelTimKiem1Layout);
         PanelTimKiem1Layout.setHorizontalGroup(
-            PanelTimKiem1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelTimKiem1Layout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addComponent(TextFieldTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(LabelAnhTimKiem)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+                PanelTimKiem1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelTimKiem1Layout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addComponent(TextFieldTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(LabelAnhTimKiem)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
         PanelTimKiem1Layout.setVerticalGroup(
-            PanelTimKiem1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTimKiem1Layout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addGroup(PanelTimKiem1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(LabelAnhTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TextFieldTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+                PanelTimKiem1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                                PanelTimKiem1Layout.createSequentialGroup()
+                                        .addGap(4, 4, 4)
+                                        .addGroup(PanelTimKiem1Layout
+                                                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(LabelAnhTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(TextFieldTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
         PanelTaiLai.setBackground(new java.awt.Color(0, 0, 0));
         PanelTaiLai.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -440,79 +493,108 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
         javax.swing.GroupLayout PanelTaiLaiLayout = new javax.swing.GroupLayout(PanelTaiLai);
         PanelTaiLai.setLayout(PanelTaiLaiLayout);
         PanelTaiLaiLayout.setHorizontalGroup(
-            PanelTaiLaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelTaiLaiLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(LabelTaiLai))
-        );
+                PanelTaiLaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelTaiLaiLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(LabelTaiLai)));
         PanelTaiLaiLayout.setVerticalGroup(
-            PanelTaiLaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelTaiLaiLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addComponent(LabelTaiLai, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+                PanelTaiLaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelTaiLaiLayout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addComponent(LabelTaiLai, javax.swing.GroupLayout.PREFERRED_SIZE, 20,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)));
 
         javax.swing.GroupLayout PanelTongLayout = new javax.swing.GroupLayout(PanelTong);
         PanelTong.setLayout(PanelTongLayout);
         PanelTongLayout.setHorizontalGroup(
-            PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelTongLayout.createSequentialGroup()
-                .addGroup(PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelTongLayout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(PanelLichLam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(PanelCaLam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(PanelTongLayout.createSequentialGroup()
-                        .addComponent(PanelInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(3, 3, 3)
-                        .addGroup(PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTongLayout.createSequentialGroup()
-                                .addComponent(PanelTimKiem1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(PanelTaiLai, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(ScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(19, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTongLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(LabelTenBang)
-                .addGap(483, 483, 483))
-        );
+                PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelTongLayout.createSequentialGroup()
+                                .addGroup(PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(PanelTongLayout.createSequentialGroup()
+                                                .addGap(62, 62, 62)
+                                                .addComponent(PanelLichLam, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(30, 30, 30)
+                                                .addComponent(PanelCaLam, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(PanelTongLayout.createSequentialGroup()
+                                                .addComponent(PanelInput, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(3, 3, 3)
+                                                .addGroup(PanelTongLayout
+                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING,
+                                                                false)
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                PanelTongLayout.createSequentialGroup()
+                                                                        .addComponent(PanelTimKiem1,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addPreferredGap(
+                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)
+                                                                        .addComponent(PanelTaiLai,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                72,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(ScrollPane,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addContainerGap(19, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTongLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(LabelTenBang)
+                                .addGap(483, 483, 483)));
         PanelTongLayout.setVerticalGroup(
-            PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTongLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PanelLichLam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PanelCaLam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(LabelTenBang)
-                .addGap(23, 23, 23)
-                .addGroup(PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PanelTaiLai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PanelTimKiem1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
-                .addGroup(PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(PanelInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(20, Short.MAX_VALUE))
-        );
+                PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTongLayout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addGroup(PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(PanelLichLam, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(PanelCaLam, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(LabelTenBang)
+                                .addGap(23, 23, 23)
+                                .addGroup(PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(PanelTaiLai, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(PanelTimKiem1, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(14, 14, 14)
+                                .addGroup(PanelTongLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(PanelInput, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(ScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap(20, Short.MAX_VALUE)));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(PanelTong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(PanelTong, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(PanelTong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 9, Short.MAX_VALUE))
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(PanelTong, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 9, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
     private void data(JTable table) {
@@ -556,7 +638,8 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
         }
 
         if (!LichLam_CaLam.check_time_CaLam(in).equals("")) {
-            JOptionPane.showMessageDialog(null, LichLam_CaLam.check_time_CaLam(in), "Sai định dạng (hh:mm)", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, LichLam_CaLam.check_time_CaLam(in), "Sai định dạng (hh:mm)",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -573,11 +656,13 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
         }
 
         if (!LichLam_CaLam.check_time_CaLam(out).equals("")) {
-            JOptionPane.showMessageDialog(null, LichLam_CaLam.check_time_CaLam(in), "Sai định dạng (hh:mm)", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, LichLam_CaLam.check_time_CaLam(in), "Sai định dạng (hh:mm)",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        int response = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm ca làm không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        int response = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm ca làm không?", "Xác nhận",
+                JOptionPane.YES_NO_OPTION);
 
         if (response == JOptionPane.YES_OPTION) {
             boolean i = CaLamBUS.getInstance().insert(ma, ten, in, out);
@@ -594,7 +679,8 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
         String in = TextThoiGianVaoCa.getText();
         String out = TextThoiGianRa.getText();
         if (ma.equals(CaLamBUS.getInstance().MaTuDong())) {
-            JOptionPane.showMessageDialog(null, "Vui lòng chọn 1 ca làm trong danh sách để sửa!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn 1 ca làm trong danh sách để sửa!", "Thông báo",
+                    JOptionPane.INFORMATION_MESSAGE);
         } else {
             if (ten.equals("")) {
                 TextTenCa.requestFocus();
@@ -609,7 +695,8 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
             }
 
             if (!LichLam_CaLam.check_time_CaLam(in).equals("")) {
-                JOptionPane.showMessageDialog(null, LichLam_CaLam.check_time_CaLam(in), "Sai định dạng (hh:mm)", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, LichLam_CaLam.check_time_CaLam(in), "Sai định dạng (hh:mm)",
+                        JOptionPane.WARNING_MESSAGE);
                 TextThoiGianVaoCa.requestFocus();
                 return;
             }
@@ -627,12 +714,14 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
             }
 
             if (!LichLam_CaLam.check_time_CaLam(out).equals("")) {
-                JOptionPane.showMessageDialog(null, LichLam_CaLam.check_time_CaLam(out), "Sai định dạng (hh:mm)", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, LichLam_CaLam.check_time_CaLam(out), "Sai định dạng (hh:mm)",
+                        JOptionPane.WARNING_MESSAGE);
                 TextThoiGianRa.requestFocus();
                 return;
             }
 
-            int response = JOptionPane.showConfirmDialog(null, "Bạn có muốn sửa ca làm không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            int response = JOptionPane.showConfirmDialog(null, "Bạn có muốn sửa ca làm không?", "Xác nhận",
+                    JOptionPane.YES_NO_OPTION);
 
             if (response == JOptionPane.YES_OPTION) {
                 int i = CaLamBUS.getInstance().update(ma, ten, in, out);
@@ -647,7 +736,8 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
         String ma = TextMaCa.getText();
 
         if (ma.equals(CaLamBUS.getInstance().MaTuDong())) {
-            JOptionPane.showMessageDialog(null, "Vui lòng chọn 1 ca làm trong danh sách để xóa!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn 1 ca làm trong danh sách để xóa!", "Thông báo",
+                    JOptionPane.INFORMATION_MESSAGE);
         } else {
             if (ma.equals("")) {
                 TextTenCa.requestFocus();
@@ -655,7 +745,8 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
                 return;
             }
 
-            int response = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa ca làm không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            int response = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa ca làm không?", "Xác nhận",
+                    JOptionPane.YES_NO_OPTION);
 
             if (response == JOptionPane.YES_OPTION) {
                 CaLamBUS.getInstance().delete(ma);
@@ -669,20 +760,20 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
         TaiLaiTrang();
         PanelCaLam.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                PanelCaLam.setBackground(new Color(199, 159, 95));
+                PanelCaLam.setBackground(Util.UIHelper.ACCENT_GREEN);
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                PanelCaLam.setBackground(new Color(219, 189, 142));
+                PanelCaLam.setBackground(Util.UIHelper.LIGHT_GREEN);
             }
         });
         PanelLichLam.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                PanelLichLam.setBackground(new Color(199, 159, 95));
+                PanelLichLam.setBackground(Util.UIHelper.ACCENT_GREEN);
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                PanelLichLam.setBackground(new Color(219, 189, 142));
+                PanelLichLam.setBackground(Util.UIHelper.LIGHT_GREEN);
             }
 
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -697,15 +788,15 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
 
         PanelTao.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                PanelTao.setBackground(new Color(106, 105, 105));
+                PanelTao.setBackground(Util.UIHelper.PRIMARY_GREEN);
                 Tao.setOpaque(true);
-                Tao.setBackground(new Color(106, 105, 105));
+                Tao.setBackground(Util.UIHelper.PRIMARY_GREEN);
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                PanelTao.setBackground(new Color(0, 0, 0));
+                PanelTao.setBackground(Util.UIHelper.DARK_GREEN);
                 Tao.setOpaque(true);
-                Tao.setBackground(new Color(0, 0, 0));
+                Tao.setBackground(Util.UIHelper.DARK_GREEN);
             }
 
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -715,15 +806,15 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
         });
         PanelSua.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                PanelSua.setBackground(new Color(106, 105, 105));
+                PanelSua.setBackground(Util.UIHelper.PRIMARY_GREEN);
                 Sua.setOpaque(true);
-                Sua.setBackground(new Color(106, 105, 105));
+                Sua.setBackground(Util.UIHelper.PRIMARY_GREEN);
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                PanelSua.setBackground(new Color(0, 0, 0));
+                PanelSua.setBackground(Util.UIHelper.DARK_GREEN);
                 Sua.setOpaque(true);
-                Sua.setBackground(new Color(0, 0, 0));
+                Sua.setBackground(Util.UIHelper.DARK_GREEN);
             }
 
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -734,15 +825,15 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
 
         PanelXoa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                PanelXoa.setBackground(new Color(106, 105, 105));
+                PanelXoa.setBackground(Util.UIHelper.PRIMARY_GREEN);
                 Xoa.setOpaque(true);
-                Xoa.setBackground(new Color(106, 105, 105));
+                Xoa.setBackground(Util.UIHelper.PRIMARY_GREEN);
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                PanelXoa.setBackground(new Color(0, 0, 0));
+                PanelXoa.setBackground(Util.UIHelper.DARK_GREEN);
                 Xoa.setOpaque(true);
-                Xoa.setBackground(new Color(0, 0, 0));
+                Xoa.setBackground(Util.UIHelper.DARK_GREEN);
             }
 
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -753,15 +844,15 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
 
         PanelTimKiem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                PanelTimKiem.setBackground(new Color(106, 105, 105));
+                PanelTimKiem.setBackground(Util.UIHelper.PRIMARY_GREEN);
                 LabelTimKiem.setOpaque(true);
-                LabelTimKiem.setBackground(new Color(106, 105, 105));
+                LabelTimKiem.setBackground(Util.UIHelper.PRIMARY_GREEN);
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                PanelTimKiem.setBackground(new Color(0, 0, 0));
+                PanelTimKiem.setBackground(Util.UIHelper.DARK_GREEN);
                 LabelTimKiem.setOpaque(true);
-                LabelTimKiem.setBackground(new Color(0, 0, 0));
+                LabelTimKiem.setBackground(Util.UIHelper.DARK_GREEN);
             }
 
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -785,15 +876,15 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
 
         PanelTaiLai.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                PanelTaiLai.setBackground(new Color(106, 105, 105));
+                PanelTaiLai.setBackground(Util.UIHelper.PRIMARY_GREEN);
                 LabelTaiLai.setOpaque(true);
-                LabelTaiLai.setBackground(new Color(106, 105, 105));
+                LabelTaiLai.setBackground(Util.UIHelper.PRIMARY_GREEN);
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                PanelTaiLai.setBackground(new Color(0, 0, 0));
+                PanelTaiLai.setBackground(Util.UIHelper.DARK_GREEN);
                 LabelTaiLai.setOpaque(true);
-                LabelTaiLai.setBackground(new Color(0, 0, 0));
+                LabelTaiLai.setBackground(Util.UIHelper.DARK_GREEN);
             }
 
             public void mouseClicked(java.awt.event.MouseEvent evt) {

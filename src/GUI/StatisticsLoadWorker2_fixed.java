@@ -17,26 +17,21 @@ public class StatisticsLoadWorker2_fixed extends SwingWorker<Void, Void> {
     @Override
     protected Void doInBackground() throws Exception {
         System.out.println("🔄 Loading statistics data...");
-        Thread.sleep(50); // Small delay
+        panel.initUI();
+        panel.addControl();
         return null;
     }
 
     @Override
     protected void done() {
         try {
-            System.out.println("🎨 Updating UI...");
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    panel.initUI();
-                    panel.addControl();
-                    System.out.println("✅ Statistics panel loaded!");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(panel, "Error: " + ex.getMessage());
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
+            get();
+            panel.revalidate();
+            panel.repaint();
+            System.out.println("✅ Statistics panel loaded!");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(panel, "Error: " + ex.getMessage());
         }
     }
 }

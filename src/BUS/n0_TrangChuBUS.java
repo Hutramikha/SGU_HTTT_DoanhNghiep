@@ -25,8 +25,11 @@ public class n0_TrangChuBUS {
             label.setForeground(DISABLED_COLOR);
             label.setOpaque(true);
             label.setBackground(DISABLED_BG);
+            // Store as tag that this label is disabled
+            label.putClientProperty("disabled", true);
         } else {
-            label.setForeground(Color.BLACK);
+            label.setForeground(Color.WHITE);
+            label.putClientProperty("disabled", false);
         }
     }
 
