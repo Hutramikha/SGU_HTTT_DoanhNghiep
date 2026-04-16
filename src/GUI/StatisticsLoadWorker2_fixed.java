@@ -16,9 +16,7 @@ public class StatisticsLoadWorker2_fixed extends SwingWorker<Void, Void> {
 
     @Override
     protected Void doInBackground() throws Exception {
-        System.out.println("🔄 Loading statistics data...");
-        panel.initUI();
-        panel.addControl();
+        System.out.println("🔄 Preparing statistics panel...");
         return null;
     }
 
@@ -26,6 +24,9 @@ public class StatisticsLoadWorker2_fixed extends SwingWorker<Void, Void> {
     protected void done() {
         try {
             get();
+            // done() runs on EDT, so Swing component updates are safe here.
+            panel.initUI();
+            panel.addControl();
             panel.revalidate();
             panel.repaint();
             System.out.println("✅ Statistics panel loaded!");

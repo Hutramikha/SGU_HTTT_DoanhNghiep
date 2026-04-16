@@ -22,10 +22,9 @@ public class n6_LichLamDAO {
     public ArrayList<String> ds_MaNhanVien() {
         ArrayList<String> list = new ArrayList<>();
         String sql = "select MaNhanVien from NhanVien where TrangThaiNhanVien = 1";
-        try {
-            Connection c = JDBCUtil.getConnection();
-            PreparedStatement st = c.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql);
+                ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
                 String MaNhanVien = rs.getString("MaNhanVien");
                 list.add(MaNhanVien);
@@ -46,9 +45,9 @@ public class n6_LichLamDAO {
         boolean isInserted = false; // Biến theo dõi xem có dòng nào được chèn hay không
         List<Date> weekDays = Util.LichLam_CaLam.seven_Days(ngayLam);
         for (Date ngay : weekDays) {
-//            System.out.println(ngay);
+            // System.out.println(ngay);
             for (String nv : list) {
-//                System.out.println(ngay);
+                // System.out.println(ngay);
                 String sql = "IF NOT EXISTS (\n"
                         + "    SELECT *\n"
                         + "    FROM LichLam\n"
@@ -71,7 +70,7 @@ public class n6_LichLamDAO {
                     int rowsAffected = st.executeUpdate();
                     if (rowsAffected > 0) {
                         isInserted = true; // Nếu có dòng được chèn
-//                        System.out.println("Tạo lịch làm thành công (DAO)");
+                        // System.out.println("Tạo lịch làm thành công (DAO)");
                     }
                 } catch (SQLException ex) {
                     System.out.println(ex);
@@ -390,69 +389,73 @@ public class n6_LichLamDAO {
         return list;
     }
 
-//    public ArrayList<String[][]> layCaLam_Tuan_theoTenNhanVien(Date ngay) {
-//        ArrayList<String[][]> dsLichLam2D = new ArrayList<>();
-//        List<Date> ds7ngay = Util.LichLam_CaLam.seven_Days(ngay);
-//        List<String> dsMaNhanVien = ds_MaNhanVien();
-//
-//        String t2 = Util.LichLam_CaLam.chuyen_Date_sang_String(ds7ngay.get(0));
-//        String cn = Util.LichLam_CaLam.chuyen_Date_sang_String(ds7ngay.get(ds7ngay.size() - 1));
-//
-//        String sql = "SELECT TenCaLam\n"
-//                + "FROM \n"
-//                + "    (SELECT * \n"
-//                + "     FROM LichLam \n"
-//                + "     WHERE NgayLam BETWEEN ? AND ? AND MaNhanVien = ?) AS t1\n"
-//                + "JOIN \n"
-//                + "    (SELECT MaCaLam, TenCaLam\n"
-//                + "     FROM CaLam\n"
-//                + "     WHERE TrangThaiCaLam = 1) AS t2\n"
-//                + "ON t1.MaCaLam = t2.MaCaLam\n"
-//                + "JOIN \n"
-//                + "    (SELECT MaNhanVien, TenNhanVien\n"
-//                + "     FROM NhanVien\n"
-//                + "     WHERE TrangThaiNhanVien = 1) AS t3\n"
-//                + "ON t1.MaNhanVien = t3.MaNhanVien";
-//
-//        for (String ma : dsMaNhanVien) {
-//            data_isEmpty();
-//            ArrayList<String> dsCaLam = new ArrayList<>();
-//
-//            // Chỉ thêm tên nhân viên nếu dsCaLam rỗng
-//            if (dsCaLam.isEmpty()) {
-//                String tenNV = tim_TenNhanVien_theo_MaNhanVien(ma);
-//                dsCaLam.add(tenNV);
-//            }
-//
-//            try (Connection c = JDBCUtil.getConnection(); PreparedStatement st = c.prepareStatement(sql)) {
-//                // Thiết lập tham số cho câu lệnh SQL
-//                st.setString(1, t2);
-//                st.setString(2, cn);
-//                st.setString(3, ma);
-//
-//                ResultSet rs = st.executeQuery();
-//                while (rs.next()) {
-//                    String ten = rs.getString("TenCaLam");
-//                    dsCaLam.add(ten);
-//                }
-//
-//                // Tạo mảng một chiều để lưu tên ca làm của nhân viên
-//                String[] col = new String[dsCaLam.size()]; // Cộng thêm 1 để chứa tên nhân viên
-////                col[0] = dsCaLam.get(0); // Gán tên nhân viên vào dòng đầu tiên
-//
-//                // Gán các tên ca làm vào mảng bắt đầu từ vị trí 1
-//                for (int i = 0; i < dsCaLam.size(); i++) {
-//                    col[i] = dsCaLam.get(i); // Gán từng phần tử vào mảng
-//                }
-//
-//                dsLichLam2D.add(new String[][]{col}); // Thêm vào danh sách dưới dạng mảng hai chiều
-//            } catch (SQLException e) {
-//                System.err.println("Lỗi khi truy vấn dữ liệu: " + e.getMessage());
-//            }
-//        }
-//
-//        return dsLichLam2D;
-//    }
+    // public ArrayList<String[][]> layCaLam_Tuan_theoTenNhanVien(Date ngay) {
+    // ArrayList<String[][]> dsLichLam2D = new ArrayList<>();
+    // List<Date> ds7ngay = Util.LichLam_CaLam.seven_Days(ngay);
+    // List<String> dsMaNhanVien = ds_MaNhanVien();
+    //
+    // String t2 = Util.LichLam_CaLam.chuyen_Date_sang_String(ds7ngay.get(0));
+    // String cn =
+    // Util.LichLam_CaLam.chuyen_Date_sang_String(ds7ngay.get(ds7ngay.size() - 1));
+    //
+    // String sql = "SELECT TenCaLam\n"
+    // + "FROM \n"
+    // + " (SELECT * \n"
+    // + " FROM LichLam \n"
+    // + " WHERE NgayLam BETWEEN ? AND ? AND MaNhanVien = ?) AS t1\n"
+    // + "JOIN \n"
+    // + " (SELECT MaCaLam, TenCaLam\n"
+    // + " FROM CaLam\n"
+    // + " WHERE TrangThaiCaLam = 1) AS t2\n"
+    // + "ON t1.MaCaLam = t2.MaCaLam\n"
+    // + "JOIN \n"
+    // + " (SELECT MaNhanVien, TenNhanVien\n"
+    // + " FROM NhanVien\n"
+    // + " WHERE TrangThaiNhanVien = 1) AS t3\n"
+    // + "ON t1.MaNhanVien = t3.MaNhanVien";
+    //
+    // for (String ma : dsMaNhanVien) {
+    // data_isEmpty();
+    // ArrayList<String> dsCaLam = new ArrayList<>();
+    //
+    // // Chỉ thêm tên nhân viên nếu dsCaLam rỗng
+    // if (dsCaLam.isEmpty()) {
+    // String tenNV = tim_TenNhanVien_theo_MaNhanVien(ma);
+    // dsCaLam.add(tenNV);
+    // }
+    //
+    // try (Connection c = JDBCUtil.getConnection(); PreparedStatement st =
+    // c.prepareStatement(sql)) {
+    // // Thiết lập tham số cho câu lệnh SQL
+    // st.setString(1, t2);
+    // st.setString(2, cn);
+    // st.setString(3, ma);
+    //
+    // ResultSet rs = st.executeQuery();
+    // while (rs.next()) {
+    // String ten = rs.getString("TenCaLam");
+    // dsCaLam.add(ten);
+    // }
+    //
+    // // Tạo mảng một chiều để lưu tên ca làm của nhân viên
+    // String[] col = new String[dsCaLam.size()]; // Cộng thêm 1 để chứa tên nhân
+    // viên
+    //// col[0] = dsCaLam.get(0); // Gán tên nhân viên vào dòng đầu tiên
+    //
+    // // Gán các tên ca làm vào mảng bắt đầu từ vị trí 1
+    // for (int i = 0; i < dsCaLam.size(); i++) {
+    // col[i] = dsCaLam.get(i); // Gán từng phần tử vào mảng
+    // }
+    //
+    // dsLichLam2D.add(new String[][]{col}); // Thêm vào danh sách dưới dạng mảng
+    // hai chiều
+    // } catch (SQLException e) {
+    // System.err.println("Lỗi khi truy vấn dữ liệu: " + e.getMessage());
+    // }
+    // }
+    //
+    // return dsLichLam2D;
+    // }
     public ArrayList<String[][]> layCaLam_Tuan_theoTenNhanVien(Date ngay) {
         ArrayList<String[][]> dsLichLam2D = new ArrayList<>();
         List<Date> ds7ngay = Util.LichLam_CaLam.seven_Days(ngay);
@@ -489,7 +492,7 @@ public class n6_LichLamDAO {
                 dsCaLam.add(0, tenNV); // Thêm tên nhân viên ở đầu danh sách
 
                 String[] col = dsCaLam.toArray(new String[0]);
-                dsLichLam2D.add(new String[][]{col});
+                dsLichLam2D.add(new String[][] { col });
             }
         } catch (SQLException e) {
             System.err.println("Lỗi khi truy vấn dữ liệu: " + e.getMessage());

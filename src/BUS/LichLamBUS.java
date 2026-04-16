@@ -47,6 +47,14 @@ public class LichLamBUS {
         }
     }
 
+    public ArrayList<String> getAllTenCaLam() {
+        return n6_LichLamDAO.getInstance().combobox_TenCaLam();
+    }
+
+    public ArrayList<String> getAllTenNhanVien() {
+        return n6_LichLamDAO.getInstance().combobox_TenNhanVien();
+    }
+
     public void Dieu_chinh(String TenCaLam, String TenNhanVien, String Ngay) {
         n6_LichLamDAO dao = n6_LichLamDAO.getInstance();
 
@@ -107,9 +115,9 @@ public class LichLamBUS {
 
             // Tìm kiếm danh sách Lịch làm trong tuần
             ArrayList<LichLamDTO> list = n6_LichLamDAO.getInstance().TimKiem_theoNgay(Ngay_Date);
-//            for (LichLamDTO lich : list) {
-//                System.out.println(lich.toString());
-//            }
+            // for (LichLamDTO lich : list) {
+            // System.out.println(lich.toString());
+            // }
 
             String period = DauTuan + "   ->   " + CuoiTuan;
             return period;
@@ -140,8 +148,7 @@ public class LichLamBUS {
                     null,
                     "Rất tiếc, không tìm thấy tuần làm phù hợp ! \nVui lòng kiểm tra lại thông tin.",
                     "Thông báo",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }

@@ -101,6 +101,10 @@ public class BanHangBUS {
         return ten;
     }
 
+    public String getNewHoaDonId() {
+        return n1_HoaDonDAO.getInstance().getNewId();
+    }
+
     public KhuyenMaiDTO getAllAndSelectBestKhuyenMai(int tongTien, String date, JComboBox box) {
         // Lấy danh sách khuyến mãi phù hợp
         ArrayList<KhuyenMaiDTO> ds = n6_CaLamDAO.getInstance().getAll_KhuyenMai(tongTien, Date.valueOf(date));

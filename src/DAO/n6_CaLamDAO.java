@@ -227,7 +227,7 @@ public class n6_CaLamDAO {
                 PreparedStatement st = c.prepareStatement(sql)) {
             st.setInt(1, tien);
             st.setString(2, Ma);
-            int kq = st.executeUpdate();
+            st.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Lỗi khi cập nhật chi tiêu khách hàng:");
             e.printStackTrace();
@@ -239,18 +239,18 @@ public class n6_CaLamDAO {
         ArrayList<CaLamDTO> list = new ArrayList<>();
         String sql = "select * from CaLam where MaCaLam like ? and TenCaLam like ? and "
                 + "(ThoiGianVaoCaLam like ? OR ThoiGianRaCaLam like ?) and TrangThaiCaLam = 1 and MaCaLam != 'CL000'";
-        try {
-            Connection c = JDBCUtil.getConnection();
-            PreparedStatement st = c.prepareStatement(sql);
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql)) {
             st.setString(1, "%" + MaCaLam + "%");
             st.setString(2, "%" + TenCaLam + "%");
             st.setString(3, "%" + ThoiGianVaoCaLam + "%");
             st.setString(4, "%" + ThoiGianRaCaLam + "%");
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                CaLamDTO calamDTO = new CaLamDTO(rs.getString("MaCaLam"), rs.getString("TenCaLam"),
-                        rs.getString("ThoiGianVaoCaLam"), rs.getString("ThoiGianRaCaLam"), true);
-                list.add(calamDTO);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    CaLamDTO calamDTO = new CaLamDTO(rs.getString("MaCaLam"), rs.getString("TenCaLam"),
+                            rs.getString("ThoiGianVaoCaLam"), rs.getString("ThoiGianRaCaLam"), true);
+                    list.add(calamDTO);
+                }
             }
         } catch (Exception e) {
             System.out.println("Không lấy được dữ liệu cần tìm của ca làm (DAO)");
@@ -265,17 +265,18 @@ public class n6_CaLamDAO {
     public ArrayList<KhuyenMaiDTO> getAll_KhuyenMai(int tongTien, Date date) {
         ArrayList<KhuyenMaiDTO> list = new ArrayList<>();
         String sql = "SELECT * FROM [KhuyenMai] WHERE DieuKienKhuyenMai <= ? AND NgayBatDauKhuyenMai <= ? AND NgayKetThucKhuyenMai >= ?";
-        try {
-            Connection c = JDBCUtil.getConnection();
-            PreparedStatement st = c.prepareStatement(sql);
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql)) {
             st.setInt(1, tongTien);
             st.setDate(2, date);
             st.setDate(3, date);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                KhuyenMaiDTO dto = new KhuyenMaiDTO(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4),
-                        rs.getFloat(5), rs.getInt(6));
-                list.add(dto);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    KhuyenMaiDTO dto = new KhuyenMaiDTO(rs.getString(1), rs.getString(2), rs.getDate(3),
+                            rs.getDate(4),
+                            rs.getFloat(5), rs.getInt(6));
+                    list.add(dto);
+                }
             }
         } catch (Exception e) {
             System.out.println("Không lấy được dữ liệu cần tìm của khuyến mãi (DAO)");
@@ -315,18 +316,19 @@ public class n6_CaLamDAO {
     public KhuyenMaiDTO get_KhuyenMai_theoTen(int tongTien, Date date, String ten) {
         KhuyenMaiDTO dto = new KhuyenMaiDTO();
         String sql = "SELECT * FROM [KhuyenMai] WHERE DieuKienKhuyenMai <= ? AND NgayBatDauKhuyenMai <= ? AND NgayKetThucKhuyenMai >= ? and TenKhuyenMai = ?";
-        try {
-            Connection c = JDBCUtil.getConnection();
-            PreparedStatement st = c.prepareStatement(sql);
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql)) {
             st.setInt(1, tongTien);
             st.setDate(2, date);
             st.setDate(3, date);
             st.setString(4, ten);
 
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                dto = new KhuyenMaiDTO(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4), rs.getFloat(5),
-                        rs.getInt(6));
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    dto = new KhuyenMaiDTO(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4),
+                            rs.getFloat(5),
+                            rs.getInt(6));
+                }
             }
         } catch (Exception e) {
             System.out.println("Không lấy được dữ liệu cần tìm của khuyến mãi (DAO)");
@@ -343,17 +345,17 @@ public class n6_CaLamDAO {
                 + "	AND NgayBatDauUuDai <= ?\n"
                 + "    AND DieuKienUuDai <= ?\n"
                 + "ORDER BY DieuKienUuDai DESC;";
-        try {
-            Connection c = JDBCUtil.getConnection();
-            PreparedStatement st = c.prepareStatement(sql);
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql)) {
             st.setDate(1, date);
             st.setDate(2, date);
             st.setInt(3, chiTieu);
 
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                dto = new UuDaiThanhVienDTO(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4),
-                        rs.getFloat(5), rs.getInt(6));
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    dto = new UuDaiThanhVienDTO(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4),
+                            rs.getFloat(5), rs.getInt(6));
+                }
             }
         } catch (Exception e) {
             System.out.println("Không lấy được dữ liệu cần tìm của ưu đãi (DAO)");
@@ -364,22 +366,20 @@ public class n6_CaLamDAO {
 
     public UuDaiThanhVienDTO get_UuDai_theoMa(String ma) {
         UuDaiThanhVienDTO dto = new UuDaiThanhVienDTO();
-        try {
-            Connection connection = JDBCUtil.getConnection();
-
-            String sql = "select * from [UuDaiThanhVien] where MaUuDai = ?";
-            PreparedStatement pre = connection.prepareStatement(sql);
+        String sql = "select * from [UuDaiThanhVien] where MaUuDai = ?";
+        try (Connection connection = JDBCUtil.getConnection();
+                PreparedStatement pre = connection.prepareStatement(sql)) {
             pre.setString(1, ma);
-            ResultSet rs = pre.executeQuery();
-            if (rs.next()) {
-                dto = new UuDaiThanhVienDTO(rs.getString(1), rs.getString(2), rs.getDate(3),
-                        rs.getDate(4), rs.getFloat(5), rs.getInt(6));
+            try (ResultSet rs = pre.executeQuery()) {
+                if (rs.next()) {
+                    dto = new UuDaiThanhVienDTO(rs.getString(1), rs.getString(2), rs.getDate(3),
+                            rs.getDate(4), rs.getFloat(5), rs.getInt(6));
+                }
             }
-            return dto;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return dto;
     }
 
     // /////////////////////////////////////////////////////////// Khuyến Mãi - Ưu
@@ -439,22 +439,20 @@ public class n6_CaLamDAO {
 
     public KhachHangDTO get_khachHang_theoMa(String ma) {
         KhachHangDTO dto = new KhachHangDTO();
-        try {
-            Connection connection = JDBCUtil.getConnection();
-
-            String sql = "select * from KhachHang where MaKhachHang = ?";
-            PreparedStatement pre = connection.prepareStatement(sql);
+        String sql = "select * from KhachHang where MaKhachHang = ?";
+        try (Connection connection = JDBCUtil.getConnection();
+                PreparedStatement pre = connection.prepareStatement(sql)) {
             pre.setString(1, ma);
-            ResultSet rs = pre.executeQuery();
-            if (rs.next()) {
-                dto = new KhachHangDTO(rs.getString(1), rs.getString(2), rs.getDate(3),
-                        rs.getString(4), rs.getString(5), rs.getInt(6));
+            try (ResultSet rs = pre.executeQuery()) {
+                if (rs.next()) {
+                    dto = new KhachHangDTO(rs.getString(1), rs.getString(2), rs.getDate(3),
+                            rs.getString(4), rs.getString(5), rs.getInt(6));
+                }
             }
-            return dto;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return dto;
     }
 
     // /////////////////////////////////////////////////////////// Khách HÀNG
@@ -462,23 +460,23 @@ public class n6_CaLamDAO {
     /// Vũ Xài
     public ArrayList<MonDTO> getAll_theo_LoaiMon(String MaLoaiMon) {
         ArrayList<MonDTO> listMon = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM Mon WHERE TrangThaiMon = 1 and MaLoaiMon = ?";
-            Connection c = JDBCUtil.getConnection();
-            PreparedStatement pre = c.prepareStatement(sql);
+        String sql = "SELECT * FROM Mon WHERE TrangThaiMon = 1 and MaLoaiMon = ?";
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement pre = c.prepareStatement(sql)) {
             pre.setString(1, MaLoaiMon);
-            ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
+            try (ResultSet rs = pre.executeQuery()) {
+                while (rs.next()) {
 
-                String maMon = rs.getString(1);
-                String maLoaiMon = rs.getString(2);
-                String tenMon = rs.getString(3);
-                String hinhAnh = rs.getString(4);
-                int donGiaMon = rs.getInt(5);
-                boolean trangThaiMon = rs.getBoolean(6);
+                    String maMon = rs.getString(1);
+                    String maLoaiMon = rs.getString(2);
+                    String tenMon = rs.getString(3);
+                    String hinhAnh = rs.getString(4);
+                    int donGiaMon = rs.getInt(5);
+                    boolean trangThaiMon = rs.getBoolean(6);
 
-                MonDTO mon = new MonDTO(maMon, maLoaiMon, tenMon, hinhAnh, donGiaMon, trangThaiMon);
-                listMon.add(mon);
+                    MonDTO mon = new MonDTO(maMon, maLoaiMon, tenMon, hinhAnh, donGiaMon, trangThaiMon);
+                    listMon.add(mon);
+                }
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -488,23 +486,23 @@ public class n6_CaLamDAO {
 
     public ArrayList<MonDTO> getAll_theo_TimKiem(String ten) {
         ArrayList<MonDTO> listMon = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM Mon WHERE TrangThaiMon = 1 and TenMon like ?";
-            Connection c = JDBCUtil.getConnection();
-            PreparedStatement pre = c.prepareStatement(sql);
+        String sql = "SELECT * FROM Mon WHERE TrangThaiMon = 1 and TenMon like ?";
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement pre = c.prepareStatement(sql)) {
             pre.setString(1, "%" + ten + "%");
-            ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
+            try (ResultSet rs = pre.executeQuery()) {
+                while (rs.next()) {
 
-                String maMon = rs.getString(1);
-                String maLoaiMon = rs.getString(2);
-                String tenMon = rs.getString(3);
-                String hinhAnh = rs.getString(4);
-                int donGiaMon = rs.getInt(5);
-                boolean trangThaiMon = rs.getBoolean(6);
+                    String maMon = rs.getString(1);
+                    String maLoaiMon = rs.getString(2);
+                    String tenMon = rs.getString(3);
+                    String hinhAnh = rs.getString(4);
+                    int donGiaMon = rs.getInt(5);
+                    boolean trangThaiMon = rs.getBoolean(6);
 
-                MonDTO mon = new MonDTO(maMon, maLoaiMon, tenMon, hinhAnh, donGiaMon, trangThaiMon);
-                listMon.add(mon);
+                    MonDTO mon = new MonDTO(maMon, maLoaiMon, tenMon, hinhAnh, donGiaMon, trangThaiMon);
+                    listMon.add(mon);
+                }
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -529,21 +527,21 @@ public class n6_CaLamDAO {
                 + "where TrangThaiNguyenLieu = 1\n"
                 + ") as t2\n"
                 + "on t1.MaNguyenLieu = t2.MaNguyenLieu";
-        try {
-            Connection c = JDBCUtil.getConnection();
-            PreparedStatement pre = c.prepareStatement(sql);
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement pre = c.prepareStatement(sql)) {
             pre.setString(1, MaMon_input);
-            ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
+            try (ResultSet rs = pre.executeQuery()) {
+                while (rs.next()) {
 
-                String MaMon = rs.getString(1);
-                String MaNguyenLieu = rs.getString(2);
-                String TenNguyenLieu = rs.getString(3);
-                float KhoiLuong = rs.getFloat(4);
-                float KhoiLuongNguyenLieu = rs.getFloat(5);
-                int SoLy = (int) (KhoiLuongNguyenLieu / KhoiLuong);
+                    String MaMon = rs.getString(1);
+                    String MaNguyenLieu = rs.getString(2);
+                    String TenNguyenLieu = rs.getString(3);
+                    float KhoiLuong = rs.getFloat(4);
+                    float KhoiLuongNguyenLieu = rs.getFloat(5);
+                    int SoLy = (int) (KhoiLuongNguyenLieu / KhoiLuong);
 
-                ds.add(new Object[] { MaMon, MaNguyenLieu, TenNguyenLieu, KhoiLuong, KhoiLuongNguyenLieu, SoLy });
+                    ds.add(new Object[] { MaMon, MaNguyenLieu, TenNguyenLieu, KhoiLuong, KhoiLuongNguyenLieu, SoLy });
+                }
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -562,23 +560,23 @@ public class n6_CaLamDAO {
 
     public ArrayList<MonDTO> getAll_theo_TimKiem_Mon(String ten) {
         ArrayList<MonDTO> listMon = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM Mon WHERE TrangThaiMon = 1 and TenMon like ?";
-            Connection c = JDBCUtil.getConnection();
-            PreparedStatement pre = c.prepareStatement(sql);
+        String sql = "SELECT * FROM Mon WHERE TrangThaiMon = 1 and TenMon like ?";
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement pre = c.prepareStatement(sql)) {
             pre.setString(1, "%" + ten + "%");
-            ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
+            try (ResultSet rs = pre.executeQuery()) {
+                while (rs.next()) {
 
-                String maMon = rs.getString(1);
-                String maLoaiMon = rs.getString(2);
-                String tenMon = rs.getString(3);
-                String hinhAnh = rs.getString(4);
-                int donGiaMon = rs.getInt(5);
-                boolean trangThaiMon = rs.getBoolean(6);
+                    String maMon = rs.getString(1);
+                    String maLoaiMon = rs.getString(2);
+                    String tenMon = rs.getString(3);
+                    String hinhAnh = rs.getString(4);
+                    int donGiaMon = rs.getInt(5);
+                    boolean trangThaiMon = rs.getBoolean(6);
 
-                MonDTO mon = new MonDTO(maMon, maLoaiMon, tenMon, hinhAnh, donGiaMon, trangThaiMon);
-                listMon.add(mon);
+                    MonDTO mon = new MonDTO(maMon, maLoaiMon, tenMon, hinhAnh, donGiaMon, trangThaiMon);
+                    listMon.add(mon);
+                }
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -629,7 +627,7 @@ public class n6_CaLamDAO {
             st.setInt(1, (int) item[3]); // Giả định sl ở vị trí thứ 4 trong mảng `item`
             st.setString(2, (String) item[0]); // Giả định id ở vị trí đầu tiên trong mảng `item`
 
-            int results = st.executeUpdate(); // Thực thi tất cả lệnh trong batch cùng một lúc
+            st.executeUpdate();
 
             JDBCUtil.closeConnection(c);
         } catch (SQLException e) {
@@ -652,7 +650,7 @@ public class n6_CaLamDAO {
             st.setInt(1, (int) item[3]); // Giả định sl ở vị trí thứ 4 trong mảng `item`
             st.setString(2, (String) item[0]); // Giả định id ở vị trí đầu tiên trong mảng `item`
 
-            int results = st.executeUpdate(); // Thực thi tất cả lệnh trong batch cùng một lúc
+            st.executeUpdate();
 
             JDBCUtil.closeConnection(c);
         } catch (SQLException e) {

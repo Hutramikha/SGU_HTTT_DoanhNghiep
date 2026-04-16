@@ -12,8 +12,8 @@ import Util.JDBCUtil;
 
 public class n1_CTHoaDonDAO {
 
-    public static n1_HoaDonDAO getInstance() {
-        return new n1_HoaDonDAO();
+    public static n1_CTHoaDonDAO getInstance() {
+        return new n1_CTHoaDonDAO();
     }
 
     public ArrayList<ChiTietHoaDonDTO> getListCTHD() {
