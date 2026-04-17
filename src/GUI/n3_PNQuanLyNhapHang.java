@@ -6,6 +6,7 @@ package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import Util.UIHelper;
 
 /**
  *
@@ -44,17 +45,17 @@ public class n3_PNQuanLyNhapHang extends javax.swing.JPanel {
         jL_PhieuNhap = new javax.swing.JLabel();
         jP_NoiDung = new javax.swing.JPanel();
 
-        setBackground(new java.awt.Color(122, 74, 74));
+        setBackground(UIHelper.APP_BACKGROUND);
         setMaximumSize(new java.awt.Dimension(1125, 667));
         setMinimumSize(new java.awt.Dimension(1125, 667));
         setPreferredSize(new java.awt.Dimension(1125, 667));
 
-        jP_NhapHang.setBackground(new java.awt.Color(255, 255, 255));
+        jP_NhapHang.setBackground(UIHelper.SURFACE);
         jP_NhapHang.setMaximumSize(new java.awt.Dimension(1125, 658));
         jP_NhapHang.setMinimumSize(new java.awt.Dimension(1125, 658));
         jP_NhapHang.setPreferredSize(new java.awt.Dimension(1125, 658));
 
-        jP_NhapHang_PhieuNhap.setBackground(new java.awt.Color(255, 255, 255));
+        jP_NhapHang_PhieuNhap.setBackground(UIHelper.SURFACE);
         jP_NhapHang_PhieuNhap.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jP_NhapHang_PhieuNhap.setMaximumSize(new java.awt.Dimension(1100, 28));
         jP_NhapHang_PhieuNhap.setMinimumSize(new java.awt.Dimension(1100, 28));
@@ -62,16 +63,18 @@ public class n3_PNQuanLyNhapHang extends javax.swing.JPanel {
         jP_NhapHang_PhieuNhap.setPreferredSize(new java.awt.Dimension(1100, 28));
         jP_NhapHang_PhieuNhap.setLayout(new java.awt.GridLayout(1, 0));
 
-        jL_NhapHang.setBackground(new java.awt.Color(219, 189, 142));
+        jL_NhapHang.setBackground(UIHelper.PRIMARY_GREEN);
         jL_NhapHang.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jL_NhapHang.setForeground(UIHelper.WHITE);
         jL_NhapHang.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jL_NhapHang.setText("Nhập Hàng");
         jL_NhapHang.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         jL_NhapHang.setOpaque(true);
         jP_NhapHang_PhieuNhap.add(jL_NhapHang);
 
-        jL_PhieuNhap.setBackground(new java.awt.Color(245, 245, 245));
+        jL_PhieuNhap.setBackground(UIHelper.SURFACE_ALT);
         jL_PhieuNhap.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jL_PhieuNhap.setForeground(UIHelper.DARK_TEXT);
         jL_PhieuNhap.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jL_PhieuNhap.setText("Phiếu Nhập");
         jL_PhieuNhap.setOpaque(true);

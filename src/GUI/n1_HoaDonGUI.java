@@ -25,6 +25,7 @@ import BUS.CTHoaDonBUS;
 import BUS.HoaDonBUS;
 import BUS.TrangChuBUS;
 import DTO.HoaDonDTO;
+import Util.UIHelper;
 
 public class n1_HoaDonGUI extends javax.swing.JPanel {
 
@@ -74,31 +75,31 @@ public class n1_HoaDonGUI extends javax.swing.JPanel {
 
                 JDTuNgay.setDateFormatString("dd-MM-yyyy");
                 JTextField dateEditor = ((JTextField) JDTuNgay.getDateEditor().getUiComponent());
-                dateEditor.setBackground(new java.awt.Color(211, 211, 211)); // Nền trắng
-                dateEditor.setForeground(new java.awt.Color(0, 0, 0)); // Chữ đen
+                dateEditor.setBackground(UIHelper.SURFACE_ALT);
+                dateEditor.setForeground(UIHelper.DARK_TEXT);
                 dateEditor.setEditable(false);
                 dateEditor.setFocusable(false);
-                JDTuNgay.setBackground(new java.awt.Color(211, 211, 211));
+                JDTuNgay.setBackground(UIHelper.SURFACE_ALT);
 
                 JDDenNgay.setDateFormatString("dd-MM-yyyy");
                 JTextField dateEditor2 = ((JTextField) JDDenNgay.getDateEditor().getUiComponent());
-                dateEditor2.setBackground(new java.awt.Color(211, 211, 211)); // Nền trắng
-                dateEditor2.setForeground(new java.awt.Color(0, 0, 0)); // Chữ đen
+                dateEditor2.setBackground(UIHelper.SURFACE_ALT);
+                dateEditor2.setForeground(UIHelper.DARK_TEXT);
                 dateEditor2.setEditable(false);
                 dateEditor2.setFocusable(false);
-                JDDenNgay.setBackground(new java.awt.Color(211, 211, 211));
+                JDDenNgay.setBackground(UIHelper.SURFACE_ALT);
 
-                setBackground(new java.awt.Color(122, 74, 74));
+                setBackground(UIHelper.APP_BACKGROUND);
                 setMaximumSize(new java.awt.Dimension(1125, 667));
                 setMinimumSize(new java.awt.Dimension(1125, 667));
                 setPreferredSize(new java.awt.Dimension(1125, 667));
 
-                PanelTong.setBackground(new java.awt.Color(255, 255, 255));
+                PanelTong.setBackground(UIHelper.SURFACE);
                 PanelTong.setMaximumSize(new java.awt.Dimension(1125, 658));
                 PanelTong.setMinimumSize(new java.awt.Dimension(1125, 658));
                 PanelTong.setPreferredSize(new java.awt.Dimension(1125, 658));
 
-                PanelHoaDon.setBackground(new java.awt.Color(219, 189, 142));
+                PanelHoaDon.setBackground(UIHelper.SURFACE_ALT);
                 PanelHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
                 PanelHoaDon.setMaximumSize(new java.awt.Dimension(195, 44));
                 PanelHoaDon.setMinimumSize(new java.awt.Dimension(195, 44));
@@ -121,7 +122,7 @@ public class n1_HoaDonGUI extends javax.swing.JPanel {
                                                                 javax.swing.GroupLayout.DEFAULT_SIZE, 44,
                                                                 Short.MAX_VALUE));
 
-                PanelBanHang.setBackground(new java.awt.Color(219, 189, 142));
+                PanelBanHang.setBackground(UIHelper.ACCENT_GREEN);
                 PanelBanHang.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
                 PanelBanHang.setMaximumSize(new java.awt.Dimension(195, 44));
                 PanelBanHang.setMinimumSize(new java.awt.Dimension(195, 44));
@@ -143,39 +144,40 @@ public class n1_HoaDonGUI extends javax.swing.JPanel {
                                                 .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 44,
                                                                 Short.MAX_VALUE));
 
-                PanelThongTinHoaDon.setBackground(new java.awt.Color(219, 189, 142));
+                PanelThongTinHoaDon.setBackground(UIHelper.SURFACE);
                 PanelThongTinHoaDon.setEnabled(false);
                 PanelThongTinHoaDon.setMaximumSize(new java.awt.Dimension(1113, 553));
                 PanelThongTinHoaDon.setMinimumSize(new java.awt.Dimension(1113, 553));
 
                 LblTieuDe.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
                 LblTieuDe.setText("Thông tin hóa đơn");
+                LblTieuDe.setForeground(UIHelper.PRIMARY_GREEN);
 
-                PanelTimKiemTheoMa.setBackground(new java.awt.Color(255, 255, 255));
+                PanelTimKiemTheoMa.setBackground(UIHelper.SURFACE);
 
                 LblTimKiemTheoMa.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-                LblTimKiemTheoMa.setForeground(new java.awt.Color(153, 102, 0));
+                LblTimKiemTheoMa.setForeground(UIHelper.PRIMARY_GREEN);
                 LblTimKiemTheoMa.setText("Tìm kiếm theo mã");
 
                 LblMaHoaDon.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-                LblMaHoaDon.setForeground(new java.awt.Color(153, 102, 0));
+                LblMaHoaDon.setForeground(UIHelper.PRIMARY_GREEN);
                 LblMaHoaDon.setText("Mã hóa đơn:");
 
                 txtMaHoaDon.setBorder(null);
 
-                jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
+                jSeparator1.setForeground(UIHelper.BORDER_COLOR);
 
-                btn_TaiLai.setBackground(new java.awt.Color(0, 0, 0));
+                btn_TaiLai.setBackground(UIHelper.ACCENT_GREEN);
                 btn_TaiLai.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-                btn_TaiLai.setForeground(new java.awt.Color(255, 255, 255));
+                btn_TaiLai.setForeground(UIHelper.WHITE);
                 btn_TaiLai.setText("Tải Lại");
                 btn_TaiLai.setMaximumSize(new java.awt.Dimension(100, 24));
                 btn_TaiLai.setMinimumSize(new java.awt.Dimension(100, 24));
                 btn_TaiLai.setPreferredSize(new java.awt.Dimension(100, 24));
 
-                btn_TimKiemMa.setBackground(new java.awt.Color(0, 0, 0));
+                btn_TimKiemMa.setBackground(UIHelper.PRIMARY_GREEN);
                 btn_TimKiemMa.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-                btn_TimKiemMa.setForeground(new java.awt.Color(255, 255, 255));
+                btn_TimKiemMa.setForeground(UIHelper.WHITE);
                 btn_TimKiemMa.setText("Tìm Kiếm");
                 btn_TimKiemMa.setMaximumSize(new java.awt.Dimension(100, 24));
                 btn_TimKiemMa.setMinimumSize(new java.awt.Dimension(100, 24));

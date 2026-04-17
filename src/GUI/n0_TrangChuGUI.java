@@ -8,7 +8,6 @@ import DTO.NhanVienDTO;
 import DTO.PhanQuyenDTO;
 import DTO.TaiKhoanDTO;
 
-import java.awt.Color;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -625,8 +624,8 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                                         label.setOpaque(true);
                                 } else if (isDisabled) {
                                         // Keep disabled styling
-                                        label.setBackground(new Color(240, 240, 240));
-                                        label.setForeground(new Color(150, 150, 150));
+                                        label.setBackground(Util.UIHelper.DISABLED_BG);
+                                        label.setForeground(Util.UIHelper.DISABLED_TEXT);
                                 } else {
                                         // Normal state
                                         label.setBackground(Util.UIHelper.PRIMARY_GREEN);

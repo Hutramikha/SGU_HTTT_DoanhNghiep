@@ -1,6 +1,5 @@
 package Util;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,19 +23,20 @@ public class TextAreaCellRenderer extends JTextArea implements TableCellRenderer
     }
 
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+            int row, int column) {
         setText(Objects.toString(value, ""));
         adjustRowHeight(table, row, column);
         if (isSelected) {
             setBackground(table.getSelectionBackground());
         } else {
             if (row == hoverRow.getIndex()) {
-                setBackground(new Color(230, 230, 230));
+                setBackground(UIHelper.SURFACE_ALT);
             } else {
                 if (row % 2 == 0) {
-                    setBackground(Color.WHITE);
+                    setBackground(UIHelper.WHITE);
                 } else {
-                    setBackground(new Color(242, 242, 242));
+                    setBackground(UIHelper.SURFACE);
                 }
             }
         }

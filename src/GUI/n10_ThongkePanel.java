@@ -8,8 +8,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JTable;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import org.knowm.xchart.*;
@@ -19,6 +23,7 @@ import BUS.ThongkeBUS;
 import DTO.NguyenLieuDTO;
 import BUS.n5_NguyenLieuBUS;
 import DTO.NhanVienDTO;
+import Util.UIHelper;
 import Util.XuLyFileExcel;
 
 /*
@@ -27,7 +32,6 @@ import Util.XuLyFileExcel;
  */
 
 /**
- *
  * @author phanloc
  */
 public class n10_ThongkePanel extends javax.swing.JPanel {
@@ -48,11 +52,117 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
         public n10_ThongkePanel() {
                 initComponents();
+                applyUnifiedGreenTheme();
 
                 // ✅ Load statistics on background thread to prevent UI freeze
                 System.out.println("🚀 Starting statistics loader...");
                 StatisticsLoadWorker2_fixed worker = new StatisticsLoadWorker2_fixed(this);
                 worker.execute(); // Run on background thread
+        }
+
+        private void applyUnifiedGreenTheme() {
+                setBackground(UIHelper.APP_BACKGROUND);
+                setOpaque(true);
+
+                applyBackground(UIHelper.SURFACE_ALT,
+                                jPanel1, HeaderTk, Panel_default, jPanel5, headerPanel, content_Panel,
+                                PnDthu, jPanel12, DetailDtPn, Main_DtPn, Main_DtPn1, Main_DtPn2, selectPn,
+                                jPanel18, jPanel65, DetailChiphi, ContentCphi, ContentCphi1, ContentCphi2,
+                                selectPnCphi,
+                                jPanel72, jPanel73, detailLoinhuan, contentTKLnhuan, contentTKLnhuan1,
+                                contentTKLnhuan2,
+                                selectPnLoinhuan,
+                                jPanel80, jPanel81, detailLuong, ContentLuong, ContentLuong1, ContentLuong2,
+                                selectPnLuong,
+                                jPanel88, jPanel89, detailKhohang, ContentKhohang, ContentKhohang1, ContentKhohang3,
+                                selectKhohang);
+
+                applyBackground(UIHelper.SURFACE,
+                                DtNgayPn, SLdonhangPn, SLspBanPn, KhMoiPn, TongDtPn,
+                                TongDThungay, DthuthangHtai, DTnamHtai,
+                                ChiphiPnhapHtai, ChiphiluongNV, TongchiphiThang,
+                                Loinhuanngay, Loinhuanthang, LoinhanTong,
+                                SluongNV, TongluongnvThang, TongLuongnvnam,
+                                SoluongPhieunhap, SoluongNguyenlieu, SoluongNcc);
+
+                styleMetricLabels(
+                                jLabel1, jLabel2, jLabel3, jLabel4, jLabel5,
+                                jLabel6, jLabel7, jLabel8, jLabel9, jLabel10,
+                                jLabel36, jLabel37, jLabel38, jLabel39, jLabel40,
+                                jLabel41, jLabel42, jLabel43, jLabel44, jLabel45);
+
+                styleValueFields(
+                                txtDthungay, txtSLHoadonngay, Slmondabanngay, SoluongKH, Dthuthanghientai,
+                                jTextField6, jTextField7, jTextField8, jTextField9, jTextField10,
+                                jTextField11, jTextField12, jTextField13, jTextField14, jTextField15,
+                                jTextField16, jTextField17, jTextField18, jTextField19, jTextField20);
+
+                styleComboBoxes(Combobox_TK, CbboxDthu, CbboxChiphi, CbboxLoinhuan, CbboxLuong, CbboxKhohang);
+                styleScrollPanes(DefaultTK, TK_doanhthu, TK_chiphi, TK_loinhuan, TK_luong, TK_khohang);
+
+                if (ThongkePanel != null) {
+                        ThongkePanel.setBackground(UIHelper.SURFACE);
+                        ThongkePanel.setForeground(UIHelper.DARK_TEXT);
+                }
+
+                if (BtnExport != null) {
+                        BtnExport.setBackground(UIHelper.PRIMARY_GREEN);
+                        BtnExport.setForeground(UIHelper.WHITE);
+                        BtnExport.setBorderPainted(false);
+                        BtnExport.setFocusPainted(false);
+                        UIHelper.addHoverEffect(BtnExport, UIHelper.ACCENT_GREEN, UIHelper.WHITE);
+                }
+
+                UIHelper.applyProjectTheme(this);
+        }
+
+        private void applyBackground(Color background, JPanel... panels) {
+                for (JPanel panel : panels) {
+                        if (panel != null) {
+                                panel.setBackground(background);
+                        }
+                }
+        }
+
+        private void styleMetricLabels(JLabel... labels) {
+                for (JLabel label : labels) {
+                        if (label != null) {
+                                label.setOpaque(true);
+                                label.setBackground(UIHelper.LIGHTER_GREEN);
+                                label.setForeground(UIHelper.WHITE);
+                        }
+                }
+        }
+
+        private void styleValueFields(JTextField... fields) {
+                for (JTextField field : fields) {
+                        if (field != null) {
+                                field.setOpaque(true);
+                                field.setBackground(UIHelper.SURFACE);
+                                field.setForeground(UIHelper.DARK_TEXT);
+                                field.setCaretColor(UIHelper.DARK_TEXT);
+                        }
+                }
+        }
+
+        private void styleComboBoxes(JComboBox<?>... comboBoxes) {
+                for (JComboBox<?> comboBox : comboBoxes) {
+                        if (comboBox != null) {
+                                comboBox.setBackground(UIHelper.SURFACE);
+                                comboBox.setForeground(UIHelper.DARK_TEXT);
+                        }
+                }
+        }
+
+        private void styleScrollPanes(JScrollPane... scrollPanes) {
+                for (JScrollPane scrollPane : scrollPanes) {
+                        if (scrollPane != null) {
+                                scrollPane.setBackground(UIHelper.SURFACE_ALT);
+                                if (scrollPane.getViewport() != null) {
+                                        scrollPane.getViewport().setBackground(UIHelper.SURFACE_ALT);
+                                }
+                        }
+                }
         }
 
         public void initUI() {
@@ -81,7 +191,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 String SoluongPhieunhap = String.valueOf(TK.getsoluongPN());
                 String SoluongNL = String.valueOf(TK.getsluongNL());
                 String SoluongNCC = String.valueOf(TK.getsluongNCC());
-                ///////
+                //
                 jTextField6.setText(Dthungay);
                 jTextField7.setText(Dthuthang);
                 jTextField8.setText(Dthnam);
@@ -97,7 +207,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 jTextField15.setText(SoluongPhieunhap + " Phiếu nhập");
                 jTextField16.setText(SoluongNL + " Nguyên liệu");
                 jTextField17.setText(SoluongNCC + " Nhà Cung Cấp");
-                ///////
+                //
                 txtDthungay.setText(Dthungay);
                 txtSLHoadonngay.setText(SoLuongHoaDon + " Hóa đơn");
                 Slmondabanngay.setText(Soluongmon + " Món");
@@ -899,7 +1009,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 headerPanel.add(KhMoiPn);
 
-                /////////////
+                ////////
                 jTextField6.setText("jTextField6");
                 jTextField6.setMinimumSize(new java.awt.Dimension(200, 22));
                 jTextField6.setPreferredSize(new java.awt.Dimension(195, 50));
@@ -1463,7 +1573,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 TK_chiphi.setBackground(new java.awt.Color(219, 189, 142));
                 TK_chiphi.setPreferredSize(new java.awt.Dimension(1120, 450));
 
-                //////////////
+                /////////
                 jTextField9.setText("jTextField6");
                 jTextField9.setMinimumSize(new java.awt.Dimension(200, 22));
                 jTextField9.setPreferredSize(new java.awt.Dimension(195, 50));
@@ -1741,7 +1851,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 TK_loinhuan.setBackground(new java.awt.Color(219, 189, 142));
                 TK_loinhuan.setPreferredSize(new java.awt.Dimension(1120, 450));
 
-                //////////////
+                /////////
                 jTextField18.setText("jTextField18");
                 jTextField18.setPreferredSize(new java.awt.Dimension(195, 50));
                 jTextField19.setText("jTextField18");
@@ -2008,7 +2118,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 TK_luong.setBackground(new java.awt.Color(219, 189, 142));
                 TK_luong.setPreferredSize(new java.awt.Dimension(1120, 450));
-                //////////////////
+                /////////////
                 jTextField12.setText("jTextField12");
                 jTextField12.setMinimumSize(new java.awt.Dimension(195, 50));
                 jTextField12.setPreferredSize(new java.awt.Dimension(195, 55));
@@ -2276,7 +2386,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 TK_khohang.setBackground(new java.awt.Color(219, 189, 142));
                 TK_khohang.setPreferredSize(new java.awt.Dimension(1120, 450));
-                ////////////////////
+                ///////////////
                 jTextField15.setText("jTextField15");
                 jTextField15.setMinimumSize(new java.awt.Dimension(195, 50));
                 jTextField15.setPreferredSize(new java.awt.Dimension(195, 55));
@@ -2788,15 +2898,15 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         private javax.swing.JPanel selectPnCphi;
         private javax.swing.JPanel selectPnLoinhuan;
         private javax.swing.JPanel selectPnLuong;
-        JTable tableDf = new JTable();
-        JTable tableDfquy = new JTable();
-        JTable tableDT = new JTable();
-        JTable tableDTquy = new JTable();
-        JTable tableCP = new JTable();
-        JTable tableCPquy = new JTable();
-        JTable tableLN = new JTable();
-        JTable tableLNquy = new JTable();
-        JTable tableLuong = new JTable();
-        JTable tableKho = new JTable();
+        private final javax.swing.JTable tableDf = new javax.swing.JTable();
+        private final javax.swing.JTable tableDfquy = new javax.swing.JTable();
+        private final javax.swing.JTable tableDT = new javax.swing.JTable();
+        private final javax.swing.JTable tableDTquy = new javax.swing.JTable();
+        private final javax.swing.JTable tableCP = new javax.swing.JTable();
+        private final javax.swing.JTable tableCPquy = new javax.swing.JTable();
+        private final javax.swing.JTable tableLN = new javax.swing.JTable();
+        private final javax.swing.JTable tableLNquy = new javax.swing.JTable();
+        private final javax.swing.JTable tableLuong = new javax.swing.JTable();
+        private final javax.swing.JTable tableKho = new javax.swing.JTable();
         // End of variables declaration//GEN-END:variables
 }

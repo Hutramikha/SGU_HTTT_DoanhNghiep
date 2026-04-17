@@ -1,6 +1,5 @@
 package Util;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,7 +17,7 @@ public class TableCustom {
     public static void apply(JScrollPane scroll, TableType type) {
         JTable table = (JTable) scroll.getViewport().getComponent(0);
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
-        table.setSelectionBackground(new Color	(239, 219, 203));
+        table.setSelectionBackground(UIHelper.ACCENT_GREEN);
         table.getTableHeader().setReorderingAllowed(false);
         table.getTableHeader().setDefaultRenderer(new TableHeaderCustomCellRender(table));
         table.setRowHeight(30);
@@ -32,25 +31,25 @@ public class TableCustom {
         table.setDefaultRenderer(Object.class, cellRender);
         table.setDefaultRenderer(Boolean.class, new BooleanCellRenderer(hoverRow));
         table.setShowVerticalLines(true);
-        table.setGridColor(new Color(220, 220, 220));
-        table.setForeground(new Color(51, 51, 51));
-        table.setSelectionForeground(new Color(0,0,0));
-        scroll.setBorder(new LineBorder(new Color(220, 220, 220)));
+        table.setGridColor(UIHelper.BORDER_COLOR);
+        table.setForeground(UIHelper.DARK_TEXT);
+        table.setSelectionForeground(UIHelper.WHITE);
+        scroll.setBorder(new LineBorder(UIHelper.BORDER_COLOR));
         JPanel panel = new JPanel() {
             @Override
             public void paint(Graphics grphcs) {
                 super.paint(grphcs);
-                grphcs.setColor(new Color(220, 220, 220));
+                grphcs.setColor(UIHelper.BORDER_COLOR);
                 grphcs.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1);
                 grphcs.dispose();
             }
         };
-        panel.setBackground(new Color(250, 250, 250));
+        panel.setBackground(UIHelper.SURFACE);
         scroll.setCorner(JScrollPane.UPPER_RIGHT_CORNER, panel);
-        scroll.getViewport().setBackground(Color.WHITE);
+        scroll.getViewport().setBackground(UIHelper.WHITE);
         scroll.getVerticalScrollBar().setUI(new ScrollBarCustomUI());
         scroll.getHorizontalScrollBar().setUI(new ScrollBarCustomUI());
-        table.getTableHeader().setBackground(new Color(250, 250, 250));
+        table.getTableHeader().setBackground(UIHelper.SURFACE);
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {

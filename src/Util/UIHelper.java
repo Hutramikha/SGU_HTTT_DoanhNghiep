@@ -20,6 +20,16 @@ public class UIHelper {
     public static final Color LIGHTEST_GREEN = new Color(232, 245, 233);
     public static final Color ACCENT_GREEN = new Color(102, 187, 106);
 
+    // Semantic tones for consistent green-first UI composition
+    public static final Color APP_BACKGROUND = LIGHTEST_GREEN;
+    public static final Color SURFACE = new Color(246, 251, 246);
+    public static final Color SURFACE_ALT = new Color(237, 246, 238);
+    public static final Color BORDER_COLOR = new Color(196, 221, 199);
+    public static final Color DISABLED_BG = new Color(234, 242, 235);
+    public static final Color DISABLED_TEXT = new Color(145, 160, 147);
+    public static final Color DANGER = new Color(229, 57, 53);
+    public static final Color DANGER_HOVER = new Color(211, 47, 47);
+
     private static final Color OLD_BACKGROUND = new Color(122, 74, 74);
     private static final Color OLD_SURFACE = new Color(219, 189, 142);
     private static final Color OLD_SURFACE_HOVER = new Color(199, 159, 95);
@@ -27,6 +37,32 @@ public class UIHelper {
     private static final Color OLD_BUTTON = new Color(51, 51, 51);
     private static final Color OLD_DISABLED = new Color(211, 211, 211);
     private static final Color OLD_GREEN_TEXT = new Color(0, 102, 0);
+
+    // Extra legacy colors found in generated forms/components
+    private static final Color LEGACY_NEUTRAL_PANEL = new Color(240, 240, 240);
+    private static final Color LEGACY_NEUTRAL_SOFT = new Color(245, 245, 245);
+    private static final Color LEGACY_NEUTRAL_CARD = new Color(250, 250, 250);
+    private static final Color LEGACY_SECTION_BG = new Color(217, 217, 217);
+    private static final Color LEGACY_HEADER_ACCENT = new Color(168, 154, 143);
+    private static final Color LEGACY_BEIGE_ALT = new Color(219, 195, 165);
+    private static final Color LEGACY_BEIGE_LIGHT = new Color(239, 219, 203);
+    private static final Color LEGACY_PRIMARY_RED = new Color(204, 0, 51);
+    private static final Color LEGACY_MAGENTA = new Color(219, 19, 142);
+    private static final Color LEGACY_BRIGHT_GREEN = new Color(2, 189, 1);
+    private static final Color LEGACY_ACTION_ORANGE = new Color(255, 102, 0);
+    private static final Color LEGACY_ACTION_BLUE = new Color(51, 102, 255);
+    private static final Color LEGACY_BLACK = new Color(0, 0, 0);
+
+    private static final Color LEGACY_TEXT_DARK_1 = new Color(50, 50, 50);
+    private static final Color LEGACY_TEXT_DARK_2 = new Color(80, 80, 80);
+    private static final Color LEGACY_TEXT_MEDIUM = new Color(100, 100, 100);
+    private static final Color LEGACY_TEXT_DISABLED = new Color(150, 150, 150);
+    private static final Color LEGACY_TEXT_BROWN = new Color(153, 102, 0);
+    private static final Color LEGACY_TEXT_ORANGE_RED = new Color(255, 51, 0);
+    private static final Color LEGACY_TEXT_BLUE = new Color(0, 102, 204);
+    private static final Color LEGACY_TEXT_BLUE_DARK = new Color(51, 0, 255);
+    private static final Color LEGACY_TEXT_YELLOW = new Color(255, 204, 0);
+    private static final Color LEGACY_TEXT_SUCCESS = new Color(0, 153, 0);
 
     private static volatile boolean projectThemeInstalled = false;
 
@@ -45,12 +81,16 @@ public class UIHelper {
                 return;
             }
 
+            installUiDefaults();
+
             Toolkit.getDefaultToolkit().addAWTEventListener(event -> {
-                if (event instanceof WindowEvent windowEvent) {
+                if (event instanceof WindowEvent) {
+                    WindowEvent windowEvent = (WindowEvent) event;
                     if (windowEvent.getID() == WindowEvent.WINDOW_OPENED) {
                         applyProjectTheme(windowEvent.getWindow());
                     }
-                } else if (event instanceof ContainerEvent containerEvent) {
+                } else if (event instanceof ContainerEvent) {
+                    ContainerEvent containerEvent = (ContainerEvent) event;
                     if (containerEvent.getID() == ContainerEvent.COMPONENT_ADDED) {
                         applyProjectTheme(containerEvent.getChild());
                     }
@@ -59,6 +99,21 @@ public class UIHelper {
 
             projectThemeInstalled = true;
         }
+    }
+
+    private static void installUiDefaults() {
+        UIManager.put("Panel.background", APP_BACKGROUND);
+        UIManager.put("Label.foreground", DARK_TEXT);
+        UIManager.put("Button.background", PRIMARY_GREEN);
+        UIManager.put("Button.foreground", WHITE);
+        UIManager.put("TextField.background", SURFACE);
+        UIManager.put("TextField.foreground", DARK_TEXT);
+        UIManager.put("PasswordField.background", SURFACE);
+        UIManager.put("PasswordField.foreground", DARK_TEXT);
+        UIManager.put("ComboBox.background", SURFACE);
+        UIManager.put("ComboBox.foreground", DARK_TEXT);
+        UIManager.put("Table.selectionBackground", ACCENT_GREEN);
+        UIManager.put("Table.selectionForeground", WHITE);
     }
 
     public static void applyProjectTheme(Component root) {
@@ -72,7 +127,8 @@ public class UIHelper {
     private static void applyProjectThemeRecursive(Component component) {
         remapThemeColors(component);
 
-        if (component instanceof Container container) {
+        if (component instanceof Container) {
+            Container container = (Container) component;
             for (Component child : container.getComponents()) {
                 applyProjectThemeRecursive(child);
             }
@@ -99,13 +155,13 @@ public class UIHelper {
         }
 
         if (matches(color, OLD_BACKGROUND)) {
-            return LIGHTEST_GREEN;
+            return APP_BACKGROUND;
         }
         if (matches(color, OLD_SURFACE)) {
-            return LIGHT_GREEN;
+            return SURFACE_ALT;
         }
         if (matches(color, OLD_SURFACE_HOVER)) {
-            return ACCENT_GREEN;
+            return LIGHTER_GREEN;
         }
         if (matches(color, OLD_DARK_SURFACE)) {
             return PRIMARY_GREEN;
@@ -114,7 +170,36 @@ public class UIHelper {
             return DARK_GREEN;
         }
         if (matches(color, OLD_DISABLED)) {
+            return DISABLED_BG;
+        }
+
+        if (matches(color, LEGACY_NEUTRAL_PANEL) || matches(color, LEGACY_NEUTRAL_SOFT)
+                || matches(color, LEGACY_NEUTRAL_CARD)) {
+            return SURFACE;
+        }
+        if (matches(color, LEGACY_BEIGE_ALT) || matches(color, LEGACY_BEIGE_LIGHT)) {
+            return SURFACE_ALT;
+        }
+        if (matches(color, LEGACY_SECTION_BG)) {
+            return SURFACE_ALT;
+        }
+        if (matches(color, LEGACY_HEADER_ACCENT)) {
             return LIGHTER_GREEN;
+        }
+        if (matches(color, LEGACY_ACTION_ORANGE)) {
+            return ACCENT_GREEN;
+        }
+        if (matches(color, LEGACY_ACTION_BLUE)) {
+            return PRIMARY_GREEN;
+        }
+        if (matches(color, LEGACY_PRIMARY_RED)) {
+            return PRIMARY_GREEN;
+        }
+        if (matches(color, LEGACY_MAGENTA) || matches(color, LEGACY_BRIGHT_GREEN)) {
+            return ACCENT_GREEN;
+        }
+        if (matches(color, LEGACY_BLACK)) {
+            return DARK_GREEN;
         }
 
         return color;
@@ -127,6 +212,26 @@ public class UIHelper {
 
         if (matches(color, OLD_GREEN_TEXT)) {
             return PRIMARY_GREEN;
+        }
+        if (matches(color, LEGACY_TEXT_DARK_1) || matches(color, LEGACY_TEXT_DARK_2)
+                || matches(color, Color.BLACK)) {
+            return DARK_TEXT;
+        }
+        if (matches(color, LEGACY_TEXT_MEDIUM) || matches(color, Color.GRAY)) {
+            return LIGHT_TEXT;
+        }
+        if (matches(color, LEGACY_TEXT_DISABLED)) {
+            return DISABLED_TEXT;
+        }
+        if (matches(color, LEGACY_TEXT_BLUE) || matches(color, LEGACY_TEXT_BLUE_DARK)
+                || matches(color, LEGACY_TEXT_SUCCESS)) {
+            return PRIMARY_GREEN;
+        }
+        if (matches(color, LEGACY_TEXT_YELLOW)) {
+            return ACCENT_GREEN;
+        }
+        if (matches(color, LEGACY_TEXT_BROWN) || matches(color, LEGACY_TEXT_ORANGE_RED)) {
+            return DARK_GREEN;
         }
 
         return color;

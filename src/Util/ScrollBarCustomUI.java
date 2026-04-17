@@ -1,6 +1,5 @@
 package Util;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -46,7 +45,7 @@ public class ScrollBarCustomUI extends BasicScrollBarUI {
 
     @Override
     protected void paintTrack(Graphics grphcs, JComponent jc, Rectangle rctngl) {
-        grphcs.setColor(new Color(250, 250, 250));
+        grphcs.setColor(UIHelper.SURFACE);
         super.paintTrack(grphcs, jc, rctngl);
     }
 
@@ -55,21 +54,23 @@ public class ScrollBarCustomUI extends BasicScrollBarUI {
         Graphics2D g2 = (Graphics2D) grphcs;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         if (isDragging) {
-            g2.setColor(new Color(130, 130, 130));
+            g2.setColor(UIHelper.PRIMARY_GREEN);
         } else {
             if (isThumbRollover()) {
-                g2.setColor(new Color(150, 150, 150));
+                g2.setColor(UIHelper.ACCENT_GREEN);
             } else {
-                g2.setColor(new Color(180, 180, 180));
+                g2.setColor(UIHelper.LIGHTER_GREEN);
             }
         }
         int round = 2;
         int spaceX = 2;
         int spaceY = 8;
         if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
-            g2.fill(new RoundRectangle2D.Double(rctngl.getX() + spaceX, rctngl.getY() + spaceY, rctngl.getWidth() - spaceX * 2, rctngl.getHeight() - spaceY * 2, round, round));
+            g2.fill(new RoundRectangle2D.Double(rctngl.getX() + spaceX, rctngl.getY() + spaceY,
+                    rctngl.getWidth() - spaceX * 2, rctngl.getHeight() - spaceY * 2, round, round));
         } else {
-            g2.fill(new RoundRectangle2D.Double(rctngl.getX() + spaceY, rctngl.getY() + spaceX, rctngl.getWidth() - spaceY * 2, rctngl.getHeight() - spaceX * 2, round, round));
+            g2.fill(new RoundRectangle2D.Double(rctngl.getX() + spaceY, rctngl.getY() + spaceX,
+                    rctngl.getWidth() - spaceY * 2, rctngl.getHeight() - spaceX * 2, round, round));
         }
         g2.dispose();
     }
@@ -128,15 +129,15 @@ public class ScrollBarCustomUI extends BasicScrollBarUI {
             Graphics2D g2 = (Graphics2D) grphcs.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             if ((increase && isMax) || (!increase && isMin)) {
-                g2.setColor(new Color(250, 250, 250));
+                g2.setColor(UIHelper.SURFACE);
             } else {
                 if (pressed) {
-                    g2.setColor(new Color(150, 150, 150));
+                    g2.setColor(UIHelper.ACCENT_GREEN);
                 } else {
                     if (hovered) {
-                        g2.setColor(new Color(200, 200, 200));
+                        g2.setColor(UIHelper.SURFACE_ALT);
                     } else {
-                        g2.setColor(new Color(250, 250, 250));
+                        g2.setColor(UIHelper.SURFACE);
                     }
                 }
             }
@@ -146,17 +147,17 @@ public class ScrollBarCustomUI extends BasicScrollBarUI {
             int y = (height - 5) / 2;
             int x = (width - 5) / 2;
             if ((increase && isMax) || (!increase && isMin)) {
-                g2.setColor(Color.LIGHT_GRAY);
+                g2.setColor(UIHelper.DISABLED_TEXT);
             } else {
                 if (pressed) {
-                    g2.setColor(Color.WHITE);
+                    g2.setColor(UIHelper.WHITE);
                 } else {
-                    g2.setColor(Color.GRAY);
+                    g2.setColor(UIHelper.DARK_TEXT);
                 }
             }
             if (orientation == JScrollBar.VERTICAL) {
-                int xx[] = {4, width - 4, width / 2};
-                int yy[] = {5, 5, 0};
+                int xx[] = { 4, width - 4, width / 2 };
+                int yy[] = { 5, 5, 0 };
                 Polygon poly = new Polygon(xx, yy, xx.length);
                 g2.translate(0, (y));
                 if (increase) {
@@ -166,8 +167,8 @@ public class ScrollBarCustomUI extends BasicScrollBarUI {
                     g2.fill(poly);
                 }
             } else {
-                int xx[] = {4, height - 4, height / 2};
-                int yy[] = {5, 5, 0};
+                int xx[] = { 4, height - 4, height / 2 };
+                int yy[] = { 5, 5, 0 };
                 Polygon poly = new Polygon(xx, yy, xx.length);
                 g2.translate(x, 0);
                 if (increase) {

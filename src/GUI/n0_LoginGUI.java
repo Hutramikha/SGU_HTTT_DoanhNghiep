@@ -47,7 +47,7 @@ public class n0_LoginGUI extends javax.swing.JFrame {
                 // Gradient background - dark green theme
                 GradientPaint gp = new GradientPaint(
                         0, 0, UIHelper.LIGHTEST_GREEN,
-                        0, getHeight(), new Color(245, 250, 245));
+                        0, getHeight(), UIHelper.SURFACE);
                 g2d.setPaint(gp);
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
@@ -92,7 +92,7 @@ public class n0_LoginGUI extends javax.swing.JFrame {
         // USERNAME LABEL
         JLabel userLabel = new JLabel("Tài Khoản");
         userLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        userLabel.setForeground(new Color(80, 80, 80));
+        userLabel.setForeground(UIHelper.LIGHT_TEXT);
         userLabel.setAlignmentX(LEFT_ALIGNMENT);
         userSection.add(userLabel);
         userSection.add(Box.createVerticalStrut(5));
@@ -100,24 +100,24 @@ public class n0_LoginGUI extends javax.swing.JFrame {
         // USERNAME FIELD
         TextFieldTaiKhoan = new JTextField();
         TextFieldTaiKhoan.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        TextFieldTaiKhoan.setForeground(new Color(50, 50, 50));
+        TextFieldTaiKhoan.setForeground(UIHelper.DARK_TEXT);
         TextFieldTaiKhoan.setCaretColor(UIHelper.PRIMARY_GREEN);
         TextFieldTaiKhoan.setBorder(new RoundBorder(8, UIHelper.PRIMARY_GREEN));
         TextFieldTaiKhoan.setOpaque(false);
-        TextFieldTaiKhoan.setBackground(new Color(240, 250, 240));
+        TextFieldTaiKhoan.setBackground(UIHelper.SURFACE_ALT);
         TextFieldTaiKhoan.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         TextFieldTaiKhoan.setAlignmentX(LEFT_ALIGNMENT);
         TextFieldTaiKhoan.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 TextFieldTaiKhoan.setBorder(new RoundBorder(8, UIHelper.ACCENT_GREEN));
-                TextFieldTaiKhoan.setBackground(new Color(255, 255, 255));
+                TextFieldTaiKhoan.setBackground(UIHelper.WHITE);
             }
 
             @Override
             public void focusLost(FocusEvent e) {
                 TextFieldTaiKhoan.setBorder(new RoundBorder(8, UIHelper.PRIMARY_GREEN));
-                TextFieldTaiKhoan.setBackground(new Color(240, 250, 240));
+                TextFieldTaiKhoan.setBackground(UIHelper.SURFACE_ALT);
             }
         });
         TextFieldTaiKhoan.addActionListener(new ActionListener() {
@@ -140,7 +140,7 @@ public class n0_LoginGUI extends javax.swing.JFrame {
         // PASSWORD LABEL
         JLabel passLabel = new JLabel("Mật Khẩu");
         passLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        passLabel.setForeground(new Color(80, 80, 80));
+        passLabel.setForeground(UIHelper.LIGHT_TEXT);
         passLabel.setAlignmentX(LEFT_ALIGNMENT);
         passSection.add(passLabel);
         passSection.add(Box.createVerticalStrut(5));
@@ -148,24 +148,24 @@ public class n0_LoginGUI extends javax.swing.JFrame {
         // PASSWORD FIELD
         PasswordFieldMatKhau = new JPasswordField();
         PasswordFieldMatKhau.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        PasswordFieldMatKhau.setForeground(new Color(50, 50, 50));
+        PasswordFieldMatKhau.setForeground(UIHelper.DARK_TEXT);
         PasswordFieldMatKhau.setCaretColor(UIHelper.PRIMARY_GREEN);
         PasswordFieldMatKhau.setBorder(new RoundBorder(8, UIHelper.PRIMARY_GREEN));
         PasswordFieldMatKhau.setOpaque(false);
-        PasswordFieldMatKhau.setBackground(new Color(240, 250, 240));
+        PasswordFieldMatKhau.setBackground(UIHelper.SURFACE_ALT);
         PasswordFieldMatKhau.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         PasswordFieldMatKhau.setAlignmentX(LEFT_ALIGNMENT);
         PasswordFieldMatKhau.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 PasswordFieldMatKhau.setBorder(new RoundBorder(8, UIHelper.ACCENT_GREEN));
-                PasswordFieldMatKhau.setBackground(new Color(255, 255, 255));
+                PasswordFieldMatKhau.setBackground(UIHelper.WHITE);
             }
 
             @Override
             public void focusLost(FocusEvent e) {
                 PasswordFieldMatKhau.setBorder(new RoundBorder(8, UIHelper.PRIMARY_GREEN));
-                PasswordFieldMatKhau.setBackground(new Color(240, 250, 240));
+                PasswordFieldMatKhau.setBackground(UIHelper.SURFACE_ALT);
             }
         });
         PasswordFieldMatKhau.addActionListener(new ActionListener() {
@@ -182,7 +182,7 @@ public class n0_LoginGUI extends javax.swing.JFrame {
         checkShowPassword = new JCheckBox("Hiện mật khẩu");
         checkShowPassword.setOpaque(false);
         checkShowPassword.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        checkShowPassword.setForeground(new Color(100, 100, 100));
+        checkShowPassword.setForeground(UIHelper.LIGHT_TEXT);
         checkShowPassword.setFocusPainted(false);
         checkShowPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
         checkShowPassword.setAlignmentX(LEFT_ALIGNMENT);

@@ -3,6 +3,7 @@ package GUI;
 import BUS.BanHangBUS;
 import DTO.MonDTO;
 import Util.TableCustom;
+import Util.UIHelper;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -50,17 +51,17 @@ public class n1_BanHangKeoTha extends javax.swing.JPanel {
         TimKiem = new javax.swing.JTextField();
         LabelAnhTimKiem = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(122, 74, 74));
+        setBackground(UIHelper.APP_BACKGROUND);
         setMaximumSize(new java.awt.Dimension(1125, 667));
         setMinimumSize(new java.awt.Dimension(1125, 667));
         setPreferredSize(new java.awt.Dimension(1125, 667));
 
-        PanelTong.setBackground(new java.awt.Color(255, 255, 255));
+        PanelTong.setBackground(UIHelper.SURFACE);
         PanelTong.setMaximumSize(new java.awt.Dimension(1125, 658));
         PanelTong.setMinimumSize(new java.awt.Dimension(1125, 658));
         PanelTong.setPreferredSize(new java.awt.Dimension(1125, 658));
 
-        PanelHoaDon.setBackground(new java.awt.Color(219, 189, 142));
+        PanelHoaDon.setBackground(UIHelper.SURFACE_ALT);
         PanelHoaDon.setMaximumSize(new java.awt.Dimension(195, 44));
         PanelHoaDon.setMinimumSize(new java.awt.Dimension(195, 44));
         PanelHoaDon.setPreferredSize(new java.awt.Dimension(195, 44));
@@ -70,7 +71,7 @@ public class n1_BanHangKeoTha extends javax.swing.JPanel {
         LabelHoaDon.setText("HÓA ĐƠN");
         PanelHoaDon.add(LabelHoaDon, new java.awt.GridBagConstraints());
 
-        PanelBanHang.setBackground(new java.awt.Color(219, 189, 142));
+        PanelBanHang.setBackground(UIHelper.ACCENT_GREEN);
         PanelBanHang.setMaximumSize(new java.awt.Dimension(195, 44));
         PanelBanHang.setMinimumSize(new java.awt.Dimension(195, 44));
         PanelBanHang.setPreferredSize(new java.awt.Dimension(195, 44));
@@ -80,7 +81,7 @@ public class n1_BanHangKeoTha extends javax.swing.JPanel {
         LabelBanHang.setText("BÁN HÀNG");
         PanelBanHang.add(LabelBanHang, new java.awt.GridBagConstraints());
 
-        PanelNoiDung.setBackground(new java.awt.Color(255, 255, 255));
+        PanelNoiDung.setBackground(UIHelper.SURFACE);
 
         LabelMenu.setFont(new java.awt.Font("Segoe UI Black", 0, 28)); // NOI18N
         LabelMenu.setText("Thực đơn");
@@ -88,7 +89,7 @@ public class n1_BanHangKeoTha extends javax.swing.JPanel {
         LabelLoaiSP.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         LabelLoaiSP.setText("Loại Sản Phẩm");
 
-        PanelProduct.setBackground(new java.awt.Color(219, 189, 142));
+        PanelProduct.setBackground(UIHelper.SURFACE_ALT);
         PanelProduct.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         PanelProduct.setMaximumSize(new java.awt.Dimension(689, 426));
         PanelProduct.setMinimumSize(new java.awt.Dimension(689, 426));
@@ -103,7 +104,7 @@ public class n1_BanHangKeoTha extends javax.swing.JPanel {
                 PanelProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGap(0, 0, Short.MAX_VALUE));
 
-        PanelGioHang.setBackground(new java.awt.Color(255, 255, 255));
+        PanelGioHang.setBackground(UIHelper.SURFACE);
 
         Table.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][] {
@@ -118,37 +119,37 @@ public class n1_BanHangKeoTha extends javax.swing.JPanel {
             Table.getColumnModel().getColumn(3).setPreferredWidth(25);
         }
 
-        LabelGioHang.setBackground(new java.awt.Color(255, 255, 255));
+        LabelGioHang.setBackground(UIHelper.SURFACE);
         LabelGioHang.setFont(new java.awt.Font("Segoe UI Black", 0, 28)); // NOI18N
         LabelGioHang.setText("Giỏ hàng");
         LabelGioHang.setOpaque(true);
 
-        PanelTaiLai.setBackground(new java.awt.Color(0, 0, 0));
+        PanelTaiLai.setBackground(UIHelper.PRIMARY_GREEN);
         PanelTaiLai.setMaximumSize(new java.awt.Dimension(34, 34));
         PanelTaiLai.setPreferredSize(new java.awt.Dimension(34, 34));
 
-        LabelTaiLai.setBackground(new java.awt.Color(0, 0, 0));
+        LabelTaiLai.setBackground(UIHelper.PRIMARY_GREEN);
         LabelTaiLai.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        LabelTaiLai.setForeground(new java.awt.Color(255, 255, 255));
+        LabelTaiLai.setForeground(UIHelper.WHITE);
         LabelTaiLai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/reload.png"))); // NOI18N
         LabelTaiLai.setOpaque(true);
         PanelTaiLai.add(LabelTaiLai);
 
-        BtnThanhToan.setBackground(new java.awt.Color(51, 51, 51));
+        BtnThanhToan.setBackground(UIHelper.PRIMARY_GREEN);
         BtnThanhToan.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        BtnThanhToan.setForeground(new java.awt.Color(255, 255, 255));
+        BtnThanhToan.setForeground(UIHelper.WHITE);
         BtnThanhToan.setText("Thanh Toán");
         BtnThanhToan.setPreferredSize(new java.awt.Dimension(100, 30));
 
-        BtnXoa.setBackground(new java.awt.Color(51, 51, 51));
+        BtnXoa.setBackground(UIHelper.DANGER);
         BtnXoa.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        BtnXoa.setForeground(new java.awt.Color(255, 255, 255));
+        BtnXoa.setForeground(UIHelper.WHITE);
         BtnXoa.setText("Xóa");
         BtnXoa.setPreferredSize(new java.awt.Dimension(100, 30));
 
-        BtnSua.setBackground(new java.awt.Color(51, 51, 51));
+        BtnSua.setBackground(UIHelper.ACCENT_GREEN);
         BtnSua.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        BtnSua.setForeground(new java.awt.Color(255, 255, 255));
+        BtnSua.setForeground(UIHelper.WHITE);
         BtnSua.setText("Sửa");
         BtnSua.setPreferredSize(new java.awt.Dimension(100, 30));
 
@@ -217,13 +218,13 @@ public class n1_BanHangKeoTha extends javax.swing.JPanel {
                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(53, Short.MAX_VALUE)));
 
-        PanelTimKiem.setBackground(new java.awt.Color(219, 189, 142));
+        PanelTimKiem.setBackground(UIHelper.SURFACE_ALT);
         PanelTimKiem.setMaximumSize(new java.awt.Dimension(314, 32));
         PanelTimKiem.setMinimumSize(new java.awt.Dimension(314, 32));
         PanelTimKiem.setPreferredSize(new java.awt.Dimension(270, 32));
 
         TimKiem.setFont(new java.awt.Font("Segoe UI Light", 2, 12)); // NOI18N
-        TimKiem.setForeground(new java.awt.Color(0, 102, 0));
+        TimKiem.setForeground(UIHelper.PRIMARY_GREEN);
         TimKiem.setText("Tìm tên món");
         TimKiem.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 

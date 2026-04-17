@@ -3,7 +3,7 @@ package GUI;
 import BUS.BanHangBUS;
 import DTO.KhuyenMaiDTO;
 import DTO.UuDaiThanhVienDTO;
-import java.awt.Color;
+import Util.UIHelper;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -22,6 +22,9 @@ public class n1_BanHang_ThanhToan extends javax.swing.JFrame {
         // System.out.println(tien_Goc);
         initComponents();
         nhomNutChucNang();
+        PanelKhung.setBackground(UIHelper.APP_BACKGROUND);
+        PanelNoiDung.setBackground(UIHelper.SURFACE);
+        PanelTenDauVao.setBackground(UIHelper.SURFACE);
         setLocationRelativeTo(null);
     }
 
@@ -69,6 +72,9 @@ public class n1_BanHang_ThanhToan extends javax.swing.JFrame {
         // Khuyến Mãi
         comboBox();
         goc.setText(Util.BanHang.set_Tien_VND(tien_Goc));
+        nv.setForeground(UIHelper.PRIMARY_GREEN);
+        kh.setForeground(UIHelper.ACCENT_GREEN);
+        goc.setForeground(UIHelper.DANGER);
     }
 
     private void comboBox() {
@@ -91,6 +97,7 @@ public class n1_BanHang_ThanhToan extends javax.swing.JFrame {
         huyBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
+                huyBtn.setBackground(UIHelper.DANGER);
                 dispose();
             }
         });
@@ -98,12 +105,12 @@ public class n1_BanHang_ThanhToan extends javax.swing.JFrame {
         huyBtn1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                huyBtn1.setBackground(new Color(255, 102, 102));
+                huyBtn1.setBackground(UIHelper.DANGER_HOVER);
             }
 
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                huyBtn1.setBackground(new Color(255, 51, 51));
+                huyBtn1.setBackground(UIHelper.DANGER);
             }
 
             @Override
@@ -212,6 +219,9 @@ public class n1_BanHang_ThanhToan extends javax.swing.JFrame {
         thanhToanBtn.addActionListener(e -> {
             String maHoaDon = Ma.getText();
             java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+            thanhToanBtn.setBackground(UIHelper.PRIMARY_GREEN);
+            thanhToanBtn.setForeground(UIHelper.WHITE);
+            huyBtn1.setBackground(UIHelper.DANGER);
             if (tien_discount == 0) {
                 tien_discount = tien_Goc;
             }
