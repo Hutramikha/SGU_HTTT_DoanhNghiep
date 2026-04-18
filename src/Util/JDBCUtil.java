@@ -4,9 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class JDBCUtil {
 
@@ -79,42 +84,51 @@ public class JDBCUtil {
         // Ensure pool is initialized (lazy loading)
         ensurePoolInitialized();
 
-        Connection conn = null;
+        Connection physicalConn = null;
 
-        // Try to get connection from pool
-        if (connectionPool != null && !connectionPool.isEmpty()) {
-            conn = connectionPool.poll();
-            try {
-                // Check if connection is still valid
-                if (conn != null && !conn.isClosed()) {
-                    return conn;
+        synchronized (JDBCUtil.class) {
+            if (connectionPool != null) {
+                while (!connectionPool.isEmpty()) {
+                    Connection candidate = connectionPool.poll();
+                    try {
+                        if (candidate != null && !candidate.isClosed()) {
+                            physicalConn = candidate;
+                            break;
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
         }
 
         // If no valid connection in pool, create new one
-        conn = createNewConnection();
-        if (conn != null) {
+        if (physicalConn == null) {
+            physicalConn = createNewConnection();
+        }
+        if (physicalConn != null) {
             System.out.println("✓ Created new connection (pool size: " +
                     (connectionPool != null ? connectionPool.size() : 0) + ")");
         }
-        return conn;
+        return wrapConnectionForPool(physicalConn);
     }
 
     /**
      * ✅ Return connection to pool for reuse
      */
     public static void returnConnection(Connection conn) {
-        if (conn != null && connectionPool != null) {
-            try {
-                if (!conn.isClosed()) {
-                    connectionPool.offer(conn);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        if (conn == null) {
+            return;
+        }
+
+        try {
+            if (Proxy.isProxyClass(conn.getClass())) {
+                conn.close();
+            } else {
+                recyclePhysicalConnection(conn);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -122,16 +136,19 @@ public class JDBCUtil {
      * Close connection properly
      */
     public static void closeConnection(Connection c) {
+        if (c == null) {
+            return;
+        }
+
         try {
-            if (c != null) {
-                if (!c.isClosed()) {
-                    // Return to pool if available space
-                    if (connectionPool.size() < POOL_SIZE) {
-                        returnConnection(c);
-                    } else {
-                        c.close();
-                    }
-                }
+            // If this is a wrapped pooled connection, close() will return it to pool.
+            if (Proxy.isProxyClass(c.getClass())) {
+                c.close();
+                return;
+            }
+
+            if (!c.isClosed()) {
+                recyclePhysicalConnection(c);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -142,18 +159,98 @@ public class JDBCUtil {
      * Close all connections in pool (call on application shutdown)
      */
     public static void closeAllConnections() {
-        if (connectionPool != null) {
-            while (!connectionPool.isEmpty()) {
-                Connection conn = connectionPool.poll();
-                try {
-                    if (conn != null && !conn.isClosed()) {
-                        conn.close();
+        synchronized (JDBCUtil.class) {
+            if (connectionPool != null) {
+                while (!connectionPool.isEmpty()) {
+                    Connection conn = connectionPool.poll();
+                    try {
+                        if (conn != null && !conn.isClosed()) {
+                            conn.close();
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                }
+                System.out.println("✓ All connections closed");
+            }
+        }
+    }
+
+    private static Connection wrapConnectionForPool(Connection physicalConn) {
+        if (physicalConn == null) {
+            return null;
+        }
+
+        final AtomicBoolean returned = new AtomicBoolean(false);
+        InvocationHandler handler = new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                String methodName = method.getName();
+
+                if ("close".equals(methodName)) {
+                    if (returned.compareAndSet(false, true)) {
+                        recyclePhysicalConnection(physicalConn);
+                    }
+                    return null;
+                }
+
+                if ("isClosed".equals(methodName)) {
+                    return returned.get() || physicalConn.isClosed();
+                }
+
+                if ("unwrap".equals(methodName)
+                        && args != null
+                        && args.length == 1
+                        && args[0] instanceof Class
+                        && ((Class<?>) args[0]).isInstance(physicalConn)) {
+                    return physicalConn;
+                }
+
+                if ("isWrapperFor".equals(methodName)
+                        && args != null
+                        && args.length == 1
+                        && args[0] instanceof Class) {
+                    return ((Class<?>) args[0]).isInstance(physicalConn);
+                }
+
+                if (returned.get()) {
+                    throw new SQLException("Connection is already closed.");
+                }
+
+                try {
+                    return method.invoke(physicalConn, args);
+                } catch (InvocationTargetException ex) {
+                    throw ex.getCause();
                 }
             }
-            System.out.println("✓ All connections closed");
+        };
+
+        return (Connection) Proxy.newProxyInstance(
+                Connection.class.getClassLoader(),
+                new Class<?>[] { Connection.class },
+                handler);
+    }
+
+    private static void recyclePhysicalConnection(Connection conn) {
+        if (conn == null) {
+            return;
+        }
+
+        synchronized (JDBCUtil.class) {
+            ensurePoolInitialized();
+            try {
+                if (conn.isClosed()) {
+                    return;
+                }
+
+                if (connectionPool != null && connectionPool.size() < POOL_SIZE) {
+                    connectionPool.offer(conn);
+                } else {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

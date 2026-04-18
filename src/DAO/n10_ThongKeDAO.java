@@ -147,186 +147,111 @@ public class n10_ThongKeDAO {
     }
 
     public int[] getTongTienHoaDonTrongTuan() {
-        int[] result = new int[7];
-        String sql = "SELECT SUM(TongTien) FROM HOADON WHERE DATEPART(WEEK, NgayTao) = DATEPART(WEEK, GETDATE()) AND DATEPART(YEAR, NgayTao) = YEAR(GETDATE()) AND DATEPART(WEEKDAY, NgayTao) = ?";
-        try (Connection conn = JDBCUtil.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            for (int i = 1; i <= 7; i++) {
-                pstmt.setInt(1, i);
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    if (rs.next()) {
-                        result[i - 1] = rs.getInt(1);
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
+        String sql = "SELECT DATEPART(WEEKDAY, NgayTao) AS bucket, SUM(TongTien) AS value "
+                + "FROM HOADON "
+                + "WHERE DATEPART(WEEK, NgayTao) = DATEPART(WEEK, GETDATE()) "
+                + "AND DATEPART(YEAR, NgayTao) = YEAR(GETDATE()) "
+                + "GROUP BY DATEPART(WEEKDAY, NgayTao)";
+        return queryBuckets(sql, 7);
     }
 
     public int[] getTongtienHoadonTheoQuy() {
-        int[] result = new int[4];
-        String sql = "SELECT SUM(TongTien) FROM HOADON WHERE DATEPART(QUARTER, NgayTao) = ? AND YEAR(NgayTao) = YEAR(GETDATE())";
-        try (Connection conn = JDBCUtil.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            for (int i = 1; i <= 4; i++) {
-                pstmt.setInt(1, i);
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    if (rs.next()) {
-                        result[i - 1] = rs.getInt(1);
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
+        String sql = "SELECT DATEPART(QUARTER, NgayTao) AS bucket, SUM(TongTien) AS value "
+                + "FROM HOADON "
+                + "WHERE YEAR(NgayTao) = YEAR(GETDATE()) "
+                + "GROUP BY DATEPART(QUARTER, NgayTao)";
+        return queryBuckets(sql, 4);
     }
 
     public int[] getTongTienTheoThang() {
-        int[] result = new int[12];
-        String sql = "SELECT SUM(TongTien) FROM HOADON WHERE MONTH(NgayTao) = ? AND YEAR(NgayTao) = YEAR(GETDATE())";
-        try (Connection conn = JDBCUtil.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            for (int i = 1; i <= 12; i++) {
-                pstmt.setInt(1, i);
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    if (rs.next()) {
-                        result[i - 1] = rs.getInt(1);
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
+        String sql = "SELECT MONTH(NgayTao) AS bucket, SUM(TongTien) AS value "
+                + "FROM HOADON "
+                + "WHERE YEAR(NgayTao) = YEAR(GETDATE()) "
+                + "GROUP BY MONTH(NgayTao)";
+        return queryBuckets(sql, 12);
     }
 
     public ArrayList<Integer> getArrayDoanhthuTuan() {
-        ArrayList<Integer> result = new ArrayList<>();
-        String sql = "SELECT SUM(TongTien) FROM HOADON WHERE DATEPART(WEEK, NgayTao) = DATEPART(WEEK, GETDATE()) AND DATEPART(YEAR, NgayTao) = YEAR(GETDATE()) AND DATEPART(WEEKDAY, NgayTao) = ?";
-        try (Connection conn = JDBCUtil.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            for (int i = 1; i <= 7; i++) {
-                pstmt.setInt(1, i);
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    if (rs.next()) {
-                        result.add(rs.getInt(1));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
+        return toArrayList(getTongTienHoaDonTrongTuan());
     }
 
     public ArrayList<Integer> getArrayDoanhthunam() {
-        ArrayList<Integer> result = new ArrayList<>();
-        String sql = "SELECT SUM(TongTien) FROM HOADON WHERE MONTH(NgayTao) = ? AND YEAR(NgayTao) = YEAR(GETDATE())";
-        try (Connection conn = JDBCUtil.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            for (int i = 1; i <= 12; i++) {
-                pstmt.setInt(1, i);
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    if (rs.next()) {
-                        result.add(rs.getInt(1));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
+        return toArrayList(getTongTienTheoThang());
     }
 
     public ArrayList<Integer> getArrayDoanhthuquy() {
-        ArrayList<Integer> result = new ArrayList<>();
-        String sql = "SELECT SUM(TongTien) FROM HOADON WHERE DATEPART(QUARTER, NgayTao) = ? AND YEAR(NgayTao) = YEAR(GETDATE())";
-        try (Connection conn = JDBCUtil.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            for (int i = 1; i <= 4; i++) {
-                pstmt.setInt(1, i);
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    if (rs.next()) {
-                        result.add(rs.getInt(1));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
+        return toArrayList(getTongtienHoadonTheoQuy());
     }
 
     public ArrayList<Integer> getArrayphieunhapnam() {
-        ArrayList<Integer> result = new ArrayList<>();
-        String sql = "SELECT COUNT(MaPhieu) FROM PHIEUNHAP WHERE MONTH(NgayNhap) = ? AND YEAR(NgayNhap) = YEAR(GETDATE())";
-        try (Connection conn = JDBCUtil.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            for (int i = 1; i <= 12; i++) {
-                pstmt.setInt(1, i);
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    if (rs.next()) {
-                        result.add(rs.getInt(1));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
+        String sql = "SELECT MONTH(NgayNhap) AS bucket, COUNT(MaPhieu) AS value "
+                + "FROM PHIEUNHAP "
+                + "WHERE YEAR(NgayNhap) = YEAR(GETDATE()) "
+                + "GROUP BY MONTH(NgayNhap)";
+        return toArrayList(queryBuckets(sql, 12));
     }
 
     public ArrayList<Integer> getArrayphieunhapnamtheoquy() {
-        ArrayList<Integer> result = new ArrayList<>();
-        String sql = "SELECT COUNT(MaPhieu) FROM PHIEUNHAP WHERE DATEPART(QUARTER, NgayNhap) = ? AND YEAR(NgayNhap) = YEAR(GETDATE())";
-        try (Connection conn = JDBCUtil.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            for (int i = 1; i <= 4; i++) {
-                pstmt.setInt(1, i);
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    if (rs.next()) {
-                        result.add(rs.getInt(1));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
+        String sql = "SELECT DATEPART(QUARTER, NgayNhap) AS bucket, COUNT(MaPhieu) AS value "
+                + "FROM PHIEUNHAP "
+                + "WHERE YEAR(NgayNhap) = YEAR(GETDATE()) "
+                + "GROUP BY DATEPART(QUARTER, NgayNhap)";
+        return toArrayList(queryBuckets(sql, 4));
     }
 
     public ArrayList<Integer> getArrayTongLuongnhanvientheothang() {
-        ArrayList<Integer> result = new ArrayList<>();
-        String sql = "SELECT COUNT(MaNV) FROM LICHLAMVIEC WHERE MONTH(NgayLam) = ? AND YEAR(NgayLam) = YEAR(GETDATE())";
-        try (Connection conn = JDBCUtil.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            for (int i = 1; i <= 12; i++) {
-                pstmt.setInt(1, i);
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    if (rs.next()) {
-                        result.add(rs.getInt(1));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
+        String sql = "SELECT MONTH(NgayLam) AS bucket, COUNT(MaNV) AS value "
+                + "FROM LICHLAMVIEC "
+                + "WHERE YEAR(NgayLam) = YEAR(GETDATE()) "
+                + "GROUP BY MONTH(NgayLam)";
+        return toArrayList(queryBuckets(sql, 12));
     }
 
     public ArrayList<Integer> getArrayTongLuongnhanvientheoquy() {
-        ArrayList<Integer> result = new ArrayList<>();
-        String sql = "SELECT COUNT(MaNV) FROM LICHLAMVIEC WHERE DATEPART(QUARTER, NgayLam) = ? AND YEAR(NgayLam) = YEAR(GETDATE())";
+        String sql = "SELECT DATEPART(QUARTER, NgayLam) AS bucket, COUNT(MaNV) AS value "
+                + "FROM LICHLAMVIEC "
+                + "WHERE YEAR(NgayLam) = YEAR(GETDATE()) "
+                + "GROUP BY DATEPART(QUARTER, NgayLam)";
+        return toArrayList(queryBuckets(sql, 4));
+    }
+
+    public ArrayList<Integer> getArrayLuongnhanvien(String maNhanVien) {
+        String sql = "SELECT MONTH(NgayLam) AS bucket, COUNT(*) AS value "
+                + "FROM LICHLAMVIEC "
+                + "WHERE MaNV = ? AND YEAR(NgayLam) = YEAR(GETDATE()) "
+                + "GROUP BY MONTH(NgayLam)";
+        return toArrayList(queryBucketsWithStringParam(sql, 12, maNhanVien));
+    }
+
+    private int[] queryBuckets(String sql, int size) {
+        int[] result = new int[size];
+        try (Connection conn = JDBCUtil.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                int bucket = rs.getInt("bucket");
+                int value = rs.getInt("value");
+                if (bucket >= 1 && bucket <= size) {
+                    result[bucket - 1] = value;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private int[] queryBucketsWithStringParam(String sql, int size, String param) {
+        int[] result = new int[size];
         try (Connection conn = JDBCUtil.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            for (int i = 1; i <= 4; i++) {
-                pstmt.setInt(1, i);
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    if (rs.next()) {
-                        result.add(rs.getInt(1));
+            pstmt.setString(1, param);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int bucket = rs.getInt("bucket");
+                    int value = rs.getInt("value");
+                    if (bucket >= 1 && bucket <= size) {
+                        result[bucket - 1] = value;
                     }
                 }
             }
@@ -336,22 +261,10 @@ public class n10_ThongKeDAO {
         return result;
     }
 
-    public ArrayList<Integer> getArrayLuongnhanvien(String maNhanVien) {
-        ArrayList<Integer> result = new ArrayList<>();
-        String sql = "SELECT COUNT(*) FROM LICHLAMVIEC WHERE MaNV = ? AND MONTH(NgayLam) = ? AND YEAR(NgayLam) = YEAR(GETDATE())";
-        try (Connection conn = JDBCUtil.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            for (int i = 1; i <= 12; i++) {
-                pstmt.setString(1, maNhanVien);
-                pstmt.setInt(2, i);
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    if (rs.next()) {
-                        result.add(rs.getInt(1));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    private ArrayList<Integer> toArrayList(int[] values) {
+        ArrayList<Integer> result = new ArrayList<>(values.length);
+        for (int value : values) {
+            result.add(value);
         }
         return result;
     }

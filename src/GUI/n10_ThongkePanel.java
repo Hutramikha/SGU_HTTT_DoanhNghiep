@@ -50,6 +50,33 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         Date date = new Date(System.currentTimeMillis());
         n5_NguyenLieuBUS NLBUS = new n5_NguyenLieuBUS();
 
+        // Cache statistics data so EDT only renders UI.
+        private int cachedTongTienHoaDonNgay = Integer.MIN_VALUE;
+        private int cachedSoLuongHoaDon = Integer.MIN_VALUE;
+        private int cachedSoLuongKhachHang = Integer.MIN_VALUE;
+        private int cachedSoLuongMon = Integer.MIN_VALUE;
+        private int cachedTongTienHoaDonThang = Integer.MIN_VALUE;
+        private int cachedTongDoanhThuNam = Integer.MIN_VALUE;
+        private int cachedTongTienPhieuNhapThang = Integer.MIN_VALUE;
+        private int cachedTongTienLuongThang = Integer.MIN_VALUE;
+        private int cachedTongLuongNhanVienNam = Integer.MIN_VALUE;
+        private int cachedTongPhieuNhapNam = Integer.MIN_VALUE;
+        private int cachedSoLuongNhanVien = Integer.MIN_VALUE;
+        private int cachedSoLuongPhieuNhap = Integer.MIN_VALUE;
+        private int cachedSoLuongNguyenLieu = Integer.MIN_VALUE;
+        private int cachedSoLuongNcc = Integer.MIN_VALUE;
+
+        private ArrayList<Integer> cachedArrayDoanhthuTuan;
+        private ArrayList<Integer> cachedArrayDoanhthuNam;
+        private ArrayList<Integer> cachedArrayDoanhthuQuy;
+        private ArrayList<Integer> cachedArrayPhieuNhapNam;
+        private ArrayList<Integer> cachedArrayPhieuNhapNamTheoQuy;
+        private ArrayList<Integer> cachedArrayTongLuongTheoThang;
+        private ArrayList<Integer> cachedArrayTongLuongTheoQuy;
+        private String[][] cachedKhoiLuongNl;
+        private ArrayList<NguyenLieuDTO> cachedNguyenLieuList;
+        private final java.util.Map<String, ArrayList<Integer>> cachedLuongNhanVienByMa = new java.util.HashMap<>();
+
         public n10_ThongkePanel() {
                 initComponents();
                 applyUnifiedGreenTheme();
@@ -165,32 +192,245 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 }
         }
 
-        public void initUI() {
+        public void preloadStatisticsData() {
+                if (list == null || list.isEmpty()) {
+                        list = getNhanVienListCached();
+                }
+
+                getTongTienHoaDonNgayCached();
+                getSoLuongHoaDonCached();
+                getSoLuongKhachHangCached();
+                getSoLuongMonCached();
+                getTongTienHoaDonThangCached();
+                getTongDoanhThuNamCached();
+                getTongTienPhieuNhapThangCached();
+                getTongTienLuongThangCached();
+                getTongLuongNhanVienNamCached();
+                getTongPhieuNhapNamCached();
+                getSoLuongNhanVienCached();
+                getSoLuongPhieuNhapCached();
+                getSoLuongNguyenLieuCached();
+                getSoLuongNccCached();
+
+                getArrayDoanhthuTuanCached();
+                getArrayDoanhthuNamCached();
+                getArrayDoanhthuQuyCached();
+                getArrayPhieuNhapNamCached();
+                getArrayPhieuNhapNamTheoQuyCached();
+                getArrayTongLuongTheoThangCached();
+                getArrayTongLuongTheoQuyCached();
+                getKhoiLuongNLCached();
+                getNguyenLieuListCached();
+
+                for (NhanVienDTO nv : list) {
+                        getLuongNhanVienCached(nv.getMaNhanVien());
+                }
+        }
+
+        private ArrayList<NhanVienDTO> getNhanVienListCached() {
                 if (list == null || list.isEmpty()) {
                         list = listnv.getlistNV();
                 }
+                return list;
+        }
+
+        private int getTongTienHoaDonNgayCached() {
+                if (cachedTongTienHoaDonNgay == Integer.MIN_VALUE) {
+                        cachedTongTienHoaDonNgay = TK.getTongTienHoaDonngay(date);
+                }
+                return cachedTongTienHoaDonNgay;
+        }
+
+        private int getSoLuongHoaDonCached() {
+                if (cachedSoLuongHoaDon == Integer.MIN_VALUE) {
+                        cachedSoLuongHoaDon = TK.getsoluongHD(date);
+                }
+                return cachedSoLuongHoaDon;
+        }
+
+        private int getSoLuongKhachHangCached() {
+                if (cachedSoLuongKhachHang == Integer.MIN_VALUE) {
+                        cachedSoLuongKhachHang = TK.getsoluongKH();
+                }
+                return cachedSoLuongKhachHang;
+        }
+
+        private int getSoLuongMonCached() {
+                if (cachedSoLuongMon == Integer.MIN_VALUE) {
+                        cachedSoLuongMon = TK.getSoluongMon(date);
+                }
+                return cachedSoLuongMon;
+        }
+
+        private int getTongTienHoaDonThangCached() {
+                if (cachedTongTienHoaDonThang == Integer.MIN_VALUE) {
+                        cachedTongTienHoaDonThang = TK.getTongTienHoaDonthang();
+                }
+                return cachedTongTienHoaDonThang;
+        }
+
+        private int getTongDoanhThuNamCached() {
+                if (cachedTongDoanhThuNam == Integer.MIN_VALUE) {
+                        cachedTongDoanhThuNam = TK.getTongDthunam();
+                }
+                return cachedTongDoanhThuNam;
+        }
+
+        private int getTongTienPhieuNhapThangCached() {
+                if (cachedTongTienPhieuNhapThang == Integer.MIN_VALUE) {
+                        cachedTongTienPhieuNhapThang = TK.getTongTienPhieunhapthang();
+                }
+                return cachedTongTienPhieuNhapThang;
+        }
+
+        private int getTongTienLuongThangCached() {
+                if (cachedTongTienLuongThang == Integer.MIN_VALUE) {
+                        cachedTongTienLuongThang = TK.getTongTienLuongthang();
+                }
+                return cachedTongTienLuongThang;
+        }
+
+        private int getTongLuongNhanVienNamCached() {
+                if (cachedTongLuongNhanVienNam == Integer.MIN_VALUE) {
+                        cachedTongLuongNhanVienNam = TK.getTongLuongnhanviennam();
+                }
+                return cachedTongLuongNhanVienNam;
+        }
+
+        private int getTongPhieuNhapNamCached() {
+                if (cachedTongPhieuNhapNam == Integer.MIN_VALUE) {
+                        cachedTongPhieuNhapNam = TK.getTongphieunhapnam();
+                }
+                return cachedTongPhieuNhapNam;
+        }
+
+        private int getSoLuongNhanVienCached() {
+                if (cachedSoLuongNhanVien == Integer.MIN_VALUE) {
+                        cachedSoLuongNhanVien = TK.getsoluongNV();
+                }
+                return cachedSoLuongNhanVien;
+        }
+
+        private int getSoLuongPhieuNhapCached() {
+                if (cachedSoLuongPhieuNhap == Integer.MIN_VALUE) {
+                        cachedSoLuongPhieuNhap = TK.getsoluongPN();
+                }
+                return cachedSoLuongPhieuNhap;
+        }
+
+        private int getSoLuongNguyenLieuCached() {
+                if (cachedSoLuongNguyenLieu == Integer.MIN_VALUE) {
+                        cachedSoLuongNguyenLieu = TK.getsluongNL();
+                }
+                return cachedSoLuongNguyenLieu;
+        }
+
+        private int getSoLuongNccCached() {
+                if (cachedSoLuongNcc == Integer.MIN_VALUE) {
+                        cachedSoLuongNcc = TK.getsluongNCC();
+                }
+                return cachedSoLuongNcc;
+        }
+
+        private ArrayList<Integer> getArrayDoanhthuTuanCached() {
+                if (cachedArrayDoanhthuTuan == null) {
+                        cachedArrayDoanhthuTuan = TK.getArrayDoanhthuTuan();
+                }
+                return cachedArrayDoanhthuTuan;
+        }
+
+        private ArrayList<Integer> getArrayDoanhthuNamCached() {
+                if (cachedArrayDoanhthuNam == null) {
+                        cachedArrayDoanhthuNam = TK.getArrayDoanhthunam();
+                }
+                return cachedArrayDoanhthuNam;
+        }
+
+        private ArrayList<Integer> getArrayDoanhthuQuyCached() {
+                if (cachedArrayDoanhthuQuy == null) {
+                        cachedArrayDoanhthuQuy = TK.getArrayDoanhthuquy();
+                }
+                return cachedArrayDoanhthuQuy;
+        }
+
+        private ArrayList<Integer> getArrayPhieuNhapNamCached() {
+                if (cachedArrayPhieuNhapNam == null) {
+                        cachedArrayPhieuNhapNam = TK.getArrayphieunhapnam();
+                }
+                return cachedArrayPhieuNhapNam;
+        }
+
+        private ArrayList<Integer> getArrayPhieuNhapNamTheoQuyCached() {
+                if (cachedArrayPhieuNhapNamTheoQuy == null) {
+                        cachedArrayPhieuNhapNamTheoQuy = TK.getArrayphieunhapnamtheoquy();
+                }
+                return cachedArrayPhieuNhapNamTheoQuy;
+        }
+
+        private ArrayList<Integer> getArrayTongLuongTheoThangCached() {
+                if (cachedArrayTongLuongTheoThang == null) {
+                        cachedArrayTongLuongTheoThang = TK.getArrayTongLuongnhanvientheothang();
+                }
+                return cachedArrayTongLuongTheoThang;
+        }
+
+        private ArrayList<Integer> getArrayTongLuongTheoQuyCached() {
+                if (cachedArrayTongLuongTheoQuy == null) {
+                        cachedArrayTongLuongTheoQuy = TK.getArrayTongLuongnhanvientheoquy();
+                }
+                return cachedArrayTongLuongTheoQuy;
+        }
+
+        private ArrayList<Integer> getLuongNhanVienCached(String maNhanVien) {
+                ArrayList<Integer> cached = cachedLuongNhanVienByMa.get(maNhanVien);
+                if (cached == null) {
+                        cached = TK.getArrayLuongnhanvien(maNhanVien);
+                        cachedLuongNhanVienByMa.put(maNhanVien, cached);
+                }
+                return cached;
+        }
+
+        private String[][] getKhoiLuongNLCached() {
+                if (cachedKhoiLuongNl == null) {
+                        cachedKhoiLuongNl = TK.getkhoiluongNL();
+                }
+                return cachedKhoiLuongNl;
+        }
+
+        private ArrayList<NguyenLieuDTO> getNguyenLieuListCached() {
+                if (cachedNguyenLieuList == null) {
+                        cachedNguyenLieuList = NLBUS.getAll();
+                }
+                return cachedNguyenLieuList;
+        }
+
+        public void initUI() {
+                if (list == null || list.isEmpty()) {
+                        list = getNhanVienListCached();
+                }
                 ////////////////// dữ liệu
-                String Dthungay = (toCurrency(TK.getTongTienHoaDonngay(date)));
+                String Dthungay = (toCurrency(getTongTienHoaDonNgayCached()));
                 txtDthungay.setText(Dthungay);
-                String SoLuongHoaDon = (String.valueOf(TK.getsoluongHD(date)));
-                String SoluongKh = String.valueOf(TK.getsoluongKH());
-                String Soluongmon = String.valueOf(TK.getSoluongMon(date));
-                String Dthuthang = toCurrency(TK.getTongTienHoaDonthang());
-                String Dthnam = toCurrency(TK.getTongDthunam());
-                String ChiphiNhaphang = toCurrency(TK.getTongTienPhieunhapthang());
-                String ChiphiLuongNhanvien = toCurrency(TK.getTongTienLuongthang());
-                String Tongchiphi = toCurrency(TK.getTongTienLuongthang() + TK.getTongTienPhieunhapthang());
-                String Loinhuanngay = toCurrency(TK.getTongTienHoaDonngay(date));
-                String Loinhuanthang = toCurrency(TK.getTongTienHoaDonthang() - TK.getTongTienPhieunhapthang()
-                                - TK.getTongTienLuongthang());
+                String SoLuongHoaDon = (String.valueOf(getSoLuongHoaDonCached()));
+                String SoluongKh = String.valueOf(getSoLuongKhachHangCached());
+                String Soluongmon = String.valueOf(getSoLuongMonCached());
+                String Dthuthang = toCurrency(getTongTienHoaDonThangCached());
+                String Dthnam = toCurrency(getTongDoanhThuNamCached());
+                String ChiphiNhaphang = toCurrency(getTongTienPhieuNhapThangCached());
+                String ChiphiLuongNhanvien = toCurrency(getTongTienLuongThangCached());
+                String Tongchiphi = toCurrency(getTongTienLuongThangCached() + getTongTienPhieuNhapThangCached());
+                String Loinhuanngay = toCurrency(getTongTienHoaDonNgayCached());
+                String Loinhuanthang = toCurrency(getTongTienHoaDonThangCached() - getTongTienPhieuNhapThangCached()
+                                - getTongTienLuongThangCached());
                 String LoinhuanTong = toCurrency(
-                                TK.getTongDthunam() - TK.getTongLuongnhanviennam() - TK.getTongphieunhapnam());
-                String SlNhanvien = String.valueOf(TK.getsoluongNV());
-                String TongluongnvThang = toCurrency(TK.getTongTienLuongthang());
-                String Tongluongnvnam = toCurrency(TK.getTongLuongnhanviennam());
-                String SoluongPhieunhap = String.valueOf(TK.getsoluongPN());
-                String SoluongNL = String.valueOf(TK.getsluongNL());
-                String SoluongNCC = String.valueOf(TK.getsluongNCC());
+                                getTongDoanhThuNamCached() - getTongLuongNhanVienNamCached()
+                                                - getTongPhieuNhapNamCached());
+                String SlNhanvien = String.valueOf(getSoLuongNhanVienCached());
+                String TongluongnvThang = toCurrency(getTongTienLuongThangCached());
+                String Tongluongnvnam = toCurrency(getTongLuongNhanVienNamCached());
+                String SoluongPhieunhap = String.valueOf(getSoLuongPhieuNhapCached());
+                String SoluongNL = String.valueOf(getSoLuongNguyenLieuCached());
+                String SoluongNCC = String.valueOf(getSoLuongNccCached());
                 //
                 jTextField6.setText(Dthungay);
                 jTextField7.setText(Dthuthang);
@@ -221,7 +461,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 List<Integer> xData = Arrays.asList(2, 3, 4, 5, 6, 7, 8);
                 // List<Integer> yData = Arrays.asList(1.0, 4.0, 3.0, 5.0, 4.0, 3.0, 5.0, 4.0,
                 // 3.0, 5.0, 5.0, 4.0, 3.0, 1.0, 4.0, 3.0, 5.0, 4.0);
-                ArrayList<Integer> yData = TK.getArrayDoanhthuTuan();
+                ArrayList<Integer> yData = getArrayDoanhthuTuanCached();
                 List<String> seriesNamedthutuan = List.of("doanh thu");
                 // Tạo biểu đồ
                 XYChart chartDefault = n10_ChartCreator.createLineChart(xData, yData, seriesNamedthutuan,
@@ -240,7 +480,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                         xIndexDThu.add(i);
                 }
                 List<String> seriesNamedthu = List.of("doanh thu");
-                List<Integer> ydataDthu = TK.getArrayDoanhthunam();
+                List<Integer> ydataDthu = getArrayDoanhthuNamCached();
                 XYChart ChartDthu = n10_ChartCreator.createLineChart(xIndexDThu, ydataDthu, seriesNamedthu,
                                 "Biểu đồ doanh thu năm theo Tháng",
                                 "tháng", "doanh thu");
@@ -251,7 +491,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 Main_DtPn1.add(ChartPanelDthu, BorderLayout.NORTH);
                 // /////////////////theo quý
                 List<Integer> xdataDthuQuy = Arrays.asList(1, 2, 3, 4);
-                List<Integer> ydataDthuQUy = TK.getArrayDoanhthuquy();
+                List<Integer> ydataDthuQUy = getArrayDoanhthuQuyCached();
                 List<String> seriesNamedthuquy = List.of("doanh thu");
                 XYChart ChartDthuquy = n10_ChartCreator.createLineChart(xdataDthuQuy, ydataDthuQUy, seriesNamedthuquy,
                                 "Biểu đồ doanh thu năm theo quý", "Quý", "doanh thu (Triệu)");
@@ -263,8 +503,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 ////////////////////////////////////// biểu đồ cột chi phí ////////////////tháng
                 List<String> xdataCphi = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
-                List<List<Integer>> yDataList = List.of(TK.getArrayTongLuongnhanvientheothang(),
-                                TK.getArrayphieunhapnam());
+                List<List<Integer>> yDataList = List.of(getArrayTongLuongTheoThangCached(),
+                                getArrayPhieuNhapNamCached());
                 List<String> seriesName = List.of("lương nhân viên", "nhập hàng");
 
                 CategoryChart ChartChiphi = n10_ChartCreator.createBarChart(xdataCphi, yDataList, seriesName,
@@ -275,8 +515,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 ContentCphi1.add(ChartChiphipanel, BorderLayout.NORTH);
                 //////////////// quý
                 List<String> xdataCphiquy = Arrays.asList("quý 1", "quý 2", "quý 3", "quý 4");
-                List<List<Integer>> yDataListQuy = List.of(TK.getArrayTongLuongnhanvientheoquy(),
-                                TK.getArrayphieunhapnamtheoquy());
+                List<List<Integer>> yDataListQuy = List.of(getArrayTongLuongTheoQuyCached(),
+                                getArrayPhieuNhapNamTheoQuyCached());
                 List<String> seriesNameQuy = List.of("lương nhân viên", "nhập hàng");
 
                 CategoryChart ChartChiphiQuy = n10_ChartCreator.createBarChart(xdataCphiquy, yDataListQuy,
@@ -288,9 +528,9 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 ////////////////////////////////////// biểu đồ cột lợi nhuận
                 List<String> xdataLoinhuan = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
                                 "12");
-                ArrayList<Integer> Dthu = TK.getArrayDoanhthunam();
-                ArrayList<Integer> ChiPhi = TK.getArrayphieunhapnam();
-                ArrayList<Integer> LuongNV = TK.getArrayTongLuongnhanvientheothang();
+                ArrayList<Integer> Dthu = getArrayDoanhthuNamCached();
+                ArrayList<Integer> ChiPhi = getArrayPhieuNhapNamCached();
+                ArrayList<Integer> LuongNV = getArrayTongLuongTheoThangCached();
                 ArrayList<Integer> LoiNhuan = new ArrayList<>();
                 for (int i = 0; i < 12; i++) {
                         int LoiNhuanthang = Dthu.get(i) - ChiPhi.get(i) - LuongNV.get(i);
@@ -305,9 +545,9 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 contentTKLnhuan1.add(ChartLoinhuanpanel, BorderLayout.NORTH);
                 ///////////////////////// quý
                 List<String> xdataLoinhuanquy = Arrays.asList("1", "2", "3", "4");
-                ArrayList<Integer> Dthuquy = TK.getArrayDoanhthuquy();
-                ArrayList<Integer> ChiPhiQuy = TK.getArrayphieunhapnamtheoquy();
-                ArrayList<Integer> LuongNVQuy = TK.getArrayTongLuongnhanvientheoquy();
+                ArrayList<Integer> Dthuquy = getArrayDoanhthuQuyCached();
+                ArrayList<Integer> ChiPhiQuy = getArrayPhieuNhapNamTheoQuyCached();
+                ArrayList<Integer> LuongNVQuy = getArrayTongLuongTheoQuyCached();
 
                 ArrayList<Integer> LoiNhuanQuy = new ArrayList<>();
                 for (int i = 0; i < 4; i++) {
@@ -330,7 +570,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 // FIX: Cache all salary data before loop to avoid N+1 queries
                 java.util.Map<String, ArrayList<Integer>> employeeSalaryCache = new java.util.HashMap<>();
                 for (NhanVienDTO nv : list) {
-                        employeeSalaryCache.put(nv.getMaNhanVien(), TK.getArrayLuongnhanvien(nv.getMaNhanVien()));
+                        employeeSalaryCache.put(nv.getMaNhanVien(), getLuongNhanVienCached(nv.getMaNhanVien()));
                 }
 
                 for (int i = 0; i < list.size(); i++) {
@@ -357,14 +597,22 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 // Thêm dữ liệu vào biểu đồ Pie
                 ArrayList<String> datanl = new ArrayList<>();
                 ArrayList<Double> khoiluongnl = new ArrayList<>();
-                String a[][] = TK.getkhoiluongNL();
+                String a[][] = getKhoiLuongNLCached();
+                if (a == null) {
+                        a = new String[0][0];
+                }
+                int soLuongNguyenLieu = a.length;
                 Double sumkl = 0.0;
-                for (int i = 0; i < TK.getsluongNL(); i++) {
+                for (int i = 0; i < soLuongNguyenLieu; i++) {
                         sumkl = sumkl + Integer.parseInt(a[i][1]);
                 }
-                for (int i = 0; i < TK.getsluongNL(); i++) {
+                for (int i = 0; i < soLuongNguyenLieu; i++) {
                         datanl.add(a[i][0]);
-                        khoiluongnl.add(Double.parseDouble(a[i][1]) / sumkl * 100);
+                        if (sumkl > 0) {
+                                khoiluongnl.add(Double.parseDouble(a[i][1]) / sumkl * 100);
+                        } else {
+                                khoiluongnl.add(0.0);
+                        }
                 }
                 PieChart piechart = n10_ChartCreator.createPieChart(datanl, khoiluongnl,
                                 "biểu đồ tỉ khối nguyên liệu trong kho");
@@ -380,12 +628,12 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                                 "tổng năm" + date.toLocalDate().getYear() };
                 String[] columnNamesquy = { "Quý", "1", "2", "3", "4", "tổng năm" + date.toLocalDate().getYear() };
 
-                ArrayList<Integer> dataDthu = TK.getArrayDoanhthunam(); // Doanh thu
-                ArrayList<Integer> dataDthuquy = TK.getArrayDoanhthuquy(); // Doanh thu
-                ArrayList<Integer> datapn = TK.getArrayphieunhapnam(); // Phí nhập hàng
-                ArrayList<Integer> datapnquy = TK.getArrayphieunhapnamtheoquy(); // Phí nhập hàng theo quý
-                ArrayList<Integer> dataluong = TK.getArrayTongLuongnhanvientheothang(); // Lương nhân viên
-                ArrayList<Integer> dataluongQuy = TK.getArrayTongLuongnhanvientheoquy(); // Lương nhân viên Quý
+                ArrayList<Integer> dataDthu = getArrayDoanhthuNamCached(); // Doanh thu
+                ArrayList<Integer> dataDthuquy = getArrayDoanhthuQuyCached(); // Doanh thu
+                ArrayList<Integer> datapn = getArrayPhieuNhapNamCached(); // Phí nhập hàng
+                ArrayList<Integer> datapnquy = getArrayPhieuNhapNamTheoQuyCached(); // Phí nhập hàng theo quý
+                ArrayList<Integer> dataluong = getArrayTongLuongTheoThangCached(); // Lương nhân viên
+                ArrayList<Integer> dataluongQuy = getArrayTongLuongTheoQuyCached(); // Lương nhân viên Quý
 
                 // Tạo mảng 2 chiều String để lưu dữ liệu
                 String[][] stringArrayDthu = new String[1][14];
@@ -479,7 +727,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 // FIX: Cache all salary data before loop to avoid N+1 queries
                 java.util.Map<String, ArrayList<Integer>> employeeSalaryCache2 = new java.util.HashMap<>();
                 for (NhanVienDTO nv : list) {
-                        employeeSalaryCache2.put(nv.getMaNhanVien(), TK.getArrayLuongnhanvien(nv.getMaNhanVien()));
+                        employeeSalaryCache2.put(nv.getMaNhanVien(), getLuongNhanVienCached(nv.getMaNhanVien()));
                 }
 
                 for (int i = 0; i < list.size(); i++) {
@@ -497,7 +745,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 DefaultTableModel tableModeldsnl = new DefaultTableModel();
                 tableModeldsnl.addColumn("Tên Nguyên Liệu");
                 tableModeldsnl.addColumn("Khối Lượng");
-                ArrayList<NguyenLieuDTO> list = NLBUS.getAll();
+                ArrayList<NguyenLieuDTO> list = getNguyenLieuListCached();
                 for (int i = 0; i < list.size(); i++) {
                         tableModeldsnl.addRow(new Object[] {
                                         list.get(i).getTenNguyenLieu(),
@@ -1009,7 +1257,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 headerPanel.add(KhMoiPn);
 
-                ////////
+                ///////
                 jTextField6.setText("jTextField6");
                 jTextField6.setMinimumSize(new java.awt.Dimension(200, 22));
                 jTextField6.setPreferredSize(new java.awt.Dimension(195, 50));
@@ -1573,7 +1821,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 TK_chiphi.setBackground(new java.awt.Color(219, 189, 142));
                 TK_chiphi.setPreferredSize(new java.awt.Dimension(1120, 450));
 
-                /////////
+                ////////
                 jTextField9.setText("jTextField6");
                 jTextField9.setMinimumSize(new java.awt.Dimension(200, 22));
                 jTextField9.setPreferredSize(new java.awt.Dimension(195, 50));
@@ -1851,7 +2099,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 TK_loinhuan.setBackground(new java.awt.Color(219, 189, 142));
                 TK_loinhuan.setPreferredSize(new java.awt.Dimension(1120, 450));
 
-                /////////
+                ////////
                 jTextField18.setText("jTextField18");
                 jTextField18.setPreferredSize(new java.awt.Dimension(195, 50));
                 jTextField19.setText("jTextField18");
@@ -2118,7 +2366,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 TK_luong.setBackground(new java.awt.Color(219, 189, 142));
                 TK_luong.setPreferredSize(new java.awt.Dimension(1120, 450));
-                /////////////
+                ////////////
                 jTextField12.setText("jTextField12");
                 jTextField12.setMinimumSize(new java.awt.Dimension(195, 50));
                 jTextField12.setPreferredSize(new java.awt.Dimension(195, 55));
@@ -2386,7 +2634,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 TK_khohang.setBackground(new java.awt.Color(219, 189, 142));
                 TK_khohang.setPreferredSize(new java.awt.Dimension(1120, 450));
-                ///////////////
+                //////////////
                 jTextField15.setText("jTextField15");
                 jTextField15.setMinimumSize(new java.awt.Dimension(195, 50));
                 jTextField15.setPreferredSize(new java.awt.Dimension(195, 55));

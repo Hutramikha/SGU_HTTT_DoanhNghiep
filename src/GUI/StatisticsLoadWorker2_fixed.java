@@ -17,6 +17,7 @@ public class StatisticsLoadWorker2_fixed extends SwingWorker<Void, Void> {
     @Override
     protected Void doInBackground() throws Exception {
         System.out.println("🔄 Preparing statistics panel...");
+        panel.preloadStatisticsData();
         return null;
     }
 

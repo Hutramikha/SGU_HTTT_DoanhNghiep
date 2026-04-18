@@ -584,8 +584,22 @@ public class n1_BanHangKeoTha extends javax.swing.JPanel {
 
         LabelAnhTimKiem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ArrayList<MonDTO> listMon = BanHangBUS.getInstance().getAll_theo_TimKiem(TimKiem.getText());
-                listSanPham(listMon);
+                javax.swing.SwingWorker<ArrayList<MonDTO>, Void> searchWorker = new javax.swing.SwingWorker<ArrayList<MonDTO>, Void>() {
+                    @Override
+                    protected ArrayList<MonDTO> doInBackground() throws Exception {
+                        return BanHangBUS.getInstance().getAll_theo_TimKiem(TimKiem.getText());
+                    }
+
+                    @Override
+                    protected void done() {
+                        try {
+                            listSanPham(get());
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                };
+                searchWorker.execute();
             }
         });
 
