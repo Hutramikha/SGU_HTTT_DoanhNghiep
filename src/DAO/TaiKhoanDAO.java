@@ -51,10 +51,23 @@ public class TaiKhoanDAO {
         return taiKhoan;
     }
 
+    /**
+     * @deprecated NGUY HIỂM — SQL Injection Risk!
+     * Method này nhận condition dạng SQL String thuần, không có tham số hóa.
+     * Ví dụ: selectByCondition("MaNhanVien='" + userInput + "'") → bị inject.
+     *
+     * Thay thế: Tạo method cụ thể với PreparedStatement cho từng loại điều kiện.
+     * Ví dụ: selectByMaNhanVien(String ma), selectByTrangThai(int tt)...
+     *
+     * Nếu bắt buộc dùng, gọi caller PHẢI tự đảm bảo condition không chứa user input.
+     */
+    @Deprecated
     public ArrayList<TaiKhoanDTO> selectByCondition(String condition) {
         ArrayList<TaiKhoanDTO> taiKhoans = new ArrayList<>();
+        Connection c = null;
         try {
-            Connection c = JDBCUtil.getConnection();
+            c = JDBCUtil.getConnection();
+            // ⚠️ CẢNH BÁO: condition là SQL thuần — không dùng với user input!
             String sql = "select * from TaiKhoan where " + condition;
             PreparedStatement pst = c.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
@@ -104,22 +117,26 @@ public class TaiKhoanDAO {
 
     public int update(TaiKhoanDTO tk) {
         int ketQua = 0;
+        Connection c = null;
         try {
-            Connection c = JDBCUtil.getConnection();
-            String sql = "update TaiKhoan set TenDangNhap=?,MatKhau=?,MaPhanQuyen=?,MaNhanVien = ?, NgayCap=?, NgayNghiViec=?,TrangThaiTaiKhoan=? where MaNhanVien=?";
+            c = JDBCUtil.getConnection();
+            // Đúng thứ tự: TenDangNhap=1, MatKhau=2, MaPhanQuyen=3, MaNhanVien=4,
+            // NgayCap=5, NgayNghiViec=6, TrangThaiTaiKhoan=7, WHERE MaNhanVien=8
+            String sql = "update TaiKhoan set TenDangNhap=?,MatKhau=?,MaPhanQuyen=?,MaNhanVien=?,NgayCap=?,NgayNghiViec=?,TrangThaiTaiKhoan=? where MaNhanVien=?";
             PreparedStatement pst = c.prepareStatement(sql);
-            pst.setString(1, tk.getMaTaiKhoan());
-            pst.setString(2, tk.getTenDangNhap());
-            pst.setString(3, tk.getMatKhau());
-            pst.setString(4, tk.getMaPhanQuyen());
-            pst.setString(5, tk.getMaNhanVien());
-            pst.setDate(6,tk.getNgaycap());
-            pst.setDate(7, tk.getNgayNghiViec());
-            pst.setInt(5, tk.getTrangThaiTaiKhoan());
+            pst.setString(1, tk.getTenDangNhap());
+            pst.setString(2, tk.getMatKhau());
+            pst.setString(3, tk.getMaPhanQuyen());
+            pst.setString(4, tk.getMaNhanVien());
+            pst.setDate(5, tk.getNgaycap());
+            pst.setDate(6, tk.getNgayNghiViec());
+            pst.setInt(7, tk.getTrangThaiTaiKhoan());
+            pst.setString(8, tk.getMaNhanVien());
             ketQua = pst.executeUpdate();
-            JDBCUtil.closeConnection(c);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            JDBCUtil.closeConnection(c);
         }
         return ketQua;
     }
@@ -130,7 +147,7 @@ public class TaiKhoanDAO {
             Connection c = JDBCUtil.getConnection();
             String sql = "update TaiKhoan set TrangThaiTaiKhoan=0 where MaNhanVien=?";
             PreparedStatement pst = c.prepareStatement(sql);
-            pst.setString(1, tk.getMaTaiKhoan());
+            pst.setString(1, tk.getMaNhanVien());
 
             ketQua = pst.executeUpdate();
             JDBCUtil.closeConnection(c);
@@ -168,8 +185,9 @@ public class TaiKhoanDAO {
 
     public String getIdNV(String ma){
         String manv = "";
+        Connection c = null;
         try {
-            Connection c = JDBCUtil.getConnection();
+            c = JDBCUtil.getConnection();
             String sql = "select MaNhanVien from TaiKhoan where MaNhanVien = ?";
             PreparedStatement pst = c.prepareStatement(sql);
             pst.setString(1, ma);
@@ -179,14 +197,17 @@ public class TaiKhoanDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            JDBCUtil.closeConnection(c);
         }
         return manv;
     }
 
     public String getMkByMaNhanVien(String ma){
         String matKhau = "";
+        Connection c = null;
         try {
-            Connection c = JDBCUtil.getConnection();
+            c = JDBCUtil.getConnection();
             String sql = "select MatKhau from TaiKhoan where MaNhanVien = ?";
             PreparedStatement pst = c.prepareStatement(sql);
             pst.setString(1, ma);
@@ -196,49 +217,63 @@ public class TaiKhoanDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            JDBCUtil.closeConnection(c);
         }
         return matKhau;
     }
 
     public boolean kiemTraTrungTenDangNhap(String tenDangNhap) {
+        Connection c = null;
         try {
-            Connection c = JDBCUtil.getConnection();
-            String sql = "select * from TaiKhoan where TenDangNhap = '" + tenDangNhap + "'";
+            c = JDBCUtil.getConnection();
+            String sql = "select * from TaiKhoan where TenDangNhap = ?";
             PreparedStatement pst = c.prepareStatement(sql);
+            pst.setString(1, tenDangNhap);
             ResultSet rs = pst.executeQuery();
             return rs.next();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            JDBCUtil.closeConnection(c);
         }
         return false;
     }
 
     public String layTenDangNhapTheoMa(String ma) {
+        Connection c = null;
         try {
-            String sql = "SELECT TenDangNhap FROM TaiKhoan WHERE MaNhanVien='" + ma +"'";
-            Connection c = JDBCUtil.getConnection();
+            c = JDBCUtil.getConnection();
+            String sql = "SELECT TenDangNhap FROM TaiKhoan WHERE MaNhanVien = ?";
             PreparedStatement pst = c.prepareStatement(sql);
+            pst.setString(1, ma);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 return rs.getString(1);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            JDBCUtil.closeConnection(c);
         }
         return "";
     }
 
     public String layQuyenTheoMa(String ma) {
+        Connection c = null;
         try {
-            String sql = "SELECT MaPhanQuyen FROM TaiKhoan WHERE MaNhanVien='" + ma +"'";
-            Connection c = JDBCUtil.getConnection();
+            c = JDBCUtil.getConnection();
+            String sql = "SELECT MaPhanQuyen FROM TaiKhoan WHERE MaNhanVien = ?";
             PreparedStatement pst = c.prepareStatement(sql);
+            pst.setString(1, ma);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 return rs.getString(1);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            JDBCUtil.closeConnection(c);
         }
         return "";
     }
@@ -320,21 +355,22 @@ public class TaiKhoanDAO {
     }
 
     public int getTrangThai(String ma) {
-        int flag=0;
+        int flag = 0;
+        Connection c = null;
         try {
+            c = JDBCUtil.getConnection();
             String sql = "SELECT TrangThaiTaiKhoan FROM TaiKhoan WHERE MaNhanVien = ?";
-            Connection c = JDBCUtil.getConnection();
             PreparedStatement pre = c.prepareStatement(sql);
-            pre.setString(1,  ma); // Truyền tham số vào câu lệnh SQL
+            pre.setString(1, ma);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-
-                flag = rs.getInt(1); 
+                flag = rs.getInt(1);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            JDBCUtil.closeConnection(c);
         }
-
         return flag;
     }
 

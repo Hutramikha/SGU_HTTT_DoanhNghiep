@@ -6,7 +6,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -140,7 +142,7 @@ public class n1_BanHang_ListSanPham extends javax.swing.JPanel {
 
         try {
             if (tenAnh == null || tenAnh.isEmpty()) {
-                linkHinhAnh = "/IMAGE/Logo2.png"; // Ảnh mặc định
+                linkHinhAnh = "/IMAGE/logo2.png"; // Ảnh mặc định
                 imgURL = getClass().getResource(linkHinhAnh);
             } else {
                 linkHinhAnh = "/IMAGE/SanPham/" + tenAnh;
@@ -169,12 +171,20 @@ public class n1_BanHang_ListSanPham extends javax.swing.JPanel {
             double widthRatio = (double) labelWidth / imageWidth;
             double heightRatio = (double) labelHeight / imageHeight;
             double scaleFactor = Math.min(widthRatio, heightRatio); // Chọn tỷ lệ nhỏ hơn để ảnh không bị cắt
+            // Keep original quality by avoiding upscaling low-detail logos.
+            scaleFactor = Math.min(scaleFactor, 1.0d);
 
-            int newWidth = (int) (imageWidth * scaleFactor);
-            int newHeight = (int) (imageHeight * scaleFactor);
+            int newWidth = Math.max(1, (int) Math.round(imageWidth * scaleFactor));
+            int newHeight = Math.max(1, (int) Math.round(imageHeight * scaleFactor));
 
-            // Điều chỉnh kích thước ảnh theo tỷ lệ đã tính toán
-            Image scaledImage = imageIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+            // Resize with bicubic interpolation for sharper result than getScaledInstance.
+            BufferedImage scaledImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = scaledImage.createGraphics();
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.drawImage(imageIcon.getImage(), 0, 0, newWidth, newHeight, null);
+            g2d.dispose();
             imageIcon = new ImageIcon(scaledImage);
 
             // Đặt ImageIcon vào JLabel

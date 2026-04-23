@@ -21,12 +21,13 @@ public class UIHelper {
     public static final Color ACCENT_GREEN = new Color(102, 187, 106);
 
     // Semantic tones for consistent green-first UI composition
-    public static final Color APP_BACKGROUND = LIGHTEST_GREEN;
-    public static final Color SURFACE = new Color(246, 251, 246);
-    public static final Color SURFACE_ALT = new Color(237, 246, 238);
-    public static final Color BORDER_COLOR = new Color(196, 221, 199);
-    public static final Color DISABLED_BG = new Color(234, 242, 235);
-    public static final Color DISABLED_TEXT = new Color(145, 160, 147);
+    // App background requested: #2e7d32
+    public static final Color APP_BACKGROUND = PRIMARY_GREEN;
+    public static final Color SURFACE = new Color(248, 252, 248);
+    public static final Color SURFACE_ALT = new Color(232, 245, 233);
+    public static final Color BORDER_COLOR = new Color(165, 214, 167);
+    public static final Color DISABLED_BG = new Color(220, 233, 221);
+    public static final Color DISABLED_TEXT = new Color(120, 140, 122);
     public static final Color DANGER = new Color(229, 57, 53);
     public static final Color DANGER_HOVER = new Color(211, 47, 47);
 
@@ -66,8 +67,8 @@ public class UIHelper {
 
     private static volatile boolean projectThemeInstalled = false;
 
-    public static final Color DARK_TEXT = new Color(33, 33, 33); // Chữ đậm
-    public static final Color LIGHT_TEXT = new Color(117, 117, 117); // Chữ nhạt
+    public static final Color DARK_TEXT = new Color(30, 57, 34); // Chữ đậm
+    public static final Color LIGHT_TEXT = new Color(92, 118, 96); // Chữ nhạt
     public static final Color WHITE = new Color(255, 255, 255);
     public static final Color LIGHT_GRAY = new Color(240, 240, 240);
 
@@ -152,6 +153,10 @@ public class UIHelper {
     private static Color remapBackground(Color color) {
         if (color == null) {
             return null;
+        }
+
+        if (matches(color, WHITE)) {
+            return SURFACE;
         }
 
         if (matches(color, OLD_BACKGROUND)) {

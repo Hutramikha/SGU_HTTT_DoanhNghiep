@@ -63,6 +63,9 @@ public class NhanVienBUS {
     }
 
     public boolean checkExistAdmin() {
+        if (listNV == null) {
+            docDanhSach(); // Đảm bảo danh sách đã được tải trước khi kiểm tra
+        }
         for (NhanVienDTO nv : listNV) {
             if (nv.getChucVuNhanVien().equals("Quản Trị Viên")) {
                 return true;
@@ -103,70 +106,63 @@ public class NhanVienBUS {
         return flag;
     }
 
-    public void timNhanVienMa(String tuKhoa, JTable tbl) {
-        DefaultTableModel model = new DefaultTableModel(
-                new String[] {
-                        "Mã NV", "Tên NV", "Giới tính", "SĐT", "Ngày sinh", "Chức vụ", "Địa chỉ", "Lương", "Trạng thái"
-                },
-                0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        tbl.setModel(model);
+    /**
+     * Tìm nhân viên theo mã. BUS chỉ trả về dữ liệu, GUI tự fill table.
+     */
+    public ArrayList<NhanVienDTO> timNhanVienTheoMa(String tuKhoa) {
+        if (listNV == null) docDanhSach();
         tuKhoa = tuKhoa.toLowerCase();
-        ArrayList<NhanVienDTO> dsnv = new ArrayList<>();
+        ArrayList<NhanVienDTO> ketQua = new ArrayList<>();
         for (NhanVienDTO nv : listNV) {
             if (nv.getMaNhanVien().toLowerCase().contains(tuKhoa)) {
-                dsnv.add(nv);
+                ketQua.add(nv);
             }
         }
-
-        for (NhanVienDTO nv : dsnv) {
-            Vector<Object> vec = new Vector<>();
-            vec.add(nv.getMaNhanVien());
-            vec.add(nv.getTenNhanVien());
-            vec.add(nv.getGioiTinhNhanVien());
-            vec.add(nv.getSoDienThoaiNhanVien());
-            vec.add(nv.getNgaySinhNhanVien());
-            vec.add(nv.getChucVuNhanVien());
-            vec.add(nv.getDiaChi());
-            vec.add(nv.getLuongNhanVien());
-            // vec.add(nv.getTrangThaiNhanVien());
-
-            int trangThai = nv.getTrangThaiNhanVien();
-            if (trangThai == 1) {
-                vec.add("Hoạt động");
-            }
-            if (trangThai == 0) {
-                vec.add("Nghỉ việc");
-            } else {
-                vec.add("Chưa có");
-            }
-            model.addRow(vec);
-        }
+        return ketQua;
     }
 
-    public void timNhanVienTheoTen(String tuKhoa, JTable tbl) {
-        DefaultTableModel model = new DefaultTableModel(
-                new String[] {
-                        "Mã NV", "Tên NV", "Giới tính", "SĐT", "Ngày sinh", "Chức vụ", "Địa chỉ", "Lương", "Trạng thái"
-                },
-                0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        tbl.setModel(model);
+    /**
+     * @deprecated Dùng timNhanVienTheoMa(String) thay thế. GUI tự fill JTable.
+     */
+    @Deprecated
+    public void timNhanVienMa(String tuKhoa, javax.swing.JTable tbl) {
+        fillTableNhanVien(tbl, timNhanVienTheoMa(tuKhoa));
+    }
+
+    /**
+     * Tìm nhân viên theo tên. BUS chỉ trả về dữ liệu, GUI tự fill table.
+     */
+    public ArrayList<NhanVienDTO> timNhanVienTheoTenResult(String tuKhoa) {
+        if (listNV == null) docDanhSach();
         tuKhoa = tuKhoa.toLowerCase();
-        ArrayList<NhanVienDTO> dsnv = new ArrayList<>();
+        ArrayList<NhanVienDTO> ketQua = new ArrayList<>();
         for (NhanVienDTO nv : listNV) {
             if (nv.getTenNhanVien().toLowerCase().contains(tuKhoa)) {
-                dsnv.add(nv);
+                ketQua.add(nv);
             }
         }
+        return ketQua;
+    }
+
+    /**
+     * @deprecated Dùng timNhanVienTheoTenResult(String) thay thế. GUI tự fill JTable.
+     */
+    @Deprecated
+    public void timNhanVienTheoTen(String tuKhoa, javax.swing.JTable tbl) {
+        fillTableNhanVien(tbl, timNhanVienTheoTenResult(tuKhoa));
+    }
+
+    /**
+     * Helper: Điền dữ liệu nhân viên vào JTable (nằm ở BUS như bridge, nhưng
+     * nên được chuyển sang GUI khi refactor toàn diện).
+     */
+    public void fillTableNhanVien(javax.swing.JTable tbl, ArrayList<NhanVienDTO> dsnv) {
+        DefaultTableModel model = new DefaultTableModel(
+                new String[] { "Mã NV", "Tên NV", "Giới tính", "SĐT", "Ngày sinh", "Chức vụ", "Địa chỉ", "Lương", "Trạng thái" }, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
+        tbl.setModel(model);
         for (NhanVienDTO nv : dsnv) {
             Vector<Object> vec = new Vector<>();
             vec.add(nv.getMaNhanVien());
@@ -177,12 +173,10 @@ public class NhanVienBUS {
             vec.add(nv.getChucVuNhanVien());
             vec.add(nv.getDiaChi());
             vec.add(nv.getLuongNhanVien());
-
             int trangThai = nv.getTrangThaiNhanVien();
             if (trangThai == 1) {
                 vec.add("Hoạt động");
-            }
-            if (trangThai == 0) {
+            } else if (trangThai == 0) {
                 vec.add("Nghỉ việc");
             } else {
                 vec.add("Chưa có");
@@ -211,21 +205,15 @@ public class NhanVienBUS {
     }
 
     public boolean xoaFKHoadon_PhieuNhap_NV() {
-        nvDAO.deletaFKHoandon_PhieuNhap();
-        boolean ketqua = nvDAO.deletaFKHoandon_PhieuNhap();
-        return ketqua;
+        return nvDAO.deletaFKHoandon_PhieuNhap();
     }
 
     public boolean updateFKHoadon_PhieuNhap_NV() {
-        nvDAO.updateFKHoandon_PhieuNhap();
-        boolean ketqua = nvDAO.updateFKHoandon_PhieuNhap();
-        return ketqua;
+        return nvDAO.updateFKHoandon_PhieuNhap();
     }
 
     public boolean xoaAllNhanVien() {
-        nvDAO.xoaAllInfor();
-        boolean ketqua = nvDAO.xoaAllInfor();
-        return ketqua;
+        return nvDAO.xoaAllInfor();
     }
 
     // Hàm nhập excel
@@ -275,8 +263,7 @@ public class NhanVienBUS {
             int trangThai = nv.getTrangThaiNhanVien();
             if (trangThai == 1) {
                 vec.add("Hoạt động");
-            }
-            if (trangThai == 0) {
+            } else if (trangThai == 0) {
                 vec.add("Nghỉ việc");
             } else {
                 vec.add("Chưa có");

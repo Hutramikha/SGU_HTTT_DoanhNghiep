@@ -85,9 +85,6 @@ public class TaiKhoanDTO {
         this.maPhanQuyen = maPhanQuyen;
     }
 
-    public int isTrangThaiTaiKhoan() {
-        return trangThaiTaiKhoan;
-    }
 
     public void setTrangThaiTaiKhoan(int trangThaiTaiKhoan) {
         this.trangThaiTaiKhoan = trangThaiTaiKhoan;
@@ -104,7 +101,6 @@ public class TaiKhoanDTO {
                 + ", tenDangNhap='" + tenDangNhap + '\''
                 + ", matKhau='" + matKhau + '\''
                 + ", maPhanQuyen='" + maPhanQuyen + '\''
-                + ", ngayCap='" + matKhau + '\''
                 + ", ngayCap='" + ngayCap + '\''
                 + ", ngayNghiViec='" + ngayNghiViec + '\''
                 + ", trangThaiTaiKhoan=" + trangThaiTaiKhoan

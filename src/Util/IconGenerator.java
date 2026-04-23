@@ -5,6 +5,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.io.InputStream;
 import java.awt.RenderingHints;
 
@@ -257,12 +259,10 @@ public class IconGenerator {
     }
 
     /**
-     * Generate a premium coffee logo icon for "Cà phê Xanh" branding
-     * Rich brown coffee cup with green accents for contrast against green
-     * background
+     * Generate app logo icon for "Cà phê Xanh" branding.
      */
     public static ImageIcon generateGreenCoffeeLogoIcon(int width, int height) {
-        return loadLogoQuanIcon("/IMAGE/logoquan.jpg", width, height, true);
+        return loadLogoQuanIcon("/IMAGE/logo2.png", width, height, true);
     }
 
     /**
@@ -291,10 +291,10 @@ public class IconGenerator {
     }
 
     /**
-     * Generate a beautiful coffee cup icon with handle (for login page)
+     * Generate login logo icon.
      */
     public static ImageIcon generateCoffeeIconWithHandle(int width, int height) {
-        return loadLogoQuanIcon("/IMAGE/logoquan.jpg", width, height, false);
+        return loadLogoQuanIcon("/IMAGE/logo2.png", width, height, false);
     }
 
     private static ImageIcon loadLogoQuanIcon(String imagePath, int width, int height, boolean circleBadge) {
@@ -308,33 +308,58 @@ public class IconGenerator {
                 return createFallbackCoffeeLogo(width, height, circleBadge);
             }
 
-            Rectangle cropBounds = findLogoBounds(originalImage);
-            BufferedImage croppedImage = originalImage.getSubimage(
+            boolean sourceHasAlpha = originalImage.getColorModel().hasAlpha();
+            BufferedImage preparedImage = sourceHasAlpha ? removeUniformBackgroundByCorners(originalImage)
+                    : originalImage;
+            Rectangle cropBounds = sourceHasAlpha
+                    ? findOpaqueBounds(preparedImage)
+                    : new Rectangle(0, 0, originalImage.getWidth(), originalImage.getHeight());
+            if (cropBounds.width <= 0 || cropBounds.height <= 0) {
+                preparedImage = originalImage;
+                cropBounds = findLogoBounds(originalImage);
+            }
+
+            BufferedImage croppedImage = preparedImage.getSubimage(
                     cropBounds.x,
                     cropBounds.y,
                     cropBounds.width,
                     cropBounds.height);
 
-            int logoTargetWidth = Math.max(1, Math.round(width * 0.88f));
-            int logoTargetHeight = Math.max(1, Math.round(height * 0.88f));
+            float logoFillRatio = sourceHasAlpha ? 0.94f : 0.96f;
+            int logoTargetWidth = Math.max(1, Math.round(width * logoFillRatio));
+            int logoTargetHeight = Math.max(1, Math.round(height * logoFillRatio));
             float scale = Math.min(
                     (float) logoTargetWidth / croppedImage.getWidth(),
                     (float) logoTargetHeight / croppedImage.getHeight());
+            // Never upscale logos to avoid blur artifacts.
+            scale = Math.min(scale, 1.0f);
 
             int scaledWidth = Math.max(1, Math.round(croppedImage.getWidth() * scale));
             int scaledHeight = Math.max(1, Math.round(croppedImage.getHeight() * scale));
-            BufferedImage scaledLogo = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D scaledGraphics = scaledLogo.createGraphics();
-            applyHighQualityHints(scaledGraphics);
-            scaledGraphics.drawImage(croppedImage, 0, 0, scaledWidth, scaledHeight, null);
-            scaledGraphics.dispose();
+            BufferedImage scaledLogo = scaleImage(croppedImage, scaledWidth, scaledHeight);
 
-            softenWhiteBackground(scaledLogo);
+            if (!sourceHasAlpha) {
+                float shrinkX = croppedImage.getWidth() / (float) scaledWidth;
+                float shrinkY = croppedImage.getHeight() / (float) scaledHeight;
+                float shrinkFactor = Math.max(shrinkX, shrinkY);
+                if (shrinkFactor >= 6f) {
+                    scaledLogo = applySubtleSmoothing(scaledLogo);
+                }
+            }
+
+            if (sourceHasAlpha && preparedImage == originalImage) {
+                softenWhiteBackground(scaledLogo);
+            }
 
             BufferedImage canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = canvas.createGraphics();
             applyHighQualityHints(g2d);
-            drawGreenLogoBadge(g2d, width, height, circleBadge);
+
+            // Keep opaque brand logos intact instead of drawing a synthetic badge behind
+            // them.
+            if (sourceHasAlpha) {
+                drawGreenLogoBadge(g2d, width, height, circleBadge);
+            }
 
             int drawX = (width - scaledWidth) / 2;
             int drawY = (height - scaledHeight) / 2;
@@ -345,6 +370,156 @@ public class IconGenerator {
             ex.printStackTrace();
             return createFallbackCoffeeLogo(width, height, circleBadge);
         }
+    }
+
+    private static BufferedImage removeUniformBackgroundByCorners(BufferedImage image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        if (width <= 2 || height <= 2) {
+            return image;
+        }
+
+        Color bg = estimateCornerBackground(image);
+        BufferedImage cleaned = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        int foregroundCount = 0;
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int argb = image.getRGB(x, y);
+                int alpha = (argb >>> 24) & 0xFF;
+
+                if (alpha < 10) {
+                    cleaned.setRGB(x, y, 0x00000000);
+                    continue;
+                }
+
+                if (isNearColor(argb, bg, 38)) {
+                    cleaned.setRGB(x, y, 0x00000000);
+                } else {
+                    cleaned.setRGB(x, y, argb);
+                    foregroundCount++;
+                }
+            }
+        }
+
+        int minForegroundPixels = Math.max(32, (width * height) / 500);
+        if (foregroundCount < minForegroundPixels) {
+            return image;
+        }
+        return cleaned;
+    }
+
+    private static Color estimateCornerBackground(BufferedImage image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        int[] samples = new int[] {
+                image.getRGB(0, 0),
+                image.getRGB(width - 1, 0),
+                image.getRGB(0, height - 1),
+                image.getRGB(width - 1, height - 1),
+                image.getRGB(width / 2, 0),
+                image.getRGB(width / 2, height - 1)
+        };
+
+        int sumR = 0;
+        int sumG = 0;
+        int sumB = 0;
+        int count = 0;
+
+        for (int argb : samples) {
+            int alpha = (argb >>> 24) & 0xFF;
+            if (alpha < 10) {
+                continue;
+            }
+            sumR += (argb >>> 16) & 0xFF;
+            sumG += (argb >>> 8) & 0xFF;
+            sumB += argb & 0xFF;
+            count++;
+        }
+
+        if (count == 0) {
+            return UIHelper.PRIMARY_GREEN;
+        }
+
+        return new Color(sumR / count, sumG / count, sumB / count);
+    }
+
+    private static boolean isNearColor(int argb, Color target, int tolerancePerChannel) {
+        int red = (argb >>> 16) & 0xFF;
+        int green = (argb >>> 8) & 0xFF;
+        int blue = argb & 0xFF;
+
+        return Math.abs(red - target.getRed()) <= tolerancePerChannel
+                && Math.abs(green - target.getGreen()) <= tolerancePerChannel
+                && Math.abs(blue - target.getBlue()) <= tolerancePerChannel;
+    }
+
+    private static Rectangle findOpaqueBounds(BufferedImage image) {
+        int minX = image.getWidth();
+        int minY = image.getHeight();
+        int maxX = -1;
+        int maxY = -1;
+
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int alpha = (image.getRGB(x, y) >>> 24) & 0xFF;
+                if (alpha > 10) {
+                    minX = Math.min(minX, x);
+                    minY = Math.min(minY, y);
+                    maxX = Math.max(maxX, x);
+                    maxY = Math.max(maxY, y);
+                }
+            }
+        }
+
+        if (maxX < minX || maxY < minY) {
+            return new Rectangle(0, 0, 0, 0);
+        }
+
+        int padX = Math.max(4, (int) (image.getWidth() * 0.015f));
+        int padY = Math.max(4, (int) (image.getHeight() * 0.015f));
+        minX = Math.max(0, minX - padX);
+        minY = Math.max(0, minY - padY);
+        maxX = Math.min(image.getWidth() - 1, maxX + padX);
+        maxY = Math.min(image.getHeight() - 1, maxY + padY);
+
+        return new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
+    }
+
+    private static Rectangle findForegroundBoundsByBackground(BufferedImage image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        Color bg = estimateCornerBackground(image);
+
+        int minX = width;
+        int minY = height;
+        int maxX = -1;
+        int maxY = -1;
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int argb = image.getRGB(x, y);
+                if (!isNearColor(argb, bg, 26)) {
+                    minX = Math.min(minX, x);
+                    minY = Math.min(minY, y);
+                    maxX = Math.max(maxX, x);
+                    maxY = Math.max(maxY, y);
+                }
+            }
+        }
+
+        if (maxX < minX || maxY < minY) {
+            return new Rectangle(0, 0, width, height);
+        }
+
+        int padX = Math.max(4, (int) (width * 0.02f));
+        int padY = Math.max(4, (int) (height * 0.02f));
+        minX = Math.max(0, minX - padX);
+        minY = Math.max(0, minY - padY);
+        maxX = Math.min(width - 1, maxX + padX);
+        maxY = Math.min(height - 1, maxY + padY);
+        return new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
     }
 
     private static void drawGreenLogoBadge(Graphics2D g2d, int width, int height, boolean circleBadge) {
@@ -459,17 +634,58 @@ public class IconGenerator {
     }
 
     private static BufferedImage scaleImage(BufferedImage source, int targetWidth, int targetHeight) {
+        if (targetWidth <= 0 || targetHeight <= 0) {
+            return source;
+        }
+
+        BufferedImage current = source;
+        int currentW = source.getWidth();
+        int currentH = source.getHeight();
+
+        // Progressive downscaling keeps edges smoother than a single massive resize.
+        while (currentW / 2 >= targetWidth && currentH / 2 >= targetHeight) {
+            currentW = Math.max(targetWidth, currentW / 2);
+            currentH = Math.max(targetHeight, currentH / 2);
+            BufferedImage step = new BufferedImage(currentW, currentH, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = step.createGraphics();
+            applyHighQualityHints(g2d);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.drawImage(current, 0, 0, currentW, currentH, null);
+            g2d.dispose();
+            current = step;
+        }
+
+        if (current.getWidth() == targetWidth && current.getHeight() == targetHeight) {
+            return current;
+        }
+
         BufferedImage scaled = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = scaled.createGraphics();
         applyHighQualityHints(g2d);
-        g2d.drawImage(source, 0, 0, targetWidth, targetHeight, null);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.drawImage(current, 0, 0, targetWidth, targetHeight, null);
         g2d.dispose();
         return scaled;
+    }
+
+    private static BufferedImage applySubtleSmoothing(BufferedImage image) {
+        float[] kernelData = {
+                1f / 20f, 2f / 20f, 1f / 20f,
+                2f / 20f, 8f / 20f, 2f / 20f,
+                1f / 20f, 2f / 20f, 1f / 20f
+        };
+
+        Kernel kernel = new Kernel(3, 3, kernelData);
+        ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
+        BufferedImage output = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        op.filter(image, output);
+        return output;
     }
 
     private static void applyHighQualityHints(Graphics2D g2d) {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);

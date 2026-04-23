@@ -59,13 +59,13 @@ public class n0_LoginGUI extends javax.swing.JFrame {
         // LOGO - Coffee cup with handle
         JPanel logoPanel = new JPanel(new BorderLayout());
         logoPanel.setOpaque(false);
-        logoPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+        logoPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 118));
         logoPanel.setAlignmentX(CENTER_ALIGNMENT);
-        JLabel logoLabel = new JLabel(IconGenerator.generateCoffeeIconWithHandle(100, 100));
+        JLabel logoLabel = new JLabel(IconGenerator.generateCoffeeIconWithHandle(96, 96));
         logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
         logoPanel.add(logoLabel, BorderLayout.CENTER);
         mainPanel.add(logoPanel);
-        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(Box.createVerticalStrut(14));
 
         // TITLE
         JLabel titleLabel = new JLabel("ĐĂNG NHẬP");

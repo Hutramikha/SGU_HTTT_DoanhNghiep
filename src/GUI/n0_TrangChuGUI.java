@@ -69,45 +69,46 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
 
                 PanelLogo.setBackground(new java.awt.Color(219, 189, 142));
                 PanelLogo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-                PanelLogo.setPreferredSize(new java.awt.Dimension(253, 65));
+                PanelLogo.setPreferredSize(new java.awt.Dimension(266, 72));
                 PanelLogo.setRoundBottomRight(20);
                 PanelLogo.setRoundTopLeft(20);
                 PanelLogo.setRoundTopRight(20);
                 PanelLogo.setRoundBottomLeft(20);
 
-                LabelCaPheSGU.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+                LabelCaPheSGU.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
                 LabelCaPheSGU.setText("CÀ PHÊ XANH");
 
-                LabelXinChao.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+                LabelXinChao.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
                 LabelXinChao.setText("xin chào");
 
-                LabelIcon.setIcon(Util.IconGenerator.generateGreenCoffeeLogoIcon(70, 70)); // NOI18N
-                LabelIcon.setText("jLabel3");
+                LabelIcon.setIcon(Util.IconGenerator.generateGreenCoffeeLogoIcon(56, 56)); // NOI18N
+                LabelIcon.setText("");
+                LabelIcon.setPreferredSize(new java.awt.Dimension(56, 56));
 
                 javax.swing.GroupLayout PanelLogoLayout = new javax.swing.GroupLayout(PanelLogo);
                 PanelLogo.setLayout(PanelLogoLayout);
                 PanelLogoLayout.setHorizontalGroup(
                                 PanelLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(PanelLogoLayout.createSequentialGroup()
-                                                                .addGap(15, 15, 15)
+                                                                .addGap(12, 12, 12)
                                                                 .addComponent(LabelIcon,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                54,
+                                                                                56,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addPreferredGap(
                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                                                35,
+                                                                                28,
                                                                                 Short.MAX_VALUE)
                                                                 .addGroup(PanelLogoLayout.createParallelGroup(
                                                                                 javax.swing.GroupLayout.Alignment.LEADING)
                                                                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
                                                                                                 PanelLogoLayout.createSequentialGroup()
                                                                                                                 .addComponent(LabelXinChao)
-                                                                                                                .addGap(52, 52, 52))
+                                                                                                                .addGap(56, 56, 56))
                                                                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
                                                                                                 PanelLogoLayout.createSequentialGroup()
                                                                                                                 .addComponent(LabelCaPheSGU)
-                                                                                                                .addGap(23, 23, 23)))));
+                                                                                                                .addGap(26, 26, 26)))));
                 PanelLogoLayout.setVerticalGroup(
                                 PanelLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelLogoLayout
@@ -124,7 +125,7 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                                                                 .addComponent(LabelXinChao)
                                                                 .addContainerGap())
                                                 .addGroup(PanelLogoLayout.createSequentialGroup()
-                                                                .addGap(7, 7, 7)
+                                                                .addGap(8, 8, 8)
                                                                 .addComponent(LabelIcon)
                                                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                 Short.MAX_VALUE)));
@@ -557,6 +558,9 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
 
                 // Logo panel - primary green
                 PanelLogo.setBackground(Util.UIHelper.PRIMARY_GREEN);
+                PanelLogo.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                                javax.swing.BorderFactory.createLineBorder(Util.UIHelper.SURFACE, 1, true),
+                                javax.swing.BorderFactory.createEmptyBorder(4, 8, 4, 8)));
                 LabelCaPheSGU.setForeground(Util.UIHelper.WHITE);
                 LabelXinChao.setForeground(Util.UIHelper.WHITE);
 

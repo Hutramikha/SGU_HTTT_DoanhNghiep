@@ -92,10 +92,4 @@ public class HoaDonDTO {
                 '}';
     }
 
-    public static void main(String[] args) {
-        Date date = new Date();
-        date.getTime();
-        HoaDonDTO hoaDon = new HoaDonDTO("HD001", date, 500000, "NV001", "KH001", "UD001", "KM001");
-        System.out.println(hoaDon.toString());
-    }
 }

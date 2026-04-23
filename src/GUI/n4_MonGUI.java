@@ -40,7 +40,7 @@ public class n4_MonGUI extends javax.swing.JPanel {
     private n4_MonBUS monBUS;
     private n4_LoaiMonBUS loaiMonBUS;
     private File selectedFile;
-    private String imageDefault = "src\\IMAGE\\Logo2.png";
+    private String imageDefault = "src\\IMAGE\\logo2.png";
     private String targetFolder = "src\\IMAGE\\SanPham";
     private String regex = ".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?~].*";
     private String regexNumber = "\\d+(\\.\\d+)?";

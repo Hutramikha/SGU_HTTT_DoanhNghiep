@@ -43,9 +43,6 @@ public class HoaDonBUS {
     // }
 
     public HoaDonDTO getlisttheoMHD(String MHD) {
-        if (HDDAO.getHoaDonTheoMHD(MHD) == null) {
-            return null;
-        }
         return HDDAO.getHoaDonTheoMHD(MHD);
     }
 
@@ -157,84 +154,122 @@ public class HoaDonBUS {
         return false;
     }
 
-    public void loadData(JTable table){
+    /**
+     * Trả về toàn bộ danh sách hóa đơn dưới dạng ArrayList (dùng cho GUI tự fill table).
+     */
+    public ArrayList<HoaDonDTO> getListForTable() {
+        return getlistHD();
+    }
+
+    /**
+     * @deprecated Dùng getListForTable() và tự fill JTable từ GUI.
+     */
+    @Deprecated
+    public void loadData(JTable table) {
         DefaultTableModel model = new DefaultTableModel(
             new String[] {
                 "Mã hóa đơn", "Mã khách hàng", "Mã nhân viên", "Mã khuyến mãi","Mã ưu đãi", "Ngày lập", "Tổng tiền"
             }, 
             0 
-        ){
+        ) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false; 
             }
         };
         table.setModel(model);
-        HoaDonBUS list = new HoaDonBUS();
-        ArrayList<HoaDonDTO> listHD = list.getlistHD();
-        for (int i = 0; i < list.getlistHD().size(); i++) {
+        ArrayList<HoaDonDTO> listHD = getlistHD();
+        for (int i = 0; i < listHD.size(); i++) {
             Object[] newRowData = {listHD.get(i).getMaHoaDon(), listHD.get(i).getMaKhachHang(), listHD.get(i).getMaNhanVien(), listHD.get(i).getMaKhuyenMai(), listHD.get(i).getMaUuDai(), listHD.get(i).getNgayLapHoaDon(), listHD.get(i).getTongTienHoaDon()};
             model.addRow(newRowData);
         }
         modelTmp = model;
     }
 
-    public void TimHoaDonTheoMa(JTable table, String MAHD){
+    /**
+     * Tìm hóa đơn theo mã - trả về ArrayList (BUS thuần dữ liệu, GUI tự fill).
+     */
+    public ArrayList<HoaDonDTO> searchByMa(String maHD) {
+        ArrayList<HoaDonDTO> dshd = new ArrayList<>();
+        String keyword = maHD.toLowerCase();
+        for (HoaDonDTO hd : getlistHD()) {
+            if (hd.getMaHoaDon().toLowerCase().contains(keyword)) {
+                dshd.add(hd);
+            }
+        }
+        return dshd;
+    }
+
+    /**
+     * @deprecated Dùng searchByMa(String) thay thế. GUI tự fill JTable.
+     */
+    @Deprecated
+    public void TimHoaDonTheoMa(JTable table, String MAHD) {
         DefaultTableModel model = new DefaultTableModel(
             new String[] {
                 "Mã hóa đơn", "Mã khách hàng", "Mã nhân viên", "Mã khuyến mãi", "Ngày lập" ,"Mã ưu đãi", "Tổng tiền"
             }, 
             0 
-        ){
+        ) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false; 
             }
         };
         table.setModel(model);
-        ArrayList<HoaDonDTO> dshd1=getlistHD();
-        MAHD=MAHD.toLowerCase();
-        ArrayList<HoaDonDTO> dshd = new ArrayList<>();
-        for (HoaDonDTO hd:dshd1) {
-            if (hd.getMaHoaDon().toLowerCase().contains(MAHD) )
-                dshd.add(hd);
-            }
-        for (HoaDonDTO hd : dshd) {
-        Vector<Object> vec = new Vector<>();
-        vec.add(hd.getMaHoaDon());
-        vec.add((hd.getMaKhachHang()));
-        vec.add((hd.getMaNhanVien()));
-        vec.add((hd.getMaKhuyenMai()));
-        vec.add((hd.getNgayLapHoaDon()));
-        vec.add((hd.getMaUuDai()));
-        vec.add((hd.getTongTienHoaDon()));
-        model.addRow(vec);
+        for (HoaDonDTO hd : searchByMa(MAHD)) {
+            Vector<Object> vec = new Vector<>();
+            vec.add(hd.getMaHoaDon());
+            vec.add(hd.getMaKhachHang());
+            vec.add(hd.getMaNhanVien());
+            vec.add(hd.getMaKhuyenMai());
+            vec.add(hd.getNgayLapHoaDon());
+            vec.add(hd.getMaUuDai());
+            vec.add(hd.getTongTienHoaDon());
+            model.addRow(vec);
         }
     }
 
-    public void TimKiemHoaDonTheoNgay_TongTien(JDateChooser JDTuNgay,JDateChooser JDDenNgay,JTextField TextFieldGiaTu,JTextField TextFieldDenGia,JTable TblHoaDon){
+    /**
+     * @deprecated Dùng getListHD_Price_Date() trực tiếp từ GUI thay vì truyền
+     * JDateChooser, JTextField vào BUS. GUI nên lấy giá trị từ các component rồi
+     * truyền dữ liệu thuần vào BUS.
+     */
+    @Deprecated
+    public void TimKiemHoaDonTheoNgay_TongTien(com.toedter.calendar.JDateChooser JDTuNgay,
+            com.toedter.calendar.JDateChooser JDDenNgay,
+            javax.swing.JTextField TextFieldGiaTu,
+            javax.swing.JTextField TextFieldDenGia,
+            JTable TblHoaDon) {
         DefaultTableModel model = new DefaultTableModel(
             new String[] {
                 "Mã hóa đơn", "Mã khách hàng", "Mã nhân viên", "Mã khuyến mãi", "Mã ưu đãi", "Ngày lập", "Tổng tiền"
             }, 
             0 
-        ){
+        ) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
         TblHoaDon.setModel(model);
-        HoaDonBUS list = new HoaDonBUS();
         ArrayList<HoaDonDTO> listHD = null;
         try {
-            listHD = list.getListHD_Price_Date(JDTuNgay.getDate(), JDDenNgay.getDate(), TextFieldGiaTu.getText(), TextFieldDenGia.getText());
-        } catch (SQLException ex) {
+            // Dùng this thay vì new HoaDonBUS() — tránh khởi tạo instance thừa
+            listHD = getListHD_Price_Date(
+                JDTuNgay.getDate(), JDDenNgay.getDate(),
+                TextFieldGiaTu.getText(), TextFieldDenGia.getText());
+        } catch (java.sql.SQLException ex) {
             throw new RuntimeException(ex);
         }
         if (listHD != null) {
             for (int i = 0; i < listHD.size(); i++) {
-                Object[] newRowData = {listHD.get(i).getMaHoaDon(), listHD.get(i).getMaKhachHang(), listHD.get(i).getMaNhanVien(), listHD.get(i).getMaKhuyenMai(), listHD.get(i).getMaUuDai(), listHD.get(i).getNgayLapHoaDon(), listHD.get(i).getTongTienHoaDon()};
+                Object[] newRowData = {
+                    listHD.get(i).getMaHoaDon(), listHD.get(i).getMaKhachHang(),
+                    listHD.get(i).getMaNhanVien(), listHD.get(i).getMaKhuyenMai(),
+                    listHD.get(i).getMaUuDai(), listHD.get(i).getNgayLapHoaDon(),
+                    listHD.get(i).getTongTienHoaDon()
+                };
                 model.addRow(newRowData);
             }
         }
