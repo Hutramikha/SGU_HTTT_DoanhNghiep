@@ -24,9 +24,6 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                 initComponents();
                 setTitle("Cà Phê Xanh - Quản Lý Quán Cà Phê");
                 applyGreenTheme();
-                banhang = new n1_BanHangKeoTha(userLogin.getMaNhanVien());
-                list = banhang.listCart;
-                showContentPanel(banhang);
         }
 
         @SuppressWarnings("unchecked")
@@ -686,14 +683,123 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                                 LabelThongKe);
         }
 
+        private boolean canAccessPermissionManagement() {
+                return phanQuyen != null && "Quản Lý".equalsIgnoreCase(phanQuyen.getTenQuyen());
+        }
+
+        private void syncCartFromBanHang() {
+                if (banhang != null) {
+                        list = banhang.returnSoLuong(list);
+                }
+        }
+
+        private void openDefaultModuleByPermission() {
+                if (phanQuyen.getQuyenBanHang()) {
+                        if (banhang == null) {
+                                banhang = new n1_BanHangKeoTha(MaNhanVien);
+                        }
+                        banhang.listCart = list;
+                        setActiveMenuButton(LabelBanHang);
+                        showContentPanel(banhang);
+                        return;
+                }
+
+                if (phanQuyen.getQuyenKhachHang()) {
+                        if (khachHangGUI == null) {
+                                khachHangGUI = new n2_KhachHangGUI();
+                        }
+                        setActiveMenuButton(LabelKhachHang);
+                        showContentPanel(khachHangGUI);
+                        return;
+                }
+
+                if (phanQuyen.getQuyenNhapHang()) {
+                        if (nhapHangGUI == null) {
+                                nhapHangGUI = new n3_PNQuanLyNhapHang(userLogin.getMaNhanVien());
+                        }
+                        setActiveMenuButton(LabelNhapHang);
+                        showContentPanel(nhapHangGUI);
+                        return;
+                }
+
+                if (phanQuyen.getQuyenMon()) {
+                        if (monGUI == null) {
+                                monGUI = new n4_MonGUI();
+                        }
+                        setActiveMenuButton(LabelMon);
+                        showContentPanel(monGUI);
+                        return;
+                }
+
+                if (phanQuyen.getQuyenNguyenLieu()) {
+                        if (nguyenLieuGUI == null) {
+                                nguyenLieuGUI = new n5_NguyenLieuGUI();
+                        }
+                        setActiveMenuButton(LabelNguyenLieu);
+                        showContentPanel(nguyenLieuGUI);
+                        return;
+                }
+
+                if (phanQuyen.getQuyenLichLam()) {
+                        if (lichLamGUI == null) {
+                                lichLamGUI = new n6_LichLamGUI();
+                        }
+                        setActiveMenuButton(LabelLichLam);
+                        showContentPanel(lichLamGUI);
+                        return;
+                }
+
+                if (phanQuyen.getQuyenKhuyenMaiUuDai()) {
+                        if (khuyenMaiGUI == null) {
+                                khuyenMaiGUI = new n7_KhuyenMaiGUI();
+                        }
+                        setActiveMenuButton(LabelKhuyenMai);
+                        showContentPanel(khuyenMaiGUI);
+                        return;
+                }
+
+                if (phanQuyen.getQuyenNhaCungCap()) {
+                        if (nhaCungCapGUI == null) {
+                                nhaCungCapGUI = new n8_NhaCungCapGUI();
+                        }
+                        setActiveMenuButton(LabelNhaCungCap);
+                        showContentPanel(nhaCungCapGUI);
+                        return;
+                }
+
+                if (phanQuyen.getQuyenNhanVien()) {
+                        if (nhanVienGUI == null) {
+                                nhanVienGUI = new n9_NhanVienKeoTha(canAccessPermissionManagement());
+                        }
+                        setActiveMenuButton(LabelNhanVien);
+                        showContentPanel(nhanVienGUI);
+                        return;
+                }
+
+                if (phanQuyen.getQuyenThongKe()) {
+                        if (thongKeGUI == null) {
+                                thongKeGUI = new n10_ThongkePanel();
+                        }
+                        setActiveMenuButton(LabelThongKe);
+                        showContentPanel(thongKeGUI);
+                        return;
+                }
+
+                PanelNoiDung.removeAll();
+                PanelNoiDung.setLayout(new BorderLayout());
+                PanelNoiDung.add(new JLabel("Tài khoản chưa được cấp quyền truy cập chức năng nào.", JLabel.CENTER),
+                                BorderLayout.CENTER);
+                PanelNoiDung.revalidate();
+                PanelNoiDung.repaint();
+        }
+
         private void nhomNutChucNang() {
                 set_ngay();
                 set_NhanVien(userLogin.getMaNhanVien());
                 setQuyen();
                 set_NhanVien(userLogin.getMaNhanVien());
                 addClickHandlers();
-                // Initialize active button - BanHang is default page
-                setActiveMenuButton(LabelBanHang);
+                openDefaultModuleByPermission();
         }
 
         private void showContentPanel(javax.swing.JPanel panel) {
@@ -728,7 +834,7 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
                                 if (currentActiveLabel == LabelKhachHang)
                                         return; // Already on this page
-                                list = banhang.returnSoLuong(list);
+                                syncCartFromBanHang();
                                 if (phanQuyen.getQuyenKhachHang()) {
                                         setActiveMenuButton(LabelKhachHang);
                                         PanelNoiDung.removeAll();
@@ -748,7 +854,7 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
                                 if (currentActiveLabel == LabelNhapHang)
                                         return; // Already on this page
-                                list = banhang.returnSoLuong(list);
+                                syncCartFromBanHang();
                                 if (phanQuyen.getQuyenNhapHang()) {
                                         setActiveMenuButton(LabelNhapHang);
                                         if (nhapHangGUI == null) {
@@ -764,7 +870,7 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
                                 if (currentActiveLabel == LabelMon)
                                         return; // Already on this page
-                                list = banhang.returnSoLuong(list);
+                                syncCartFromBanHang();
                                 if (phanQuyen.getQuyenMon()) {
                                         setActiveMenuButton(LabelMon);
                                         PanelNoiDung.removeAll();
@@ -784,7 +890,7 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
                                 if (currentActiveLabel == LabelNguyenLieu)
                                         return; // Already on this page
-                                list = banhang.returnSoLuong(list);
+                                syncCartFromBanHang();
                                 if (phanQuyen.getQuyenNguyenLieu()) {
                                         setActiveMenuButton(LabelNguyenLieu);
                                         PanelNoiDung.removeAll();
@@ -804,7 +910,7 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
                                 if (currentActiveLabel == LabelLichLam)
                                         return; // Already on this page
-                                list = banhang.returnSoLuong(list);
+                                syncCartFromBanHang();
                                 if (phanQuyen.getQuyenLichLam()) {
                                         setActiveMenuButton(LabelLichLam);
                                         PanelNoiDung.removeAll();
@@ -824,7 +930,7 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
                                 if (currentActiveLabel == LabelKhuyenMai)
                                         return; // Already on this page
-                                list = banhang.returnSoLuong(list);
+                                syncCartFromBanHang();
                                 if (phanQuyen.getQuyenKhuyenMaiUuDai()) {
                                         setActiveMenuButton(LabelKhuyenMai);
                                         PanelNoiDung.removeAll();
@@ -844,7 +950,7 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
                                 if (currentActiveLabel == LabelNhaCungCap)
                                         return; // Already on this page
-                                list = banhang.returnSoLuong(list);
+                                syncCartFromBanHang();
                                 if (phanQuyen.getQuyenNhaCungCap()) {
                                         setActiveMenuButton(LabelNhaCungCap);
                                         PanelNoiDung.removeAll();
@@ -864,11 +970,11 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
                                 if (currentActiveLabel == LabelNhanVien)
                                         return; // Already on this page
-                                list = banhang.returnSoLuong(list);
+                                syncCartFromBanHang();
                                 if (phanQuyen.getQuyenNhanVien()) {
                                         setActiveMenuButton(LabelNhanVien);
                                         if (nhanVienGUI == null) {
-                                                nhanVienGUI = new n9_NhanVienKeoTha();
+                                                nhanVienGUI = new n9_NhanVienKeoTha(canAccessPermissionManagement());
                                         }
                                         showContentPanel(nhanVienGUI);
                                 }
@@ -880,7 +986,7 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
                                 if (currentActiveLabel == LabelThongKe)
                                         return; // Already on this page
-                                list = banhang.returnSoLuong(list);
+                                syncCartFromBanHang();
                                 if (phanQuyen.getQuyenThongKe()) {
                                         setActiveMenuButton(LabelThongKe);
                                         if (thongKeGUI == null) {
@@ -895,7 +1001,7 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                                 new java.awt.event.MouseAdapter() {
                                         @Override
                                         public void mouseClicked(java.awt.event.MouseEvent evt) {
-                                                list = banhang.returnSoLuong(list);
+                                                syncCartFromBanHang();
 
                                                 n0_LoginGUI login = new n0_LoginGUI();
                                                 login.nhomNutChucNang(login);
@@ -911,7 +1017,7 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                                                 "Xác nhận thoát", JOptionPane.YES_NO_OPTION);
 
                                 if (confirm == JOptionPane.YES_OPTION) {
-                                        list = banhang.returnSoLuong(list);
+                                        syncCartFromBanHang();
                                         System.exit(0);
                                 }
                         }

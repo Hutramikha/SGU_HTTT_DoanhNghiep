@@ -38,7 +38,14 @@ import Util.XuLyFileExcel;
  */
 public class n9_NhanVienKeoTha extends javax.swing.JPanel {
 
+    private final boolean canAccessPermissionManagement;
+
     public n9_NhanVienKeoTha() {
+        this(false);
+    }
+
+    public n9_NhanVienKeoTha(boolean canAccessPermissionManagement) {
+        this.canAccessPermissionManagement = canAccessPermissionManagement;
         initComponents();
         loadDataCmbQuyen();
         loadDataTblNhanVien();
@@ -770,16 +777,34 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
                 BtnQLNhanVien.setBackground(Util.UIHelper.LIGHT_GREEN);
             }
         });
+
+        if (!canAccessPermissionManagement) {
+            BtnQLPhanQuyen.setBackground(new Color(230, 230, 230));
+            LbPhanQuyen.setForeground(new Color(130, 130, 130));
+        }
+
         BtnQLPhanQuyen.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
+                if (!canAccessPermissionManagement) {
+                    return;
+                }
                 BtnQLPhanQuyen.setBackground(Util.UIHelper.ACCENT_GREEN);
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
+                if (!canAccessPermissionManagement) {
+                    return;
+                }
                 BtnQLPhanQuyen.setBackground(Util.UIHelper.LIGHT_GREEN);
             }
 
             public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (!canAccessPermissionManagement) {
+                    JOptionPane.showMessageDialog(null,
+                            "Chỉ tài khoản Quản Lý mới được truy cập màn Phân quyền.",
+                            "Không đủ quyền", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
                 PanelTong.removeAll();
                 n9_PhanQuyenGUI lich = new n9_PhanQuyenGUI();
                 PanelTong.setLayout(new BorderLayout());

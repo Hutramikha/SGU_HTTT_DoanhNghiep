@@ -39,7 +39,10 @@ public class n0_TrangChuDAO {
 
     public PhanQuyenDTO getPhanQuyen(String maNhanVien) {
         PhanQuyenDTO dto = null;
-        String sql = "select * from PhanQuyen where MaPhanQuyen = (select MaPhanQuyen from TaiKhoan where MaNhanVien = ?)";
+        String sql = "SELECT pq.* "
+            + "FROM TaiKhoan tk "
+            + "JOIN PhanQuyen pq ON pq.MaPhanQuyen = tk.MaPhanQuyen "
+            + "WHERE tk.MaNhanVien = ? AND tk.TrangThaiTaiKhoan = 1 AND pq.TrangThaiPhanQuyen = 1";
         try (Connection c = JDBCUtil.getConnection();
                 PreparedStatement st = c.prepareStatement(sql)) {
             st.setString(1, maNhanVien);

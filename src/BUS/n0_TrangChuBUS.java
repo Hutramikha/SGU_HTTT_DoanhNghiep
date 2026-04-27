@@ -39,6 +39,10 @@ public class n0_TrangChuBUS {
             JLabel LabelNhanVien, JLabel LabelThongKe) {
         n0_TrangChuDAO dao = new n0_TrangChuDAO();
         PhanQuyenDTO dto = dao.getPhanQuyen(maNhanVien);
+        if (dto == null) {
+            dto = new PhanQuyenDTO("", "", false, false, false, false, false, false, false, false, false, false,
+                    false);
+        }
 
         // Kiểm tra quyền và thay đổi màu chữ
         applyPermissionStyle(LabelBanHang, dto.getQuyenBanHang());

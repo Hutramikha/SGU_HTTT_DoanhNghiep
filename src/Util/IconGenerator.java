@@ -5,8 +5,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.ConvolveOp;
-import java.awt.image.Kernel;
 import java.io.InputStream;
 import java.awt.RenderingHints;
 
@@ -338,15 +336,6 @@ public class IconGenerator {
             int scaledHeight = Math.max(1, Math.round(croppedImage.getHeight() * scale));
             BufferedImage scaledLogo = scaleImage(croppedImage, scaledWidth, scaledHeight);
 
-            if (!sourceHasAlpha) {
-                float shrinkX = croppedImage.getWidth() / (float) scaledWidth;
-                float shrinkY = croppedImage.getHeight() / (float) scaledHeight;
-                float shrinkFactor = Math.max(shrinkX, shrinkY);
-                if (shrinkFactor >= 6f) {
-                    scaledLogo = applySubtleSmoothing(scaledLogo);
-                }
-            }
-
             if (sourceHasAlpha && preparedImage == originalImage) {
                 softenWhiteBackground(scaledLogo);
             }
@@ -638,48 +627,60 @@ public class IconGenerator {
             return source;
         }
 
+        if (source.getWidth() == targetWidth && source.getHeight() == targetHeight) {
+            return source;
+        }
+
+        // Two-pass scaling helps keep edges smooth when shrinking very large logos.
+        int intermediateWidth = Math.max(targetWidth, Math.min(source.getWidth(), targetWidth * 2));
+        int intermediateHeight = Math.max(targetHeight, Math.min(source.getHeight(), targetHeight * 2));
+
+        BufferedImage firstPass = source;
+        if (source.getWidth() != intermediateWidth || source.getHeight() != intermediateHeight) {
+            firstPass = progressiveScale(source, intermediateWidth, intermediateHeight);
+        }
+
+        return progressiveScale(firstPass, targetWidth, targetHeight);
+    }
+
+    private static BufferedImage progressiveScale(BufferedImage source, int targetWidth, int targetHeight) {
+        if (source.getWidth() == targetWidth && source.getHeight() == targetHeight) {
+            return source;
+        }
+
         BufferedImage current = source;
         int currentW = source.getWidth();
         int currentH = source.getHeight();
 
         // Progressive downscaling keeps edges smoother than a single massive resize.
-        while (currentW / 2 >= targetWidth && currentH / 2 >= targetHeight) {
-            currentW = Math.max(targetWidth, currentW / 2);
-            currentH = Math.max(targetHeight, currentH / 2);
+        while (currentW != targetWidth || currentH != targetHeight) {
+            int nextW = currentW;
+            int nextH = currentH;
+
+            if (nextW > targetWidth) {
+                nextW = Math.max(targetWidth, nextW / 2);
+            } else if (nextW < targetWidth) {
+                nextW = targetWidth;
+            }
+
+            if (nextH > targetHeight) {
+                nextH = Math.max(targetHeight, nextH / 2);
+            } else if (nextH < targetHeight) {
+                nextH = targetHeight;
+            }
+
+            currentW = nextW;
+            currentH = nextH;
             BufferedImage step = new BufferedImage(currentW, currentH, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = step.createGraphics();
             applyHighQualityHints(g2d);
-            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
             g2d.drawImage(current, 0, 0, currentW, currentH, null);
             g2d.dispose();
             current = step;
         }
 
-        if (current.getWidth() == targetWidth && current.getHeight() == targetHeight) {
-            return current;
-        }
-
-        BufferedImage scaled = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = scaled.createGraphics();
-        applyHighQualityHints(g2d);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.drawImage(current, 0, 0, targetWidth, targetHeight, null);
-        g2d.dispose();
-        return scaled;
-    }
-
-    private static BufferedImage applySubtleSmoothing(BufferedImage image) {
-        float[] kernelData = {
-                1f / 20f, 2f / 20f, 1f / 20f,
-                2f / 20f, 8f / 20f, 2f / 20f,
-                1f / 20f, 2f / 20f, 1f / 20f
-        };
-
-        Kernel kernel = new Kernel(3, 3, kernelData);
-        ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
-        BufferedImage output = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        op.filter(image, output);
-        return output;
+        return current;
     }
 
     private static void applyHighQualityHints(Graphics2D g2d) {

@@ -1,6 +1,11 @@
 package Util;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
 import java.awt.event.ContainerEvent;
 import java.awt.event.MouseAdapter;
@@ -66,6 +71,8 @@ public class UIHelper {
     private static final Color LEGACY_TEXT_SUCCESS = new Color(0, 153, 0);
 
     private static volatile boolean projectThemeInstalled = false;
+    private static final String BUTTON_ELEVATED_KEY = "uihelper.button.elevated";
+    private static final String BUTTON_BASE_COLOR_KEY = "uihelper.button.base.color";
 
     public static final Color DARK_TEXT = new Color(30, 57, 34); // Chữ đậm
     public static final Color LIGHT_TEXT = new Color(92, 118, 96); // Chữ nhạt
@@ -88,7 +95,9 @@ public class UIHelper {
                 if (event instanceof WindowEvent) {
                     WindowEvent windowEvent = (WindowEvent) event;
                     if (windowEvent.getID() == WindowEvent.WINDOW_OPENED) {
-                        applyProjectTheme(windowEvent.getWindow());
+                        Window window = windowEvent.getWindow();
+                        centerWindowOnScreen(window);
+                        applyProjectTheme(window);
                     }
                 } else if (event instanceof ContainerEvent) {
                     ContainerEvent containerEvent = (ContainerEvent) event;
@@ -128,12 +137,35 @@ public class UIHelper {
     private static void applyProjectThemeRecursive(Component component) {
         remapThemeColors(component);
 
+        if (component instanceof JButton) {
+            applySoftRaisedButtonStyle((JButton) component);
+        }
+
         if (component instanceof Container) {
             Container container = (Container) component;
             for (Component child : container.getComponents()) {
                 applyProjectThemeRecursive(child);
             }
         }
+    }
+
+    private static void centerWindowOnScreen(Window window) {
+        if (window == null) {
+            return;
+        }
+
+        if (window instanceof Frame) {
+            Frame frame = (Frame) window;
+            if ((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
+                return;
+            }
+        }
+
+        if (window.getWidth() <= 0 || window.getHeight() <= 0) {
+            return;
+        }
+
+        window.setLocationRelativeTo(null);
     }
 
     private static void remapThemeColors(Component component) {
@@ -324,10 +356,14 @@ public class UIHelper {
         button.setBackground(PRIMARY_GREEN);
         button.setForeground(WHITE);
         button.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        button.setBorderPainted(false);
         button.setFocusPainted(false);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        addHoverEffect(button, ACCENT_GREEN, WHITE);
+        if (button instanceof JButton) {
+            applySoftRaisedButtonStyle((JButton) button);
+        } else {
+            button.setBorderPainted(false);
+            addHoverEffect(button, ACCENT_GREEN, WHITE);
+        }
     }
 
     /**
@@ -337,5 +373,139 @@ public class UIHelper {
         panel.setBackground(PRIMARY_GREEN);
         panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         addHoverEffectToPanel(panel, PRIMARY_GREEN, ACCENT_GREEN);
+    }
+
+    private static void applySoftRaisedButtonStyle(JButton button) {
+        if (button == null || !isApplicationButton(button)) {
+            return;
+        }
+
+        Color baseColor = normalizeButtonColor(button.getBackground());
+        Color textColor = isDarkColor(baseColor) ? WHITE : DARK_TEXT;
+
+        button.putClientProperty(BUTTON_BASE_COLOR_KEY, baseColor);
+        button.setBackground(baseColor);
+        button.setForeground(textColor);
+        button.setContentAreaFilled(true);
+        button.setOpaque(true);
+        button.setBorderPainted(true);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        button.setBorder(createSoftRaisedBorder(baseColor));
+
+        if (Boolean.TRUE.equals(button.getClientProperty(BUTTON_ELEVATED_KEY))) {
+            return;
+        }
+
+        button.putClientProperty(BUTTON_ELEVATED_KEY, Boolean.TRUE);
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (!button.isEnabled()) {
+                    return;
+                }
+                updateButtonTone(button, 0.10f);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (!button.isEnabled()) {
+                    return;
+                }
+                updateButtonTone(button, 0f);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (!button.isEnabled()) {
+                    return;
+                }
+                updateButtonTone(button, -0.06f);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (!button.isEnabled()) {
+                    return;
+                }
+                if (button.contains(e.getPoint())) {
+                    updateButtonTone(button, 0.10f);
+                } else {
+                    updateButtonTone(button, 0f);
+                }
+            }
+        });
+    }
+
+    private static void updateButtonTone(JButton button, float ratio) {
+        Object value = button.getClientProperty(BUTTON_BASE_COLOR_KEY);
+        Color base = value instanceof Color ? (Color) value : normalizeButtonColor(button.getBackground());
+        Color adjusted = ratio >= 0 ? lighten(base, ratio) : darken(base, -ratio);
+        button.setBackground(adjusted);
+        button.setBorder(createSoftRaisedBorder(adjusted));
+    }
+
+    private static boolean isApplicationButton(JButton button) {
+        if (button instanceof BasicArrowButton) {
+            return false;
+        }
+
+        String className = button.getClass().getName();
+        return !className.startsWith("javax.swing.plaf.");
+    }
+
+    private static Color normalizeButtonColor(Color color) {
+        if (color == null) {
+            return PRIMARY_GREEN;
+        }
+
+        if (matches(color, DISABLED_BG) || !color.equals(remapBackground(color))) {
+            return remapBackground(color);
+        }
+
+        return color;
+    }
+
+    private static Border createSoftRaisedBorder(Color base) {
+        Color highlightOuter = lighten(base, 0.42f);
+        Color highlightInner = lighten(base, 0.22f);
+        Color shadowInner = darken(base, 0.18f);
+        Color shadowOuter = darken(base, 0.34f);
+
+        Border bevel = new SoftBevelBorder(
+                SoftBevelBorder.RAISED,
+                highlightOuter,
+                highlightInner,
+                shadowOuter,
+                shadowInner);
+        Border padding = new EmptyBorder(7, 14, 7, 14);
+        return new CompoundBorder(bevel, padding);
+    }
+
+    private static Color lighten(Color color, float ratio) {
+        int r = color.getRed();
+        int g = color.getGreen();
+        int b = color.getBlue();
+
+        int nr = clamp(r + Math.round((255 - r) * ratio));
+        int ng = clamp(g + Math.round((255 - g) * ratio));
+        int nb = clamp(b + Math.round((255 - b) * ratio));
+        return new Color(nr, ng, nb, color.getAlpha());
+    }
+
+    private static Color darken(Color color, float ratio) {
+        int nr = clamp(Math.round(color.getRed() * (1f - ratio)));
+        int ng = clamp(Math.round(color.getGreen() * (1f - ratio)));
+        int nb = clamp(Math.round(color.getBlue() * (1f - ratio)));
+        return new Color(nr, ng, nb, color.getAlpha());
+    }
+
+    private static int clamp(int value) {
+        return Math.max(0, Math.min(255, value));
+    }
+
+    private static boolean isDarkColor(Color color) {
+        double luma = 0.2126 * color.getRed() + 0.7152 * color.getGreen() + 0.0722 * color.getBlue();
+        return luma < 150;
     }
 }
