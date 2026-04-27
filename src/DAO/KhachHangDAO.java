@@ -126,4 +126,89 @@ public class KhachHangDAO {
         }
         return maKH;
     }
+
+    public ArrayList<KhachHangDTO> getData_KhachHang() {
+        ArrayList<KhachHangDTO> list = new ArrayList<>();
+        String sql = "SELECT *\n"
+                + "  FROM KhachHang order by MaKhachHang desc";
+        try {
+            Connection c = JDBCUtil.getConnection();
+            PreparedStatement st = c.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                KhachHangDTO dto = new KhachHangDTO(rs.getString("MaKhachHang"),
+                        rs.getString("TenKhachHang"),
+                        rs.getDate("NgaySinhKhachHang"),
+                        rs.getString("GioiTinhKhachHang"),
+                        rs.getString("SoDienThoaiKhachHang"),
+                        rs.getInt("ChiTieuKhachHang"));
+                list.add(dto);
+            }
+            JDBCUtil.closeConnection(c);
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("Không lấy được dữ liệu tất các khách hàng (DAO)");
+        }
+        return list;
+    }
+
+    public ArrayList<KhachHangDTO> getData_KhachHang_theoTen(String ten) {
+        ArrayList<KhachHangDTO> list = new ArrayList<>();
+        String sql = "select *\n"
+                + "from KhachHang\n"
+                + "where TenKhachHang like ? order by MaKhachHang desc";
+        try {
+            Connection c = JDBCUtil.getConnection();
+            PreparedStatement st = c.prepareStatement(sql);
+            st.setString(1, "%" + ten + "%");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                KhachHangDTO dto = new KhachHangDTO(rs.getString("MaKhachHang"),
+                        rs.getString("TenKhachHang"),
+                        rs.getDate("NgaySinhKhachHang"),
+                        rs.getString("GioiTinhKhachHang"),
+                        rs.getString("SoDienThoaiKhachHang"),
+                        rs.getInt("ChiTieuKhachHang"));
+                list.add(dto);
+            }
+            JDBCUtil.closeConnection(c);
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("Không lấy được dữ liệu tất các khách hàng (DAO)");
+        }
+        return list;
+    }
+
+    public KhachHangDTO get_khachHang_theoMa(String ma) {
+        KhachHangDTO dto = new KhachHangDTO();
+        String sql = "select * from KhachHang where MaKhachHang = ?";
+        try (Connection connection = JDBCUtil.getConnection();
+                PreparedStatement pre = connection.prepareStatement(sql)) {
+            pre.setString(1, ma);
+            try (ResultSet rs = pre.executeQuery()) {
+                if (rs.next()) {
+                    dto = new KhachHangDTO(rs.getString(1), rs.getString(2), rs.getDate(3),
+                            rs.getString(4), rs.getString(5), rs.getInt(6));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dto;
+    }
+
+    public void suaChiTieuKhachHang(int tien, String Ma) {
+        String sql = "UPDATE KhachHang "
+                + "SET ChiTieuKhachHang = ChiTieuKhachHang + ? "
+                + "WHERE MaKhachHang = ?";
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql)) {
+            st.setInt(1, tien);
+            st.setString(2, Ma);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Lỗi khi cập nhật chi tiêu khách hàng:");
+            e.printStackTrace();
+        }
+    }
 }

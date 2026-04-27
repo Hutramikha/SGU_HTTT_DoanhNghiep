@@ -34,6 +34,8 @@ public class StatisticsLoadWorker2_fixed extends SwingWorker<Void, Void> {
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(panel, "Error: " + ex.getMessage());
+        } finally {
+            panel.setStatisticsLoading(false);
         }
     }
 }

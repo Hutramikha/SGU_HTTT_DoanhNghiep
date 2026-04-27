@@ -7,6 +7,10 @@ import DTO.NguyenLieuDTO;
 import Util.JDBCUtil;
 
 public class n5_NguyenLieuDAO {
+    public static n5_NguyenLieuDAO getInstance() {
+        return new n5_NguyenLieuDAO();
+    }
+
       public ArrayList<NguyenLieuDTO> getAll() {
             ArrayList<NguyenLieuDTO> listNguyenLieu = new ArrayList<>();
             try {
@@ -138,4 +142,77 @@ public class n5_NguyenLieuDAO {
             }
             return maNguyenLieu; // Trả về mã món mới
       }
+
+    public void update_reload_NguyenLieu(ArrayList<Object[]> cart) {
+        String sql = "UPDATE b\n"
+                + "SET b.KhoiLuongNguyenLieu = round(b.KhoiLuongNguyenLieu + (a.KhoiLuong * ?), 2)\n"
+                + "FROM NguyenLieu b\n"
+                + "JOIN CongThuc a ON a.MaNguyenLieu = b.MaNguyenLieu\n"
+                + "WHERE a.MaMon = ?;";
+
+        try {
+            Connection c = JDBCUtil.getConnection();
+            PreparedStatement st = c.prepareStatement(sql);
+
+            for (Object[] item : cart) {
+                st.setInt(1, (int) item[3]); // Giả định sl ở vị trí thứ 4 trong mảng `item`
+                st.setString(2, (String) item[0]); // Giả định id ở vị trí đầu tiên trong mảng `item`
+                st.addBatch(); // Thêm câu lệnh vào batch
+            }
+
+            int[] results = st.executeBatch(); // Thực thi tất cả lệnh trong batch cùng một lúc
+            System.out.println("Số lượng bản ghi được cập nhật: " + results.length);
+
+            JDBCUtil.closeConnection(c);
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("Reload nguyên liệu DAO thất bại!");
+        }
+    }
+
+    public void update_Tru_NguyenLieu(Object[] item) {
+        String sql = "UPDATE b\n"
+                + "SET b.KhoiLuongNguyenLieu = round( b.KhoiLuongNguyenLieu - (a.KhoiLuong * ?),2)\n"
+                + "FROM NguyenLieu b\n"
+                + "JOIN CongThuc a ON a.MaNguyenLieu = b.MaNguyenLieu\n"
+                + "WHERE a.MaMon = ?;";
+
+        try {
+            Connection c = JDBCUtil.getConnection();
+            PreparedStatement st = c.prepareStatement(sql);
+
+            st.setInt(1, (int) item[3]); // Giả định sl ở vị trí thứ 4 trong mảng `item`
+            st.setString(2, (String) item[0]); // Giả định id ở vị trí đầu tiên trong mảng `item`
+
+            st.executeUpdate();
+
+            JDBCUtil.closeConnection(c);
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("Trừ nguyên liệu DAO thất bại!");
+        }
+    }
+
+    public void update_Cong_NguyenLieu(Object[] item) {
+        String sql = "UPDATE b\n"
+                + "SET b.KhoiLuongNguyenLieu = round(b.KhoiLuongNguyenLieu + (a.KhoiLuong * ?),2)\n"
+                + "FROM NguyenLieu b\n"
+                + "JOIN CongThuc a ON a.MaNguyenLieu = b.MaNguyenLieu\n"
+                + "WHERE a.MaMon = ?;";
+
+        try {
+            Connection c = JDBCUtil.getConnection();
+            PreparedStatement st = c.prepareStatement(sql);
+
+            st.setInt(1, (int) item[3]); // Giả định sl ở vị trí thứ 4 trong mảng `item`
+            st.setString(2, (String) item[0]); // Giả định id ở vị trí đầu tiên trong mảng `item`
+
+            st.executeUpdate();
+
+            JDBCUtil.closeConnection(c);
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("Cộng nguyên liệu DAO thất bại!");
+        }
+    }
 }

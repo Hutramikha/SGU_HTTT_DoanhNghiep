@@ -182,7 +182,7 @@ public class n10_ThongKeDAO {
     }
 
     public ArrayList<Integer> getArrayphieunhapnam() {
-        String sql = "SELECT MONTH(NgayLapPhieuNhap) AS bucket, COUNT(MaPhieuNhap) AS value "
+        String sql = "SELECT MONTH(NgayLapPhieuNhap) AS bucket, COALESCE(SUM(TongTienPhieuNhap), 0) AS value "
                 + "FROM PhieuNhap "
                 + "WHERE YEAR(NgayLapPhieuNhap) = YEAR(GETDATE()) "
                 + "GROUP BY MONTH(NgayLapPhieuNhap)";
@@ -190,7 +190,7 @@ public class n10_ThongKeDAO {
     }
 
     public ArrayList<Integer> getArrayphieunhapnamtheoquy() {
-        String sql = "SELECT DATEPART(QUARTER, NgayLapPhieuNhap) AS bucket, COUNT(MaPhieuNhap) AS value "
+        String sql = "SELECT DATEPART(QUARTER, NgayLapPhieuNhap) AS bucket, COALESCE(SUM(TongTienPhieuNhap), 0) AS value "
                 + "FROM PhieuNhap "
                 + "WHERE YEAR(NgayLapPhieuNhap) = YEAR(GETDATE()) "
                 + "GROUP BY DATEPART(QUARTER, NgayLapPhieuNhap)";

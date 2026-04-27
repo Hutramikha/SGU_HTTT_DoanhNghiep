@@ -8,6 +8,13 @@ import java.sql.*;
 public class n0_LoginDAO {
 
     public TaiKhoanDTO checkLogin(String username, String password) {
+        // Built-in local admin account for demo/project use without DB dependency.
+        if ("admin".equals(username) && "admin".equals(password)) {
+            Date now = new Date(System.currentTimeMillis());
+            return new TaiKhoanDTO("LOCAL_ADMIN_TK", "admin", "admin", "LOCAL_ADMIN_ROLE", "LOCAL_ADMIN", now,
+                    null, 1);
+        }
+
         TaiKhoanDTO account = null;
         System.out.println("[DEBUG] 🔍 Login: Attempting to authenticate user: " + username);
         long startTime = System.currentTimeMillis();
@@ -20,7 +27,7 @@ public class n0_LoginDAO {
 
             if (con == null) {
                 System.out.println("[DEBUG] ❌ Connection is NULL!");
-                return new TaiKhoanDTO();
+                return null;
             }
 
             System.out.println("[DEBUG] ⏳ Preparing statement...");
@@ -58,7 +65,7 @@ public class n0_LoginDAO {
         } catch (Exception e) {
             System.out.println("[DEBUG] ❌ Login error: " + e.getMessage());
             e.printStackTrace();
-            return new TaiKhoanDTO();
+            return null;
         }
         return account;
     }

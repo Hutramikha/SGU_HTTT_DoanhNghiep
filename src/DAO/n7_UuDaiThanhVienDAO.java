@@ -316,6 +316,51 @@ public class n7_UuDaiThanhVienDAO {
         }
     }
 
+    public UuDaiThanhVienDTO get_UuDai_theoChiTieu(int chiTieu, Date date) {
+        UuDaiThanhVienDTO dto = new UuDaiThanhVienDTO();
+        String sql = "SELECT TOP 1 *\n"
+                + "FROM UuDaiThanhVien\n"
+                + "WHERE NgayKetThucUuDai >= ?\n"
+                + "	AND NgayBatDauUuDai <= ?\n"
+                + "    AND DieuKienUuDai <= ?\n"
+                + "ORDER BY DieuKienUuDai DESC;";
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql)) {
+            st.setDate(1, date);
+            st.setDate(2, date);
+            st.setInt(3, chiTieu);
+
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    dto = new UuDaiThanhVienDTO(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4),
+                            rs.getFloat(5), rs.getInt(6));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Không lấy được dữ liệu cần tìm của ưu đãi (DAO)");
+            System.out.println(e);
+        }
+        return dto;
+    }
+
+    public UuDaiThanhVienDTO get_UuDai_theoMa(String ma) {
+        UuDaiThanhVienDTO dto = new UuDaiThanhVienDTO();
+        String sql = "select * from [UuDaiThanhVien] where MaUuDai = ?";
+        try (Connection connection = JDBCUtil.getConnection();
+                PreparedStatement pre = connection.prepareStatement(sql)) {
+            pre.setString(1, ma);
+            try (ResultSet rs = pre.executeQuery()) {
+                if (rs.next()) {
+                    dto = new UuDaiThanhVienDTO(rs.getString(1), rs.getString(2), rs.getDate(3),
+                            rs.getDate(4), rs.getFloat(5), rs.getInt(6));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dto;
+    }
+
     public static void main(String[] args) {
         n7_UuDaiThanhVienDAO.getInstance().getListUuDai();
         ArrayList<UuDaiThanhVienDTO> list = n7_UuDaiThanhVienDAO.getInstance().getListUuDai();

@@ -80,11 +80,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         public n10_ThongkePanel() {
                 initComponents();
                 applyUnifiedGreenTheme();
-
-                // ✅ Load statistics on background thread to prevent UI freeze
-                System.out.println("🚀 Starting statistics loader...");
-                StatisticsLoadWorker2_fixed worker = new StatisticsLoadWorker2_fixed(this);
-                worker.execute(); // Run on background thread
+                refreshStatisticsData(false);
         }
 
         private void applyUnifiedGreenTheme() {
@@ -124,7 +120,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                                 jTextField11, jTextField12, jTextField13, jTextField14, jTextField15,
                                 jTextField16, jTextField17, jTextField18, jTextField19, jTextField20);
 
-                styleComboBoxes(Combobox_TK, CbboxDthu, CbboxChiphi, CbboxLoinhuan, CbboxLuong, CbboxKhohang);
+                styleComboBoxes(Combobox_TK, CbboxDefault, CbboxDthu, CbboxChiphi, CbboxLoinhuan, CbboxLuong,
+                                CbboxKhohang);
                 styleScrollPanes(DefaultTK, TK_doanhthu, TK_chiphi, TK_loinhuan, TK_luong, TK_khohang);
 
                 if (ThongkePanel != null) {
@@ -140,7 +137,82 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                         UIHelper.addHoverEffect(BtnExport, UIHelper.ACCENT_GREEN, UIHelper.WHITE);
                 }
 
+                if (BtnRefresh != null) {
+                        BtnRefresh.setBackground(UIHelper.ACCENT_GREEN);
+                        BtnRefresh.setForeground(UIHelper.WHITE);
+                        BtnRefresh.setBorderPainted(false);
+                        BtnRefresh.setFocusPainted(false);
+                        UIHelper.addHoverEffect(BtnRefresh, UIHelper.PRIMARY_GREEN, UIHelper.WHITE);
+                }
+
                 UIHelper.applyProjectTheme(this);
+        }
+
+        private void resetStatisticsCache() {
+                date = new Date(System.currentTimeMillis());
+                list = new ArrayList<>();
+
+                cachedTongTienHoaDonNgay = Integer.MIN_VALUE;
+                cachedSoLuongHoaDon = Integer.MIN_VALUE;
+                cachedSoLuongKhachHang = Integer.MIN_VALUE;
+                cachedSoLuongMon = Integer.MIN_VALUE;
+                cachedTongTienHoaDonThang = Integer.MIN_VALUE;
+                cachedTongDoanhThuNam = Integer.MIN_VALUE;
+                cachedTongTienPhieuNhapThang = Integer.MIN_VALUE;
+                cachedTongTienLuongThang = Integer.MIN_VALUE;
+                cachedTongLuongNhanVienNam = Integer.MIN_VALUE;
+                cachedTongPhieuNhapNam = Integer.MIN_VALUE;
+                cachedSoLuongNhanVien = Integer.MIN_VALUE;
+                cachedSoLuongPhieuNhap = Integer.MIN_VALUE;
+                cachedSoLuongNguyenLieu = Integer.MIN_VALUE;
+                cachedSoLuongNcc = Integer.MIN_VALUE;
+
+                cachedArrayDoanhthuTuan = null;
+                cachedArrayDoanhthuNam = null;
+                cachedArrayDoanhthuQuy = null;
+                cachedArrayPhieuNhapNam = null;
+                cachedArrayPhieuNhapNamTheoQuy = null;
+                cachedArrayTongLuongTheoThang = null;
+                cachedArrayTongLuongTheoQuy = null;
+                cachedKhoiLuongNl = null;
+                cachedNguyenLieuList = null;
+                cachedLuongNhanVienByMa.clear();
+        }
+
+        private void clearChartContainers() {
+                content_Panel.removeAll();
+                Main_DtPn1.removeAll();
+                Main_DtPn2.removeAll();
+                ContentCphi1.removeAll();
+                ContentCphi2.removeAll();
+                contentTKLnhuan1.removeAll();
+                contentTKLnhuan2.removeAll();
+                ContentLuong1.removeAll();
+                ContentKhohang1.removeAll();
+        }
+
+        private void updateDefaultModeVisibility() {
+                boolean isDefaultTab = "Mặc định".equals(Combobox_TK.getSelectedItem());
+                CbboxDefault.setVisible(isDefaultTab);
+                HeaderTk.revalidate();
+                HeaderTk.repaint();
+        }
+
+        public void setStatisticsLoading(boolean isLoading) {
+                BtnRefresh.setEnabled(!isLoading);
+                BtnExport.setEnabled(!isLoading);
+                Combobox_TK.setEnabled(!isLoading);
+                CbboxDefault.setEnabled(!isLoading);
+        }
+
+        private void refreshStatisticsData(boolean forceReload) {
+                if (forceReload) {
+                        resetStatisticsCache();
+                }
+                setStatisticsLoading(true);
+                System.out.println("Starting statistics loader...");
+                StatisticsLoadWorker2_fixed worker = new StatisticsLoadWorker2_fixed(this);
+                worker.execute();
         }
 
         private void applyBackground(Color background, JPanel... panels) {
@@ -408,6 +480,9 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 if (list == null || list.isEmpty()) {
                         list = getNhanVienListCached();
                 }
+
+                clearChartContainers();
+
                 ////////////////// dữ liệu
                 String Dthungay = (toCurrency(getTongTienHoaDonNgayCached()));
                 txtDthungay.setText(Dthungay);
@@ -458,7 +533,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 Dthuthanghientai.setEditable(false);
 
                 //////////////////////////////// biểu đồ đường mặc định
-                List<Integer> xData = Arrays.asList(2, 3, 4, 5, 6, 7, 8);
+                List<Integer> xData = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
                 // List<Integer> yData = Arrays.asList(1.0, 4.0, 3.0, 5.0, 4.0, 3.0, 5.0, 4.0,
                 // 3.0, 5.0, 5.0, 4.0, 3.0, 1.0, 4.0, 3.0, 5.0, 4.0);
                 ArrayList<Integer> yData = getArrayDoanhthuTuanCached();
@@ -470,6 +545,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 XChartPanel<XYChart> chartPanel = new XChartPanel<>(chartDefault);
                 content_Panel.setLayout(new BorderLayout());
                 content_Panel.add(chartPanel, BorderLayout.NORTH);
+                content_Panel.revalidate();
+                content_Panel.repaint();
 
                 //////////////////////////////// biểu đồ đường doanh thu
                 /// ////////////////theo tháng
@@ -489,6 +566,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 Main_DtPn1.setLayout(new BorderLayout());
                 Main_DtPn1.add(ChartPanelDthu, BorderLayout.NORTH);
+                Main_DtPn1.revalidate();
+                Main_DtPn1.repaint();
                 // /////////////////theo quý
                 List<Integer> xdataDthuQuy = Arrays.asList(1, 2, 3, 4);
                 List<Integer> ydataDthuQUy = getArrayDoanhthuQuyCached();
@@ -500,6 +579,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 Main_DtPn2.setLayout(new BorderLayout());
                 Main_DtPn2.add(ChartPanelDthuquy, BorderLayout.NORTH);
+                Main_DtPn2.revalidate();
+                Main_DtPn2.repaint();
 
                 ////////////////////////////////////// biểu đồ cột chi phí ////////////////tháng
                 List<String> xdataCphi = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
@@ -513,6 +594,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 XChartPanel<CategoryChart> ChartChiphipanel = new XChartPanel<CategoryChart>(ChartChiphi);
                 ContentCphi1.setLayout(new BorderLayout());
                 ContentCphi1.add(ChartChiphipanel, BorderLayout.NORTH);
+                ContentCphi1.revalidate();
+                ContentCphi1.repaint();
                 //////////////// quý
                 List<String> xdataCphiquy = Arrays.asList("quý 1", "quý 2", "quý 3", "quý 4");
                 List<List<Integer>> yDataListQuy = List.of(getArrayTongLuongTheoQuyCached(),
@@ -525,6 +608,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 XChartPanel<CategoryChart> ChartChiphipanelQuy = new XChartPanel<CategoryChart>(ChartChiphiQuy);
                 ContentCphi2.setLayout(new BorderLayout());
                 ContentCphi2.add(ChartChiphipanelQuy, BorderLayout.NORTH);
+                ContentCphi2.revalidate();
+                ContentCphi2.repaint();
                 ////////////////////////////////////// biểu đồ cột lợi nhuận
                 List<String> xdataLoinhuan = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
                                 "12");
@@ -543,6 +628,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 XChartPanel<CategoryChart> ChartLoinhuanpanel = new XChartPanel<CategoryChart>(ChartLoinhuan);
                 contentTKLnhuan1.setLayout(new BorderLayout());
                 contentTKLnhuan1.add(ChartLoinhuanpanel, BorderLayout.NORTH);
+                contentTKLnhuan1.revalidate();
+                contentTKLnhuan1.repaint();
                 ///////////////////////// quý
                 List<String> xdataLoinhuanquy = Arrays.asList("1", "2", "3", "4");
                 ArrayList<Integer> Dthuquy = getArrayDoanhthuQuyCached();
@@ -562,6 +649,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 XChartPanel<CategoryChart> ChartLoinhuanpanelquy = new XChartPanel<CategoryChart>(ChartLoinhuanQuy);
                 contentTKLnhuan2.setLayout(new BorderLayout());
                 contentTKLnhuan2.add(ChartLoinhuanpanelquy, BorderLayout.NORTH);
+                contentTKLnhuan2.revalidate();
+                contentTKLnhuan2.repaint();
                 ////////////////////////////////////// biểu đồ cột chi phí
                 List<String> xdataCLuong = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
                 List<List<Integer>> yDataList3 = new ArrayList<>();
@@ -592,6 +681,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 XChartPanel<CategoryChart> ChartLuongPn = new XChartPanel<CategoryChart>(ChartLuong);
                 ContentLuong1.setLayout(new BorderLayout());
                 ContentLuong1.add(ChartLuongPn, BorderLayout.NORTH);
+                ContentLuong1.revalidate();
+                ContentLuong1.repaint();
                 ////// biểu đồ bánh
 
                 // Thêm dữ liệu vào biểu đồ Pie
@@ -604,12 +695,12 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 int soLuongNguyenLieu = a.length;
                 Double sumkl = 0.0;
                 for (int i = 0; i < soLuongNguyenLieu; i++) {
-                        sumkl = sumkl + Integer.parseInt(a[i][1]);
+                        sumkl = sumkl + Double.parseDouble(a[i][2]);
                 }
                 for (int i = 0; i < soLuongNguyenLieu; i++) {
-                        datanl.add(a[i][0]);
+                        datanl.add(a[i][1]);
                         if (sumkl > 0) {
-                                khoiluongnl.add(Double.parseDouble(a[i][1]) / sumkl * 100);
+                                khoiluongnl.add(Double.parseDouble(a[i][2]) / sumkl * 100);
                         } else {
                                 khoiluongnl.add(0.0);
                         }
@@ -620,6 +711,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 XChartPanel<PieChart> ChartpnKho = new XChartPanel<>(piechart);
                 ContentKhohang1.setLayout(new BorderLayout());
                 ContentKhohang1.add(ChartpnKho, BorderLayout.NORTH);
+                ContentKhohang1.revalidate();
+                ContentKhohang1.repaint();
         }
 
         public void addControl() {
@@ -643,6 +736,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 String[][] stringArrayloinhuan = new String[1][14];
                 String[][] stringArrayloinhuanquy = new String[1][6];
                 String[][] stringArrayDefault = new String[4][14];
+                String[][] stringArrayDefaultquy = new String[4][6];
 
                 Double sumDT = 0.0;
                 Double sumpn = 0.0;
@@ -661,7 +755,11 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 stringArrayChiphiquy[0][0] = "Phí nhập hàng";
                 stringArrayChiphiquy[1][0] = "Lương nhân viên";
                 stringArrayloinhuan[0][0] = "lợi nhuận";
-                stringArrayloinhuanquy[0][0] = "Phí nhập hàng";
+                stringArrayloinhuanquy[0][0] = "lợi nhuận";
+                stringArrayDefaultquy[0][0] = "Doanh thu";
+                stringArrayDefaultquy[1][0] = "Phí nhập hàng";
+                stringArrayDefaultquy[2][0] = "Lương nhân viên";
+                stringArrayDefaultquy[3][0] = "lợi nhuận";
                 // EXPORT
                 // Gán dữ liệu vào các cột tháng (1 đến 12)
                 // mạc định
@@ -754,7 +852,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                         });
                 }
                 // mặc định
-                for (int j = 0; j < 12; j++) {
+                for (int j = 0; j <= 12; j++) {
                         // Gán doanh thu cho từng tháng
                         stringArrayDefault[0][j] = stringArrayDthu[0][j];
                         stringArrayDefault[1][j] = stringArrayChiphi[0][j];
@@ -766,6 +864,17 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                         stringArrayDefault[3][13] = String.valueOf(Sumloinhuan);
                 }
 
+                for (int j = 1; j <= 4; j++) {
+                        stringArrayDefaultquy[0][j] = stringArrayDthuquy[0][j];
+                        stringArrayDefaultquy[1][j] = stringArrayChiphiquy[0][j];
+                        stringArrayDefaultquy[2][j] = stringArrayChiphiquy[1][j];
+                        stringArrayDefaultquy[3][j] = stringArrayloinhuanquy[0][j];
+                }
+                stringArrayDefaultquy[0][5] = String.valueOf(sumDTquy);
+                stringArrayDefaultquy[1][5] = String.valueOf(sumpnquy);
+                stringArrayDefaultquy[2][5] = String.valueOf(sumluongquy);
+                stringArrayDefaultquy[3][5] = String.valueOf(Sumloinhuanquy);
+
                 // Tạo DefaultTableModel với dữ liệu từ stringArray và columnNames
                 DefaultTableModel tableModeldt = new DefaultTableModel(stringArrayDthu, columnNames);
                 DefaultTableModel tableModeldtquy = new DefaultTableModel(stringArrayDthuquy, columnNamesquy);
@@ -775,6 +884,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 DefaultTableModel tableModelloinhuanquy = new DefaultTableModel(stringArrayloinhuanquy, columnNamesquy);
                 DefaultTableModel tableModelluongnv = new DefaultTableModel(stringArrayluongnv, columnNames);
                 DefaultTableModel tableModelmDefaul = new DefaultTableModel(stringArrayDefault, columnNames);
+                DefaultTableModel tableModelmDefaulQuy = new DefaultTableModel(stringArrayDefaultquy, columnNamesquy);
 
                 // Gán model cho JTable
                 tableDT.setModel(tableModeldt);
@@ -786,6 +896,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 tableLuong.setModel(tableModelluongnv);
                 tableKho.setModel(tableModeldsnl);
                 tableDf.setModel(tableModelmDefaul);
+                tableDfquy.setModel(tableModelmDefaulQuy);
 
                 ThongkePanel.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
                         @Override
@@ -816,8 +927,10 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 jPanel1 = new javax.swing.JPanel();
                 HeaderTk = new javax.swing.JPanel();
+                BtnRefresh = new javax.swing.JButton();
                 BtnExport = new javax.swing.JButton();
                 Combobox_TK = new javax.swing.JComboBox<>();
+                CbboxDefault = new javax.swing.JComboBox<>();
                 ThongkePanel = new javax.swing.JTabbedPane();
                 DefaultTK = new javax.swing.JScrollPane();
                 Panel_default = new javax.swing.JPanel();
@@ -939,6 +1052,15 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 HeaderTk.setBackground(new java.awt.Color(255, 255, 255));
                 HeaderTk.setPreferredSize(new java.awt.Dimension(1120, 93));
 
+                BtnRefresh.setBackground(new java.awt.Color(217, 217, 217));
+                BtnRefresh.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+                BtnRefresh.setText("Làm mới");
+                BtnRefresh.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                BtnRefreshActionPerformed(evt);
+                        }
+                });
+
                 BtnExport.setBackground(new java.awt.Color(217, 217, 217));
                 BtnExport.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
                 BtnExport.setText("Tạo báo cáo ");
@@ -970,10 +1092,10 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                                         ex.xuatExcel(tableLuong);
 
                                 } else if (Combobox_TK.getSelectedItem().equals("Mặc định")) {
-                                        if (CbboxLoinhuan.getSelectedItem().equals("Tháng")) {
-                                                ex.xuatExcel(tableDf);
-                                        } else {
+                                        if (CbboxDefault.getSelectedItem().equals("Quý")) {
                                                 ex.xuatExcel(tableDfquy);
+                                        } else {
+                                                ex.xuatExcel(tableDf);
                                         }
                                 } else {
                                         ex.xuatExcel(tableKho);
@@ -995,6 +1117,9 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                         }
                 });
 
+                CbboxDefault.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tháng", "Quý" }));
+                CbboxDefault.setToolTipText("Kiểu báo cáo tab Mặc định");
+
                 javax.swing.GroupLayout HeaderTkLayout = new javax.swing.GroupLayout(HeaderTk);
                 HeaderTk.setLayout(HeaderTkLayout);
                 HeaderTkLayout.setHorizontalGroup(
@@ -1005,10 +1130,20 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                 180,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(CbboxDefault,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                120,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addPreferredGap(
                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                                                726,
+                                                                                568,
                                                                                 Short.MAX_VALUE)
+                                                                .addComponent(BtnRefresh,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                129,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(18, 18, 18)
                                                                 .addComponent(BtnExport,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                 153,
@@ -1020,6 +1155,10 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                                                                 .addGap(27, 27, 27)
                                                                 .addGroup(HeaderTkLayout.createParallelGroup(
                                                                                 javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                .addComponent(BtnRefresh,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                Short.MAX_VALUE)
                                                                                 .addComponent(BtnExport,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -1027,8 +1166,14 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                                                                                 .addComponent(Combobox_TK,
                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                 32,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addComponent(CbboxDefault,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                32,
                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                 .addContainerGap(34, Short.MAX_VALUE)));
+
+                updateDefaultModeVisibility();
 
                 ThongkePanel.setBackground(new java.awt.Color(255, 255, 255));
                 ThongkePanel.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -1257,7 +1402,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 headerPanel.add(KhMoiPn);
 
-                ///////
+                /////
                 jTextField6.setText("jTextField6");
                 jTextField6.setMinimumSize(new java.awt.Dimension(200, 22));
                 jTextField6.setPreferredSize(new java.awt.Dimension(195, 50));
@@ -1821,7 +1966,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 TK_chiphi.setBackground(new java.awt.Color(219, 189, 142));
                 TK_chiphi.setPreferredSize(new java.awt.Dimension(1120, 450));
 
-                ////////
+                //////
                 jTextField9.setText("jTextField6");
                 jTextField9.setMinimumSize(new java.awt.Dimension(200, 22));
                 jTextField9.setPreferredSize(new java.awt.Dimension(195, 50));
@@ -2099,7 +2244,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 TK_loinhuan.setBackground(new java.awt.Color(219, 189, 142));
                 TK_loinhuan.setPreferredSize(new java.awt.Dimension(1120, 450));
 
-                ////////
+                //////
                 jTextField18.setText("jTextField18");
                 jTextField18.setPreferredSize(new java.awt.Dimension(195, 50));
                 jTextField19.setText("jTextField18");
@@ -2366,7 +2511,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 TK_luong.setBackground(new java.awt.Color(219, 189, 142));
                 TK_luong.setPreferredSize(new java.awt.Dimension(1120, 450));
-                ////////////
+                //////////
                 jTextField12.setText("jTextField12");
                 jTextField12.setMinimumSize(new java.awt.Dimension(195, 50));
                 jTextField12.setPreferredSize(new java.awt.Dimension(195, 55));
@@ -2634,7 +2779,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 TK_khohang.setBackground(new java.awt.Color(219, 189, 142));
                 TK_khohang.setPreferredSize(new java.awt.Dimension(1120, 450));
-                //////////////
+                ////////////
                 jTextField15.setText("jTextField15");
                 jTextField15.setMinimumSize(new java.awt.Dimension(195, 50));
                 jTextField15.setPreferredSize(new java.awt.Dimension(195, 55));
@@ -2989,8 +3134,13 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         private void Combobox_TKActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_Combobox_TKActionPerformed
                 int selectedIndex = Combobox_TK.getSelectedIndex();
                 ThongkePanel.setSelectedIndex(selectedIndex);
+                updateDefaultModeVisibility();
 
         }// GEN-LAST:event_Combobox_TKActionPerformed
+
+        private void BtnRefreshActionPerformed(java.awt.event.ActionEvent evt) {
+                refreshStatisticsData(true);
+        }
 
         private void CbboxDthuActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_CbboxDthuActionPerformed
                 String selectedCard = (String) CbboxDthu.getSelectedItem();
@@ -3031,7 +3181,9 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         }
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
+        private javax.swing.JButton BtnRefresh;
         private javax.swing.JButton BtnExport;
+        private javax.swing.JComboBox<String> CbboxDefault;
         private javax.swing.JComboBox<String> CbboxChiphi;
         private javax.swing.JComboBox<String> CbboxDthu;
         private javax.swing.JComboBox<String> CbboxKhohang;

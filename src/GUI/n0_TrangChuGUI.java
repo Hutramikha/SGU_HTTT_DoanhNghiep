@@ -668,14 +668,58 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                 TrangChuBUS.getInstance().hienThi_NgayHienTai(LabelDate);
         }
 
+        private boolean isLocalAdmin() {
+                return userLogin != null
+                                && "admin".equalsIgnoreCase(userLogin.getTenDangNhap())
+                                && "LOCAL_ADMIN".equals(userLogin.getMaNhanVien());
+        }
+
+        private void setMenuEnabled(JLabel label) {
+                label.setForeground(Util.UIHelper.WHITE);
+                label.putClientProperty("disabled", false);
+        }
+
+        private void applyLocalAdminPermissionStyle() {
+                setMenuEnabled(LabelBanHang);
+                setMenuEnabled(LabelKhachHang);
+                setMenuEnabled(LabelNhapHang);
+                setMenuEnabled(LabelMon);
+                setMenuEnabled(LabelNguyenLieu);
+                setMenuEnabled(LabelLichLam);
+                setMenuEnabled(LabelKhuyenMai);
+                setMenuEnabled(LabelNhaCungCap);
+                setMenuEnabled(LabelNhanVien);
+                setMenuEnabled(LabelThongKe);
+        }
+
         public void set_NhanVien(String Ma) {
+                if (isLocalAdmin()) {
+                        LabelTen.setText("Quản trị hệ thống");
+                        LabelChucVu.setText("Quản Lý");
+                        PanelTen.setText("ADMIN");
+                        return;
+                }
+
                 NhanVienDTO nv = TrangChuBUS.getInstance().get_NhanVien(Ma);
+                if (nv == null) {
+                        LabelTen.setText(Ma);
+                        LabelChucVu.setText("Chưa xác định");
+                        PanelTen.setText(Ma != null ? Ma.toUpperCase() : "UNKNOWN");
+                        return;
+                }
                 LabelTen.setText(nv.getTenNhanVien());
                 LabelChucVu.setText(nv.getChucVuNhanVien());
                 PanelTen.setText(nv.getTenNhanVien().toUpperCase());
         }
 
         public void setQuyen() {
+                if (isLocalAdmin()) {
+                        phanQuyen = new PhanQuyenDTO("LOCAL_ADMIN_ROLE", "Quản Lý", true, true, true, true,
+                                        true, true, true, true, true, true, true);
+                        applyLocalAdminPermissionStyle();
+                        return;
+                }
+
                 n0_TrangChuBUS bus = new n0_TrangChuBUS();
                 phanQuyen = bus.getPhanQuyen(userLogin.getMaNhanVien(), LabelBanHang, LabelKhachHang, LabelNhapHang,
                                 LabelMon,

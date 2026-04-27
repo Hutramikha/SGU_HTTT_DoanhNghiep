@@ -316,6 +316,81 @@ public class n7_KhuyenMaiDAO {
         }
     }
 
+    public ArrayList<KhuyenMaiDTO> getAll_KhuyenMai(int tongTien, Date date) {
+        ArrayList<KhuyenMaiDTO> list = new ArrayList<>();
+        String sql = "SELECT * FROM [KhuyenMai] WHERE DieuKienKhuyenMai <= ? AND NgayBatDauKhuyenMai <= ? AND NgayKetThucKhuyenMai >= ?";
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql)) {
+            st.setInt(1, tongTien);
+            st.setDate(2, date);
+            st.setDate(3, date);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    KhuyenMaiDTO dto = new KhuyenMaiDTO(rs.getString(1), rs.getString(2), rs.getDate(3),
+                            rs.getDate(4),
+                            rs.getFloat(5), rs.getInt(6));
+                    list.add(dto);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Không lấy được dữ liệu cần tìm của khuyến mãi (DAO)");
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public KhuyenMaiDTO getBestKhuyenMai(int tongTien, Date date) {
+        KhuyenMaiDTO bestKhuyenMai = null;
+        String sql = "SELECT TOP 1 * FROM [KhuyenMai] "
+                + "WHERE DieuKienKhuyenMai <= ? AND NgayBatDauKhuyenMai <= ? AND NgayKetThucKhuyenMai >= ? "
+                + "ORDER BY PhanTramKhuyenMai DESC";
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql)) {
+            st.setInt(1, tongTien);
+            st.setDate(2, date);
+            st.setDate(3, date);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    bestKhuyenMai = new KhuyenMaiDTO(
+                            rs.getString(1),
+                            rs.getString(2),
+                            rs.getDate(3),
+                            rs.getDate(4),
+                            rs.getFloat(5),
+                            rs.getInt(6));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Không lấy được khuyến mãi tối ưu (DAO)");
+            System.out.println(e);
+        }
+        return bestKhuyenMai;
+    }
+
+    public KhuyenMaiDTO get_KhuyenMai_theoTen(int tongTien, Date date, String ten) {
+        KhuyenMaiDTO dto = new KhuyenMaiDTO();
+        String sql = "SELECT * FROM [KhuyenMai] WHERE DieuKienKhuyenMai <= ? AND NgayBatDauKhuyenMai <= ? AND NgayKetThucKhuyenMai >= ? and TenKhuyenMai = ?";
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql)) {
+            st.setInt(1, tongTien);
+            st.setDate(2, date);
+            st.setDate(3, date);
+            st.setString(4, ten);
+
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    dto = new KhuyenMaiDTO(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4),
+                            rs.getFloat(5),
+                            rs.getInt(6));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Không lấy được dữ liệu cần tìm của khuyến mãi (DAO)");
+            System.out.println(e);
+        }
+        return dto;
+    }
+
     public static void main(String[] args) {
 //        Date ngay = Date.valueOf("2024-11-19");
 //        Date end = Date.valueOf("2025-11-19");

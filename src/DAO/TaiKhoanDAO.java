@@ -63,32 +63,8 @@ public class TaiKhoanDAO {
      */
     @Deprecated
     public ArrayList<TaiKhoanDTO> selectByCondition(String condition) {
-        ArrayList<TaiKhoanDTO> taiKhoans = new ArrayList<>();
-        Connection c = null;
-        try {
-            c = JDBCUtil.getConnection();
-            // ⚠️ CẢNH BÁO: condition là SQL thuần — không dùng với user input!
-            String sql = "select * from TaiKhoan where " + condition;
-            PreparedStatement pst = c.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                String maTK = rs.getString("MaTaiKhoan");
-                String tenDangNhap = rs.getString("TenDangNhap");
-                String matKhau = rs.getString("MatKhau");
-                String maQuyen = rs.getString("MaPhanQuyen");
-                String maNV = rs.getString("MaNhanVien");
-                Date ngayCap = rs.getDate("NgayCap");
-                Date ngayNghiViec = rs.getDate("NgayNghiViec");
-                int trangThai = rs.getInt("TrangThaiTaiKhoan");
-                TaiKhoanDTO taiKhoan = new TaiKhoanDTO(maTK, tenDangNhap, matKhau, maQuyen,maNV,ngayCap ,ngayNghiViec, trangThai);
-                taiKhoans.add(taiKhoan);
-            }
-            JDBCUtil.closeConnection(c);
-            return taiKhoans;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        throw new UnsupportedOperationException(
+                "selectByCondition is disabled due to SQL injection risk. Use specific parameterized DAO methods.");
     }
 
     public boolean insert(TaiKhoanDTO tk) {

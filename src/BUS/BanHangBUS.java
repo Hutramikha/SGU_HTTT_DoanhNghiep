@@ -6,7 +6,10 @@ import DAO.NhanVienDAO;
 import DAO.n1_CTHoaDonDAO;
 import DAO.n1_HoaDonDAO;
 import DAO.n4_MonDAO;
+import DAO.n5_NguyenLieuDAO;
 import DAO.n6_CaLamDAO;
+import DAO.n7_KhuyenMaiDAO;
+import DAO.n7_UuDaiThanhVienDAO;
 import DTO.ChiTietHoaDonDTO;
 import DTO.HoaDonDTO;
 import DTO.KhachHangDTO;
@@ -51,7 +54,7 @@ public class BanHangBUS {
             listMon = n4_MonDAO.getInstance().getAll();
         } else {
             String MaLoaiMon = LoaiMonDAO.getInstance().getMaLoaiMon_theo_TenLoaiMon(tenLoaiMon);
-            listMon = n6_CaLamDAO.getInstance().getAll_theo_LoaiMon(MaLoaiMon);
+            listMon = n4_MonDAO.getInstance().getAll_theo_LoaiMon(MaLoaiMon);
 
         }
         return listMon;
@@ -63,12 +66,12 @@ public class BanHangBUS {
 
     public ArrayList<MonDTO> getAll_theo_TimKiem(String ten) {
         ArrayList<MonDTO> listMon = new ArrayList<>();
-        listMon = n6_CaLamDAO.getInstance().getAll_theo_TimKiem_Mon(ten);
+        listMon = n4_MonDAO.getInstance().getAll_theo_TimKiem_Mon(ten);
         return listMon;
     }
 
     public int tinh_SoLuong_MonCon(String Ma) {
-        int sl = n6_CaLamDAO.getInstance().tinh_SoLuong_MonCon(Ma);
+        int sl = n4_MonDAO.getInstance().tinh_SoLuong_MonCon(Ma);
         return sl;
     }
 
@@ -107,7 +110,7 @@ public class BanHangBUS {
 
     public KhuyenMaiDTO getAllAndSelectBestKhuyenMai(int tongTien, String date, JComboBox box) {
         // Lấy danh sách khuyến mãi phù hợp
-        ArrayList<KhuyenMaiDTO> ds = n6_CaLamDAO.getInstance().getAll_KhuyenMai(tongTien, Date.valueOf(date));
+        ArrayList<KhuyenMaiDTO> ds = n7_KhuyenMaiDAO.getInstance().getAll_KhuyenMai(tongTien, Date.valueOf(date));
         KhuyenMaiDTO bestKm = null;
 
         if (!ds.isEmpty()) {
@@ -132,11 +135,11 @@ public class BanHangBUS {
     }
 
     public void suaChiTieuKhachHang(int chiTieu, String Ma) {
-        n6_CaLamDAO.getInstance().suaChiTieuKhachHang(chiTieu, Ma);
+        new KhachHangDAO().suaChiTieuKhachHang(chiTieu, Ma);
     }
 
     public KhuyenMaiDTO get_KhuyenMai_theoTen(int tongTien, String date, String ten) {
-        KhuyenMaiDTO khuyenmai = n6_CaLamDAO.getInstance().get_KhuyenMai_theoTen(tongTien, Date.valueOf(date), ten);
+        KhuyenMaiDTO khuyenmai = n7_KhuyenMaiDAO.getInstance().get_KhuyenMai_theoTen(tongTien, Date.valueOf(date), ten);
         return khuyenmai;
     }
 
@@ -152,7 +155,7 @@ public class BanHangBUS {
             model.removeRow(i);
         }
 
-        ArrayList<KhachHangDTO> ds = n6_CaLamDAO.getInstance().getData_KhachHang();
+        ArrayList<KhachHangDTO> ds = new KhachHangDAO().getData_KhachHang();
         for (KhachHangDTO kh : ds) {
             model.addRow(new Object[] { kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getSoDienThoaiKhachHang(),
                     Util.LichLam_CaLam.yyyy_mm_dd__to__dd_mm_yyyy(String.valueOf(kh.getNgaySinhKhachHang()))
@@ -167,7 +170,7 @@ public class BanHangBUS {
             model.removeRow(i);
         }
 
-        ArrayList<KhachHangDTO> ds = n6_CaLamDAO.getInstance().getData_KhachHang_theoTen(ten);
+        ArrayList<KhachHangDTO> ds = new KhachHangDAO().getData_KhachHang_theoTen(ten);
         for (KhachHangDTO kh : ds) {
             model.addRow(new Object[] { kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getSoDienThoaiKhachHang(),
                     Util.LichLam_CaLam.yyyy_mm_dd__to__dd_mm_yyyy(String.valueOf(kh.getNgaySinhKhachHang()))
@@ -176,17 +179,17 @@ public class BanHangBUS {
     }
 
     public void get_khachHang_theoMa(String ma, JLabel ten) {
-        KhachHangDTO kh = n6_CaLamDAO.getInstance().get_khachHang_theoMa(ma);
+        KhachHangDTO kh = new KhachHangDAO().get_khachHang_theoMa(ma);
         ten.setText(kh.getTenKhachHang());
     }
 
     public KhachHangDTO get_khachHang_theoMa(String ma) {
-        KhachHangDTO kh = n6_CaLamDAO.getInstance().get_khachHang_theoMa(ma);
+        KhachHangDTO kh = new KhachHangDAO().get_khachHang_theoMa(ma);
         return kh;
     }
 
     public UuDaiThanhVienDTO get_UuDai_theoMa(String ma) {
-        UuDaiThanhVienDTO kh = n6_CaLamDAO.getInstance().get_UuDai_theoMa(ma);
+        UuDaiThanhVienDTO kh = n7_UuDaiThanhVienDAO.getInstance().get_UuDai_theoMa(ma);
         return kh;
     }
 
@@ -194,7 +197,7 @@ public class BanHangBUS {
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         Date date = Date.valueOf(today);
         // System.out.println("Bán hàng bus" + chiTieu + "" + date);
-        UuDaiThanhVienDTO dto = n6_CaLamDAO.getInstance().get_UuDai_theoChiTieu(chiTieu, date);
+        UuDaiThanhVienDTO dto = n7_UuDaiThanhVienDAO.getInstance().get_UuDai_theoChiTieu(chiTieu, date);
         uuDai.setText(dto.getTenUuDai());
         return dto.getMaUuDai();
     }
@@ -214,15 +217,15 @@ public class BanHangBUS {
     }
 
     public void update_reload_NguyenLieu(ArrayList<Object[]> listCart) {
-        n6_CaLamDAO.getInstance().update_reload_NguyenLieu(listCart);
+        n5_NguyenLieuDAO.getInstance().update_reload_NguyenLieu(listCart);
     }
 
     public void update_tru_NguyenLieu(Object[] item) {
-        n6_CaLamDAO.getInstance().update_Tru_NguyenLieu(item);
+        n5_NguyenLieuDAO.getInstance().update_Tru_NguyenLieu(item);
     }
 
     public void update_cong_NguyenLieu(Object[] item) {
-        n6_CaLamDAO.getInstance().update_Cong_NguyenLieu(item);
+        n5_NguyenLieuDAO.getInstance().update_Cong_NguyenLieu(item);
     }
 
     public void insert_chiTietHoaDon(String maHoaDon, String maMon, int donGia, int thanhTien, int soLuong) {

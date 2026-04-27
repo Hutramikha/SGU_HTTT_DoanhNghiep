@@ -48,20 +48,22 @@ public class PhieuNhapDAO {
     public ArrayList<Object[]> searchPhieuNhapByMa(String maPhieuNhap) {
         ArrayList<Object[]> data = new ArrayList<>();
         try (Connection c = JDBCUtil.getConnection();
-                Statement stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery(
+                PreparedStatement stmt = c.prepareStatement(
                         "SELECT MaPhieuNhap, NgayLapPhieuNhap, TongTienPhieuNhap, MaNhanVien, MaNhaCungCap " +
                                 "FROM PhieuNhap " +
-                                "WHERE MaPhieuNhap LIKE '%" + maPhieuNhap + "%' " +
+                                "WHERE MaPhieuNhap LIKE ? " +
                                 "ORDER BY CAST(SUBSTRING(MaPhieuNhap, 3, LEN(MaPhieuNhap) - 2) AS INT) DESC")) {
-            while (rs.next()) {
-                String maPhieuNhapResult = rs.getString("MaPhieuNhap");
-                Date ngayLapPhieuNhap = rs.getDate("NgayLapPhieuNhap");
-                int tongTienPhieuNhap = rs.getInt("TongTienPhieuNhap");
-                String maNhanVien = rs.getString("MaNhanVien");
-                String maNhaCungCap = rs.getString("MaNhaCungCap");
-                data.add(new Object[] { maPhieuNhapResult, ngayLapPhieuNhap, tongTienPhieuNhap, maNhanVien,
-                        maNhaCungCap });
+            stmt.setString(1, "%" + maPhieuNhap + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String maPhieuNhapResult = rs.getString("MaPhieuNhap");
+                    Date ngayLapPhieuNhap = rs.getDate("NgayLapPhieuNhap");
+                    int tongTienPhieuNhap = rs.getInt("TongTienPhieuNhap");
+                    String maNhanVien = rs.getString("MaNhanVien");
+                    String maNhaCungCap = rs.getString("MaNhaCungCap");
+                    data.add(new Object[] { maPhieuNhapResult, ngayLapPhieuNhap, tongTienPhieuNhap, maNhanVien,
+                            maNhaCungCap });
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
