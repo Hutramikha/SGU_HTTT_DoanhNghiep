@@ -209,3 +209,19 @@ CREATE TABLE [ChiTietPhieuNhap] (
 	FOREIGN KEY ([MaPhieuNhap]) REFERENCES [PhieuNhap]([MaPhieuNhap]),
 	FOREIGN KEY ([MaNguyenLieu]) REFERENCES NguyenLieu([MaNguyenLieu])
 );
+
+CREATE TABLE [YeuCauNhanSu] (
+	[MaYeuCau] nvarchar(255),
+	[MaNhanVien] nvarchar(255),
+	[LoaiYeuCau] nvarchar(50),
+	[TuNgay] date,
+	[DenNgay] date,
+	[LyDo] nvarchar(255),
+	[TrangThai] nvarchar(50),
+	[MaQuanLyDuyet] nvarchar(255),
+	[NgayTao] date,
+	[NgayDuyet] date,
+	PRIMARY KEY ([MaYeuCau]),
+	FOREIGN KEY ([MaNhanVien]) REFERENCES [NhanVien]([MaNhanVien]),
+	FOREIGN KEY ([MaQuanLyDuyet]) REFERENCES [NhanVien]([MaNhanVien])
+);

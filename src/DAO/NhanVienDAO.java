@@ -128,6 +128,19 @@ public class NhanVienDAO {
         return false;
     }
 
+    public boolean updateTrangThaiNhanVien(String maNhanVien, int trangThai) {
+        try (Connection connection = JDBCUtil.getConnection();
+                PreparedStatement preparedStatement = connection
+                        .prepareStatement("update NhanVien set TrangThaiNhanVien = ? where MaNhanVien = ?")) {
+            preparedStatement.setInt(1, trangThai);
+            preparedStatement.setString(2, maNhanVien);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public String layMaNhanVienCuoiCung() {
         String maNV = "";
         try (Connection connection = JDBCUtil.getConnection();

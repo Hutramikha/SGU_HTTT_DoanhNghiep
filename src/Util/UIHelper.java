@@ -17,24 +17,24 @@ import java.awt.event.WindowEvent;
  * Color scheme: Dark Green theme
  */
 public class UIHelper {
-    // Color palette - Dark Green theme
-    public static final Color DARK_GREEN = new Color(27, 94, 32);
-    public static final Color PRIMARY_GREEN = new Color(46, 125, 50);
-    public static final Color LIGHT_GREEN = new Color(67, 160, 71);
-    public static final Color LIGHTER_GREEN = new Color(129, 199, 132);
-    public static final Color LIGHTEST_GREEN = new Color(232, 245, 233);
-    public static final Color ACCENT_GREEN = new Color(102, 187, 106);
+    // Color palette - Elegant Sage Green theme (Softer, eye-friendly)
+    public static final Color DARK_GREEN = new Color(43, 76, 56);
+    public static final Color PRIMARY_GREEN = new Color(74, 112, 85);
+    public static final Color LIGHT_GREEN = new Color(108, 145, 120);
+    public static final Color LIGHTER_GREEN = new Color(160, 186, 168);
+    public static final Color LIGHTEST_GREEN = new Color(236, 243, 238);
+    public static final Color ACCENT_GREEN = new Color(127, 166, 140);
 
     // Semantic tones for consistent green-first UI composition
     // App background requested: #2e7d32
     public static final Color APP_BACKGROUND = PRIMARY_GREEN;
-    public static final Color SURFACE = new Color(248, 252, 248);
-    public static final Color SURFACE_ALT = new Color(232, 245, 233);
-    public static final Color BORDER_COLOR = new Color(165, 214, 167);
-    public static final Color DISABLED_BG = new Color(220, 233, 221);
-    public static final Color DISABLED_TEXT = new Color(120, 140, 122);
-    public static final Color DANGER = new Color(229, 57, 53);
-    public static final Color DANGER_HOVER = new Color(211, 47, 47);
+    public static final Color SURFACE = new Color(251, 253, 251);
+    public static final Color SURFACE_ALT = new Color(242, 247, 243);
+    public static final Color BORDER_COLOR = new Color(205, 220, 209);
+    public static final Color DISABLED_BG = new Color(225, 232, 227);
+    public static final Color DISABLED_TEXT = new Color(145, 158, 148);
+    public static final Color DANGER = new Color(210, 85, 80);
+    public static final Color DANGER_HOVER = new Color(190, 70, 65);
 
     private static final Color OLD_BACKGROUND = new Color(122, 74, 74);
     private static final Color OLD_SURFACE = new Color(219, 189, 142);
@@ -74,8 +74,8 @@ public class UIHelper {
     private static final String BUTTON_ELEVATED_KEY = "uihelper.button.elevated";
     private static final String BUTTON_BASE_COLOR_KEY = "uihelper.button.base.color";
 
-    public static final Color DARK_TEXT = new Color(30, 57, 34); // Chữ đậm
-    public static final Color LIGHT_TEXT = new Color(92, 118, 96); // Chữ nhạt
+    public static final Color DARK_TEXT = new Color(45, 65, 50); // Chữ đậm
+    public static final Color LIGHT_TEXT = new Color(105, 125, 110); // Chữ nhạt
     public static final Color WHITE = new Color(255, 255, 255);
     public static final Color LIGHT_GRAY = new Color(240, 240, 240);
 

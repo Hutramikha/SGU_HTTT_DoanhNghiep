@@ -54,14 +54,14 @@ public class PhanQuyenDAO {
             PreparedStatement pst = c.prepareStatement(sql);
             pst.setBoolean(1, t.getQuyenKhachHang());
             pst.setBoolean(2, t.getQuyenBanHang());
-            pst.setBoolean(3 ,t.getQuyenNhapHang());
+            pst.setBoolean(3, t.getQuyenNhapHang());
             pst.setBoolean(4, t.getQuyenMon());
             pst.setBoolean(5, t.getQuyenNguyenLieu());
             pst.setBoolean(6, t.getQuyenLichLam());
             pst.setBoolean(7, t.getQuyenKhuyenMaiUuDai());
             pst.setBoolean(8, t.getQuyenNhaCungCap());
             pst.setBoolean(9, t.getQuyenNhanVien());
-            pst.setBoolean(10,t.getQuyenThongKe());
+            pst.setBoolean(10, t.getQuyenThongKe());
             pst.setString(11, t.getMaPhanQuyen());
 
             ketQua = pst.executeUpdate();
@@ -113,7 +113,8 @@ public class PhanQuyenDAO {
                 boolean nhanvien = rs.getBoolean("QuyenNhanVien");
                 boolean thongke = rs.getBoolean("QuyenThongKe");
                 boolean trangThai = rs.getBoolean("TrangThaiPhanQuyen");
-                PhanQuyenDTO phanQuyen = new PhanQuyenDTO(maQuyen, tenQuyen, khachhang, banhang, nhaphang, mon, nguyenlieu, lichlam, kmud, nhacc, nhanvien, thongke, trangThai);
+                PhanQuyenDTO phanQuyen = new PhanQuyenDTO(maQuyen, tenQuyen, khachhang, banhang, nhaphang, mon,
+                        nguyenlieu, lichlam, kmud, nhacc, nhanvien, thongke, trangThai);
                 phanQuyens.add(phanQuyen);
             }
             JDBCUtil.closeConnection(c);
@@ -145,8 +146,8 @@ public class PhanQuyenDAO {
                 boolean nhanvien = rs.getBoolean("QuyenNhanVien");
                 boolean thongke = rs.getBoolean("QuyenThongKe");
                 boolean trangThai = rs.getBoolean("TrangThaiPhanQuyen");
-                phanQuyen = new PhanQuyenDTO(maQuyen, tenQuyen, khachhang, banhang, 
-                                            nhaphang, mon, nguyenlieu, lichlam, kmud, nhacc, nhanvien, thongke, trangThai);
+                phanQuyen = new PhanQuyenDTO(maQuyen, tenQuyen, khachhang, banhang,
+                        nhaphang, mon, nguyenlieu, lichlam, kmud, nhacc, nhanvien, thongke, trangThai);
             }
             JDBCUtil.closeConnection(c);
         } catch (SQLException e) {
@@ -177,8 +178,8 @@ public class PhanQuyenDAO {
                 boolean nhanvien = rs.getBoolean("QuyenNhanVien");
                 boolean thongke = rs.getBoolean("QuyenThongKe");
                 boolean trangThai = rs.getBoolean("TrangThaiPhanQuyen");
-                phanQuyen = new PhanQuyenDTO(maQuyen, tenQuyen, khachhang, banhang, 
-                                            nhaphang, mon, nguyenlieu, lichlam, kmud, nhacc, nhanvien, thongke, trangThai);
+                phanQuyen = new PhanQuyenDTO(maQuyen, tenQuyen, khachhang, banhang,
+                        nhaphang, mon, nguyenlieu, lichlam, kmud, nhacc, nhanvien, thongke, trangThai);
             }
             JDBCUtil.closeConnection(c);
         } catch (SQLException e) {
@@ -188,35 +189,8 @@ public class PhanQuyenDAO {
     }
 
     public ArrayList<PhanQuyenDTO> selectByCondition(String condition) {
-        ArrayList<PhanQuyenDTO> phanQuyens = new ArrayList<>();
-        try {
-            Connection c = JDBCUtil.getConnection();
-            String sql = "select * from PhanQuyen where " + condition;
-            Statement statement = c.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
-            while (rs.next()) {
-                String maQuyen = rs.getString("MaPhanQuyen");
-                String tenQuyen = rs.getString("TenQuyen");
-                boolean khachhang = rs.getBoolean("QuyenKhachHang");
-                boolean banhang = rs.getBoolean("QuyenBanHang");
-                boolean nhaphang = rs.getBoolean("QuyenNhapHang");
-                boolean mon = rs.getBoolean("QuyenMon");
-                boolean nguyenlieu = rs.getBoolean("QuyenNguyenLieu");
-                boolean lichlam = rs.getBoolean("QuyenLichLam");
-                boolean kmud = rs.getBoolean("QuyenKhuyenMaiUuDai");
-                boolean nhacc = rs.getBoolean("QuyenNhaCungCap");
-                boolean nhanvien = rs.getBoolean("QuyenNhanVien");
-                boolean thongke = rs.getBoolean("QuyenThongKe");
-                boolean trangThai = rs.getBoolean("TrangThaiPhanQuyen");
-                PhanQuyenDTO phanQuyen = new PhanQuyenDTO(maQuyen, tenQuyen, khachhang, banhang, 
-                                            nhaphang, mon, nguyenlieu, lichlam, kmud, nhacc, nhanvien, thongke, trangThai);
-                phanQuyens.add(phanQuyen);
-            }
-            JDBCUtil.closeConnection(c);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return phanQuyens;
+        throw new UnsupportedOperationException(
+                "selectByCondition is disabled due to SQL injection risk. Use specific parameterized DAO methods.");
     }
 
     public String LayMaPhanQuyenCuoiCung() {
@@ -228,12 +202,11 @@ public class PhanQuyenDAO {
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
                 ma = String.valueOf(Integer.parseInt(rs.getString("MaPhanQuyen").substring(2)) + 1);
-                if(Integer.parseInt(ma)<10){
+                if (Integer.parseInt(ma) < 10) {
                     ma = "PQ00" + ma;
-                }else if(10<=Integer.parseInt(ma) &&Integer.parseInt(ma)<999){
+                } else if (10 <= Integer.parseInt(ma) && Integer.parseInt(ma) < 999) {
                     ma = "PQ0" + ma;
-                }
-                else
+                } else
                     ma = "PQ" + ma;
             }
             JDBCUtil.closeConnection(c);

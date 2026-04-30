@@ -39,17 +39,24 @@ import Util.XuLyFileExcel;
 public class n9_NhanVienKeoTha extends javax.swing.JPanel {
 
     private final boolean canAccessPermissionManagement;
+    private final String currentMaNhanVien;
 
     public n9_NhanVienKeoTha() {
-        this(false);
+        this(false, null);
     }
 
     public n9_NhanVienKeoTha(boolean canAccessPermissionManagement) {
+        this(canAccessPermissionManagement, null);
+    }
+
+    public n9_NhanVienKeoTha(boolean canAccessPermissionManagement, String currentMaNhanVien) {
         this.canAccessPermissionManagement = canAccessPermissionManagement;
+        this.currentMaNhanVien = currentMaNhanVien;
         initComponents();
         loadDataCmbQuyen();
         loadDataTblNhanVien();
         nhomNutChucNang();
+        configureYeuCauButtons();
         TableCustom.apply(ScrTable, TableCustom.TableType.MULTI_LINE);
     }
 
@@ -76,6 +83,10 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
         LblKhoaTK = new javax.swing.JLabel();
         BtnXuat = new javax.swing.JPanel();
         LblXuat = new javax.swing.JLabel();
+        BtnGuiNghi = new javax.swing.JPanel();
+        LblGuiNghi = new javax.swing.JLabel();
+        BtnDuyetNghi = new javax.swing.JPanel();
+        LblDuyetNghi = new javax.swing.JLabel();
         PanelInput = new javax.swing.JPanel();
         LblTieuDe = new javax.swing.JLabel();
         BtnRefresh = new javax.swing.JPanel();
@@ -229,6 +240,26 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
         LblXuat.setText("Xuất");
         BtnXuat.add(LblXuat);
 
+        BtnGuiNghi.setBackground(new java.awt.Color(0, 0, 0));
+        BtnGuiNghi.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        BtnGuiNghi.setPreferredSize(new java.awt.Dimension(110, 35));
+
+        LblGuiNghi.setBackground(new java.awt.Color(255, 255, 255));
+        LblGuiNghi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        LblGuiNghi.setForeground(new java.awt.Color(255, 255, 255));
+        LblGuiNghi.setText("Gửi nghỉ");
+        BtnGuiNghi.add(LblGuiNghi);
+
+        BtnDuyetNghi.setBackground(new java.awt.Color(0, 0, 0));
+        BtnDuyetNghi.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        BtnDuyetNghi.setPreferredSize(new java.awt.Dimension(110, 35));
+
+        LblDuyetNghi.setBackground(new java.awt.Color(255, 255, 255));
+        LblDuyetNghi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        LblDuyetNghi.setForeground(new java.awt.Color(255, 255, 255));
+        LblDuyetNghi.setText("Duyệt nghỉ");
+        BtnDuyetNghi.add(LblDuyetNghi);
+
         javax.swing.GroupLayout PanelChuaNutLayout = new javax.swing.GroupLayout(PanelChuaNut);
         PanelChuaNut.setLayout(PanelChuaNutLayout);
         PanelChuaNutLayout.setHorizontalGroup(
@@ -254,7 +285,13 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
                                 .addGap(50, 50, 50)
                                 .addComponent(BtnXuat, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(107, 107, 107)));
+                                .addGap(25, 25, 25)
+                                .addComponent(BtnGuiNghi, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(25, 25, 25)
+                                .addComponent(BtnDuyetNghi, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(20, 20, 20)));
         PanelChuaNutLayout.setVerticalGroup(
                 PanelChuaNutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(PanelChuaNutLayout.createSequentialGroup()
@@ -270,6 +307,10 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
                                         .addComponent(BtnThongTinTK, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(BtnXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(BtnGuiNghi, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(BtnDuyetNghi, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(20, Short.MAX_VALUE)));
 
@@ -916,6 +957,42 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
 
         });
 
+        BtnGuiNghi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                BtnGuiNghi.setBackground(Util.UIHelper.PRIMARY_GREEN);
+                LblGuiNghi.setOpaque(true);
+                LblGuiNghi.setBackground(Util.UIHelper.PRIMARY_GREEN);
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                BtnGuiNghi.setBackground(Util.UIHelper.DARK_GREEN);
+                LblGuiNghi.setOpaque(true);
+                LblGuiNghi.setBackground(Util.UIHelper.DARK_GREEN);
+            }
+
+            public void mouseClicked(MouseEvent e) {
+                moDialogGuiYeuCau();
+            }
+        });
+
+        BtnDuyetNghi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                BtnDuyetNghi.setBackground(Util.UIHelper.PRIMARY_GREEN);
+                LblDuyetNghi.setOpaque(true);
+                LblDuyetNghi.setBackground(Util.UIHelper.PRIMARY_GREEN);
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                BtnDuyetNghi.setBackground(Util.UIHelper.DARK_GREEN);
+                LblDuyetNghi.setOpaque(true);
+                LblDuyetNghi.setBackground(Util.UIHelper.DARK_GREEN);
+            }
+
+            public void mouseClicked(MouseEvent e) {
+                moDialogDuyetYeuCau();
+            }
+        });
+
         BtnKhoaTK.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 BtnKhoaTK.setBackground(Util.UIHelper.PRIMARY_GREEN);
@@ -975,6 +1052,36 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
                 xuLyClickTblNhanVien();
             }
         });
+    }
+
+    private void configureYeuCauButtons() {
+        boolean hasUser = currentMaNhanVien != null && !currentMaNhanVien.trim().isEmpty();
+        BtnGuiNghi.setVisible(hasUser);
+        BtnDuyetNghi.setVisible(canAccessPermissionManagement);
+    }
+
+    private void moDialogGuiYeuCau() {
+        if (currentMaNhanVien == null || currentMaNhanVien.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Không xác định nhân viên hiện tại.", "Thiếu dữ liệu",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        java.awt.Window owner = SwingUtilities.getWindowAncestor(this);
+        java.awt.Frame frame = owner instanceof java.awt.Frame ? (java.awt.Frame) owner : null;
+        n9_GuiYeuCauNghiDialog dialog = new n9_GuiYeuCauNghiDialog(frame, currentMaNhanVien);
+        dialog.setVisible(true);
+    }
+
+    private void moDialogDuyetYeuCau() {
+        if (currentMaNhanVien == null || currentMaNhanVien.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Không xác định quản lý duyệt.", "Thiếu dữ liệu",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        java.awt.Window owner = SwingUtilities.getWindowAncestor(this);
+        java.awt.Frame frame = owner instanceof java.awt.Frame ? (java.awt.Frame) owner : null;
+        n9_DuyetYeuCauNghiDialog dialog = new n9_DuyetYeuCauNghiDialog(frame, currentMaNhanVien);
+        dialog.setVisible(true);
     }
 
     public boolean validateFields() {
@@ -1390,6 +1497,8 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> BoxChucVu;
     private javax.swing.JComboBox<String> BoxGioiTinh;
     private javax.swing.JPanel BtnKhoaTK;
+    private javax.swing.JPanel BtnGuiNghi;
+    private javax.swing.JPanel BtnDuyetNghi;
     private javax.swing.JPanel BtnQLNhanVien;
     private javax.swing.JPanel BtnQLPhanQuyen;
     private javax.swing.JPanel BtnRefresh;
@@ -1411,6 +1520,8 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
     private javax.swing.JLabel LbeSDT;
     private javax.swing.JLabel LbeTimKiem;
     private javax.swing.JLabel LblKhoaTK;
+    private javax.swing.JLabel LblGuiNghi;
+    private javax.swing.JLabel LblDuyetNghi;
     private javax.swing.JLabel LblRefresh;
     private javax.swing.JLabel LblSua;
     private javax.swing.JLabel LblTen;

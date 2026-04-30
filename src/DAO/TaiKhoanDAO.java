@@ -42,7 +42,7 @@ public class TaiKhoanDAO {
                 Date ngayNghiViec = rs.getDate("NgayNghiViec");
                 int trangThai = rs.getInt("TrangThaiTaiKhoan");
 
-                taiKhoan = new TaiKhoanDTO(maTK, tenDangNhap, matKhau, maQuyen,maNV,ngayCap,ngayNghiViec, trangThai);
+                taiKhoan = new TaiKhoanDTO(maTK, tenDangNhap, matKhau, maQuyen, maNV, ngayCap, ngayNghiViec, trangThai);
             }
             JDBCUtil.closeConnection(c);
         } catch (SQLException e) {
@@ -53,18 +53,48 @@ public class TaiKhoanDAO {
 
     /**
      * @deprecated NGUY HIỂM — SQL Injection Risk!
-     * Method này nhận condition dạng SQL String thuần, không có tham số hóa.
-     * Ví dụ: selectByCondition("MaNhanVien='" + userInput + "'") → bị inject.
+     *             Method này nhận condition dạng SQL String thuần, không có tham số
+     *             hóa.
+     *             Ví dụ: selectByCondition("MaNhanVien='" + userInput + "'") → bị
+     *             inject.
      *
-     * Thay thế: Tạo method cụ thể với PreparedStatement cho từng loại điều kiện.
-     * Ví dụ: selectByMaNhanVien(String ma), selectByTrangThai(int tt)...
+     *             Thay thế: Tạo method cụ thể với PreparedStatement cho từng loại
+     *             điều kiện.
+     *             Ví dụ: selectByMaNhanVien(String ma), selectByTrangThai(int
+     *             tt)...
      *
-     * Nếu bắt buộc dùng, gọi caller PHẢI tự đảm bảo condition không chứa user input.
+     *             Nếu bắt buộc dùng, gọi caller PHẢI tự đảm bảo condition không
+     *             chứa user input.
      */
     @Deprecated
     public ArrayList<TaiKhoanDTO> selectByCondition(String condition) {
-        throw new UnsupportedOperationException(
-                "selectByCondition is disabled due to SQL injection risk. Use specific parameterized DAO methods.");
+        ArrayList<TaiKhoanDTO> taiKhoans = new ArrayList<>();
+        Connection c = null;
+        try {
+            c = JDBCUtil.getConnection();
+            // ⚠️ CẢNH BÁO: condition là SQL thuần — không dùng với user input!
+            String sql = "select * from TaiKhoan where " + condition;
+            PreparedStatement pst = c.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                String maTK = rs.getString("MaTaiKhoan");
+                String tenDangNhap = rs.getString("TenDangNhap");
+                String matKhau = rs.getString("MatKhau");
+                String maQuyen = rs.getString("MaPhanQuyen");
+                String maNV = rs.getString("MaNhanVien");
+                Date ngayCap = rs.getDate("NgayCap");
+                Date ngayNghiViec = rs.getDate("NgayNghiViec");
+                int trangThai = rs.getInt("TrangThaiTaiKhoan");
+                TaiKhoanDTO taiKhoan = new TaiKhoanDTO(maTK, tenDangNhap, matKhau, maQuyen, maNV, ngayCap, ngayNghiViec,
+                        trangThai);
+                taiKhoans.add(taiKhoan);
+            }
+            JDBCUtil.closeConnection(c);
+            return taiKhoans;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public boolean insert(TaiKhoanDTO tk) {
@@ -78,7 +108,7 @@ public class TaiKhoanDAO {
             pst.setString(3, tk.getMatKhau());
             pst.setString(4, tk.getMaPhanQuyen());
             pst.setString(5, tk.getMaNhanVien());
-            pst.setDate(6,tk.getNgaycap());
+            pst.setDate(6, tk.getNgaycap());
             pst.setDate(7, tk.getNgayNghiViec());
             pst.setInt(8, tk.getTrangThaiTaiKhoan());
             pst.executeUpdate();
@@ -149,7 +179,8 @@ public class TaiKhoanDAO {
                 Date ngayCap = rs.getDate("NgayCap");
                 Date ngayNghiViec = rs.getDate("NgayNghiViec");
                 int trangThai = rs.getInt("TrangThaiTaiKhoan");
-                TaiKhoanDTO taiKhoan = new TaiKhoanDTO(maTK, tenDangNhap, matKhau, maQuyen,maNV, ngayCap,ngayNghiViec, trangThai);
+                TaiKhoanDTO taiKhoan = new TaiKhoanDTO(maTK, tenDangNhap, matKhau, maQuyen, maNV, ngayCap, ngayNghiViec,
+                        trangThai);
                 taiKhoans.add(taiKhoan);
             }
             JDBCUtil.closeConnection(c);
@@ -159,7 +190,7 @@ public class TaiKhoanDAO {
         return taiKhoans;
     }
 
-    public String getIdNV(String ma){
+    public String getIdNV(String ma) {
         String manv = "";
         Connection c = null;
         try {
@@ -179,7 +210,7 @@ public class TaiKhoanDAO {
         return manv;
     }
 
-    public String getMkByMaNhanVien(String ma){
+    public String getMkByMaNhanVien(String ma) {
         String matKhau = "";
         Connection c = null;
         try {
@@ -233,6 +264,23 @@ public class TaiKhoanDAO {
             JDBCUtil.closeConnection(c);
         }
         return "";
+    }
+
+    public boolean capNhatNgayNghiViec(String maNhanVien, Date ngayNghiViec) {
+        Connection c = null;
+        try {
+            c = JDBCUtil.getConnection();
+            String sql = "UPDATE TaiKhoan SET NgayNghiViec = ?, TrangThaiTaiKhoan = 0 WHERE MaNhanVien = ?";
+            PreparedStatement pst = c.prepareStatement(sql);
+            pst.setDate(1, ngayNghiViec);
+            pst.setString(2, maNhanVien);
+            return pst.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeConnection(c);
+        }
+        return false;
     }
 
     public String layQuyenTheoMa(String ma) {
@@ -359,13 +407,12 @@ public class TaiKhoanDAO {
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
                 maTK = String.valueOf(Integer.parseInt(rs.getString("MaTaiKhoan").substring(2)) + 1);
-                
-                if(Integer.parseInt(maTK)<10){
+
+                if (Integer.parseInt(maTK) < 10) {
                     maTK = "TK00" + maTK;
-                }else if(10 <= Integer.parseInt(maTK) && Integer.parseInt(maTK)<999){
+                } else if (10 <= Integer.parseInt(maTK) && Integer.parseInt(maTK) < 999) {
                     maTK = "TK0" + maTK;
-                }
-                else
+                } else
                     maTK = "TK" + maTK;
             }
         } catch (SQLException e) {

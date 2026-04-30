@@ -813,7 +813,8 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
 
                 if (phanQuyen.getQuyenNhanVien()) {
                         if (nhanVienGUI == null) {
-                                nhanVienGUI = new n9_NhanVienKeoTha(canAccessPermissionManagement());
+                                nhanVienGUI = new n9_NhanVienKeoTha(canAccessPermissionManagement(),
+                                                userLogin != null ? userLogin.getMaNhanVien() : null);
                         }
                         setActiveMenuButton(LabelNhanVien);
                         showContentPanel(nhanVienGUI);
@@ -1018,7 +1019,8 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                                 if (phanQuyen.getQuyenNhanVien()) {
                                         setActiveMenuButton(LabelNhanVien);
                                         if (nhanVienGUI == null) {
-                                                nhanVienGUI = new n9_NhanVienKeoTha(canAccessPermissionManagement());
+                                                nhanVienGUI = new n9_NhanVienKeoTha(canAccessPermissionManagement(),
+                                                                userLogin != null ? userLogin.getMaNhanVien() : null);
                                         }
                                         showContentPanel(nhanVienGUI);
                                 }

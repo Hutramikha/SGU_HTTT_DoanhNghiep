@@ -25,10 +25,10 @@ public class dialog extends JDialog {
 
     Font font = new Font("Montserrat", Font.BOLD, 14);
 
-    private final Color success = new Color(0, 160, 80);
-    private final Color error = new Color(220, 53, 69);
-    private final Color info = new Color(0, 123, 255);
-    private final Color warning = new Color(255, 193, 7);
+    private final Color success = new Color(74, 160, 100);
+    private final Color error = new Color(210, 85, 80);
+    private final Color info = new Color(65, 145, 215);
+    private final Color warning = new Color(235, 175, 65);
 
     final ImageIcon iconError = new ImageIcon("image/btn/icons8_cancel_70px.png");
     final ImageIcon iconSuccess = new ImageIcon("image/btn/icons8_checkmark_70px.png");

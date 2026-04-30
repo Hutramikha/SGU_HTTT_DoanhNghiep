@@ -9,8 +9,8 @@ import javax.swing.JLabel;
 public class n0_TrangChuBUS {
 
     private n0_TrangChuDAO trangChuDAO;
-    private static final Color DISABLED_COLOR = new Color(150, 150, 150);
-    private static final Color DISABLED_BG = new Color(240, 240, 240);
+    private static final Color DISABLED_COLOR = new Color(145, 158, 148);
+    private static final Color DISABLED_BG = new Color(236, 243, 238);
 
     public n0_TrangChuBUS() {
         this.trangChuDAO = new n0_TrangChuDAO();

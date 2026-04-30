@@ -198,32 +198,38 @@ public class n10_ThongKeDAO {
     }
 
     public ArrayList<Integer> getArrayTongLuongnhanvientheothang() {
-        String sql = "SELECT x.Thang AS bucket, SUM(nv.LuongNhanVien) AS value "
-                + "FROM ( "
-                + "    SELECT DISTINCT MONTH(NgayLam) AS Thang, MaNhanVien "
-                + "    FROM LichLam "
-                + "    WHERE YEAR(NgayLam) = YEAR(GETDATE()) "
-                + ") AS x "
-                + "JOIN NhanVien nv ON nv.MaNhanVien = x.MaNhanVien "
-                + "GROUP BY x.Thang";
+        String sql = "SELECT MONTH(ll.NgayLam) AS bucket, "
+                + "SUM((CASE WHEN cl.ThoiGianRaCalam >= cl.ThoiGianVaoCaLam "
+                + "THEN DATEDIFF(MINUTE, cl.ThoiGianVaoCaLam, cl.ThoiGianRaCalam) "
+                + "ELSE DATEDIFF(MINUTE, cl.ThoiGianVaoCaLam, cl.ThoiGianRaCalam) + 1440 END) / 60.0 * nv.LuongNhanVien) AS value "
+                + "FROM LichLam ll "
+                + "JOIN CaLam cl ON ll.MaCaLam = cl.MaCaLam "
+                + "JOIN NhanVien nv ON ll.MaNhanVien = nv.MaNhanVien "
+                + "WHERE YEAR(ll.NgayLam) = YEAR(GETDATE()) "
+                + "GROUP BY MONTH(ll.NgayLam)";
         return toArrayList(queryBuckets(sql, 12));
     }
 
     public ArrayList<Integer> getArrayTongLuongnhanvientheoquy() {
-        String sql = "SELECT ((x.Thang - 1) / 3) + 1 AS bucket, SUM(nv.LuongNhanVien) AS value "
-                + "FROM ( "
-                + "    SELECT DISTINCT MONTH(NgayLam) AS Thang, MaNhanVien "
-                + "    FROM LichLam "
-                + "    WHERE YEAR(NgayLam) = YEAR(GETDATE()) "
-                + ") AS x "
-                + "JOIN NhanVien nv ON nv.MaNhanVien = x.MaNhanVien "
-                + "GROUP BY ((x.Thang - 1) / 3) + 1";
+        String sql = "SELECT DATEPART(QUARTER, ll.NgayLam) AS bucket, "
+                + "SUM((CASE WHEN cl.ThoiGianRaCalam >= cl.ThoiGianVaoCaLam "
+                + "THEN DATEDIFF(MINUTE, cl.ThoiGianVaoCaLam, cl.ThoiGianRaCalam) "
+                + "ELSE DATEDIFF(MINUTE, cl.ThoiGianVaoCaLam, cl.ThoiGianRaCalam) + 1440 END) / 60.0 * nv.LuongNhanVien) AS value "
+                + "FROM LichLam ll "
+                + "JOIN CaLam cl ON ll.MaCaLam = cl.MaCaLam "
+                + "JOIN NhanVien nv ON ll.MaNhanVien = nv.MaNhanVien "
+                + "WHERE YEAR(ll.NgayLam) = YEAR(GETDATE()) "
+                + "GROUP BY DATEPART(QUARTER, ll.NgayLam)";
         return toArrayList(queryBuckets(sql, 4));
     }
 
     public ArrayList<Integer> getArrayLuongnhanvien(String maNhanVien) {
-        String sql = "SELECT MONTH(ll.NgayLam) AS bucket, MAX(nv.LuongNhanVien) AS value "
+        String sql = "SELECT MONTH(ll.NgayLam) AS bucket, "
+                + "SUM((CASE WHEN cl.ThoiGianRaCalam >= cl.ThoiGianVaoCaLam "
+                + "THEN DATEDIFF(MINUTE, cl.ThoiGianVaoCaLam, cl.ThoiGianRaCalam) "
+                + "ELSE DATEDIFF(MINUTE, cl.ThoiGianVaoCaLam, cl.ThoiGianRaCalam) + 1440 END) / 60.0 * nv.LuongNhanVien) AS value "
                 + "FROM LichLam ll "
+                + "JOIN CaLam cl ON ll.MaCaLam = cl.MaCaLam "
                 + "JOIN NhanVien nv ON ll.MaNhanVien = nv.MaNhanVien "
                 + "WHERE ll.MaNhanVien = ? AND YEAR(ll.NgayLam) = YEAR(GETDATE()) "
                 + "GROUP BY MONTH(ll.NgayLam)";
@@ -296,9 +302,13 @@ public class n10_ThongKeDAO {
     }
 
     public int getTongLuongnhanviennam() {
-        String sql = "SELECT COALESCE(SUM(nv.LuongNhanVien), 0) "
-                + "FROM (SELECT DISTINCT MaNhanVien FROM LichLam WHERE YEAR(NgayLam) = YEAR(GETDATE())) t "
-                + "JOIN NhanVien nv ON nv.MaNhanVien = t.MaNhanVien";
+        String sql = "SELECT COALESCE(SUM((CASE WHEN cl.ThoiGianRaCalam >= cl.ThoiGianVaoCaLam "
+                + "THEN DATEDIFF(MINUTE, cl.ThoiGianVaoCaLam, cl.ThoiGianRaCalam) "
+                + "ELSE DATEDIFF(MINUTE, cl.ThoiGianVaoCaLam, cl.ThoiGianRaCalam) + 1440 END) / 60.0 * nv.LuongNhanVien), 0) "
+                + "FROM LichLam ll "
+                + "JOIN CaLam cl ON ll.MaCaLam = cl.MaCaLam "
+                + "JOIN NhanVien nv ON ll.MaNhanVien = nv.MaNhanVien "
+                + "WHERE YEAR(ll.NgayLam) = YEAR(GETDATE())";
         try (Connection conn = JDBCUtil.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -313,9 +323,13 @@ public class n10_ThongKeDAO {
     }
 
     public int getTongLuongnhanvienthang() {
-        String sql = "SELECT COALESCE(SUM(nv.LuongNhanVien), 0) "
-                + "FROM (SELECT DISTINCT MaNhanVien FROM LichLam WHERE MONTH(NgayLam) = MONTH(GETDATE()) AND YEAR(NgayLam) = YEAR(GETDATE())) t "
-                + "JOIN NhanVien nv ON nv.MaNhanVien = t.MaNhanVien";
+        String sql = "SELECT COALESCE(SUM((CASE WHEN cl.ThoiGianRaCalam >= cl.ThoiGianVaoCaLam "
+                + "THEN DATEDIFF(MINUTE, cl.ThoiGianVaoCaLam, cl.ThoiGianRaCalam) "
+                + "ELSE DATEDIFF(MINUTE, cl.ThoiGianVaoCaLam, cl.ThoiGianRaCalam) + 1440 END) / 60.0 * nv.LuongNhanVien), 0) "
+                + "FROM LichLam ll "
+                + "JOIN CaLam cl ON ll.MaCaLam = cl.MaCaLam "
+                + "JOIN NhanVien nv ON ll.MaNhanVien = nv.MaNhanVien "
+                + "WHERE MONTH(ll.NgayLam) = MONTH(GETDATE()) AND YEAR(ll.NgayLam) = YEAR(GETDATE())";
         try (Connection conn = JDBCUtil.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             try (ResultSet rs = pstmt.executeQuery()) {
