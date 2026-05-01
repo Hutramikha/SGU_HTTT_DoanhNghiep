@@ -317,7 +317,7 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
         PanelInput.setBackground(new java.awt.Color(255, 255, 255));
 
         LblTieuDe.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
-        LblTieuDe.setText("Quản Lí Nhân Viên ");
+        LblTieuDe.setVisible(false);
 
         BtnRefresh.setBackground(new java.awt.Color(0, 0, 0));
         BtnRefresh.setMaximumSize(new java.awt.Dimension(34, 34));
@@ -408,7 +408,7 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
 
         txtTimKiem.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        btnTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/search.png"))); // NOI18N
+        btnTimKiem.setIcon(Util.UIHelper.getSearchIcon());
 
         javax.swing.GroupLayout PanelTimKiemLayout = new javax.swing.GroupLayout(PanelTimKiem);
         PanelTimKiem.setLayout(PanelTimKiemLayout);

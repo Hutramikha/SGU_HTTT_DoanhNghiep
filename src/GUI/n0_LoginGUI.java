@@ -61,7 +61,7 @@ public class n0_LoginGUI extends javax.swing.JFrame {
         logoPanel.setOpaque(false);
         logoPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 118));
         logoPanel.setAlignmentX(CENTER_ALIGNMENT);
-        JLabel logoLabel = new JLabel(IconGenerator.generateCoffeeIconWithHandle(96, 96));
+        JLabel logoLabel = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("/IMAGE/logochinh.png")).getImage().getScaledInstance(96, 96, Image.SCALE_SMOOTH)));
         logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
         logoPanel.add(logoLabel, BorderLayout.CENTER);
         mainPanel.add(logoPanel);

@@ -100,7 +100,7 @@ public class n3_PNThongTinPhieuNhap extends javax.swing.JPanel {
 
         jL_ThongTinPhieuNhap.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
         jL_ThongTinPhieuNhap.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jL_ThongTinPhieuNhap.setText("Thông Tin Phiếu Nhập");
+        jL_ThongTinPhieuNhap.setVisible(false);
 
         jP_ThongTinPhieuNhap.setBackground(new java.awt.Color(255, 255, 255));
         jP_ThongTinPhieuNhap.setMaximumSize(new java.awt.Dimension(540, 260));

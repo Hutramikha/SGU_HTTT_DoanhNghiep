@@ -108,7 +108,7 @@ public class n4_MonGUI extends javax.swing.JPanel {
 
         TextFieldTimKiem.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        LabelAnhTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/search.png"))); // NOI18N
+        LabelAnhTimKiem.setIcon(Util.UIHelper.getSearchIcon());
 
         javax.swing.GroupLayout PanelTimKiemLayout = new javax.swing.GroupLayout(PanelTimKiem);
         PanelTimKiem.setLayout(PanelTimKiemLayout);
@@ -136,7 +136,7 @@ public class n4_MonGUI extends javax.swing.JPanel {
         lb_QuanLyMon.setBackground(new java.awt.Color(219, 189, 142));
         lb_QuanLyMon.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
         lb_QuanLyMon.setMaximumSize(new java.awt.Dimension(206, 42));
-        lb_QuanLyMon.setText("QUẢN LÝ MÓN");
+        lb_QuanLyMon.setVisible(false);
 
         btn_TimKiem.setBackground(new java.awt.Color(0, 0, 0));
         btn_TimKiem.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N

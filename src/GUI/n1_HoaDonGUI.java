@@ -99,50 +99,25 @@ public class n1_HoaDonGUI extends javax.swing.JPanel {
                 PanelTong.setMinimumSize(new java.awt.Dimension(1125, 658));
                 PanelTong.setPreferredSize(new java.awt.Dimension(1125, 658));
 
-                PanelHoaDon.setBackground(UIHelper.SURFACE_ALT);
-                PanelHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+                PanelHoaDon.setBackground(UIHelper.ACCENT_GREEN);
                 PanelHoaDon.setMaximumSize(new java.awt.Dimension(195, 44));
                 PanelHoaDon.setMinimumSize(new java.awt.Dimension(195, 44));
+                PanelHoaDon.setPreferredSize(new java.awt.Dimension(195, 44));
+                PanelHoaDon.setLayout(new java.awt.GridBagLayout());
 
                 jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-                jLabel1.setText("Hóa Đơn");
+                jLabel1.setText("HÓA ĐƠN");
+                PanelHoaDon.add(jLabel1, new java.awt.GridBagConstraints());
 
-                javax.swing.GroupLayout PanelHoaDonLayout = new javax.swing.GroupLayout(PanelHoaDon);
-                PanelHoaDon.setLayout(PanelHoaDonLayout);
-                PanelHoaDonLayout.setHorizontalGroup(
-                                PanelHoaDonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-                                                                PanelHoaDonLayout.createSequentialGroup()
-                                                                                .addContainerGap(67, Short.MAX_VALUE)
-                                                                                .addComponent(jLabel1)
-                                                                                .addGap(61, 61, 61)));
-                PanelHoaDonLayout.setVerticalGroup(
-                                PanelHoaDonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE, 44,
-                                                                Short.MAX_VALUE));
-
-                PanelBanHang.setBackground(UIHelper.ACCENT_GREEN);
-                PanelBanHang.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+                PanelBanHang.setBackground(UIHelper.SURFACE_ALT);
                 PanelBanHang.setMaximumSize(new java.awt.Dimension(195, 44));
                 PanelBanHang.setMinimumSize(new java.awt.Dimension(195, 44));
+                PanelBanHang.setPreferredSize(new java.awt.Dimension(195, 44));
+                PanelBanHang.setLayout(new java.awt.GridBagLayout());
 
                 jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-                jLabel3.setText("Bán Hàng");
-
-                javax.swing.GroupLayout PanelBanHangLayout = new javax.swing.GroupLayout(PanelBanHang);
-                PanelBanHang.setLayout(PanelBanHangLayout);
-                PanelBanHangLayout.setHorizontalGroup(
-                                PanelBanHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-                                                                PanelBanHangLayout.createSequentialGroup()
-                                                                                .addContainerGap(66, Short.MAX_VALUE)
-                                                                                .addComponent(jLabel3)
-                                                                                .addGap(55, 55, 55)));
-                PanelBanHangLayout.setVerticalGroup(
-                                PanelBanHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 44,
-                                                                Short.MAX_VALUE));
+                jLabel3.setText("BÁN HÀNG");
+                PanelBanHang.add(jLabel3, new java.awt.GridBagConstraints());
 
                 PanelThongTinHoaDon.setBackground(UIHelper.SURFACE);
                 PanelThongTinHoaDon.setEnabled(false);
@@ -150,7 +125,7 @@ public class n1_HoaDonGUI extends javax.swing.JPanel {
                 PanelThongTinHoaDon.setMinimumSize(new java.awt.Dimension(1113, 553));
 
                 LblTieuDe.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
-                LblTieuDe.setText("Thông tin hóa đơn");
+                LblTieuDe.setVisible(false);
                 LblTieuDe.setForeground(UIHelper.PRIMARY_GREEN);
 
                 PanelTimKiemTheoMa.setBackground(UIHelper.SURFACE);

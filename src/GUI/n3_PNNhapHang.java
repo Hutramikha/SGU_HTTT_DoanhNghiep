@@ -114,7 +114,7 @@ public class n3_PNNhapHang extends javax.swing.JPanel {
 
         jL_KhoHang1.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
         jL_KhoHang1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jL_KhoHang1.setText("Kho Hàng");
+        jL_KhoHang1.setVisible(false);
 
         PanelTimKiem.setBackground(new java.awt.Color(219, 189, 142));
         PanelTimKiem.setMaximumSize(new java.awt.Dimension(314, 32));
@@ -152,7 +152,7 @@ public class n3_PNNhapHang extends javax.swing.JPanel {
             }
         });
         
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/search.png"))); // NOI18N
+        jLabel1.setIcon(Util.UIHelper.getSearchIcon());
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btn_TimKiemActionPerformed(evt);
@@ -262,7 +262,7 @@ public class n3_PNNhapHang extends javax.swing.JPanel {
 
         jL_ChoNhap.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
         jL_ChoNhap.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jL_ChoNhap.setText("Chờ Nhập");
+        jL_ChoNhap.setVisible(false);
 
         // bảng chờ nhập ///////////////////////////////////////////////////////////////////////
         jTable_ChoNhap.setModel(new NonEditableTableModel(

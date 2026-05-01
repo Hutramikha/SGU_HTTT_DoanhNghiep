@@ -189,8 +189,35 @@ public class PhanQuyenDAO {
     }
 
     public ArrayList<PhanQuyenDTO> selectByCondition(String condition) {
-        throw new UnsupportedOperationException(
-                "selectByCondition is disabled due to SQL injection risk. Use specific parameterized DAO methods.");
+        ArrayList<PhanQuyenDTO> phanQuyens = new ArrayList<>();
+        try {
+            Connection c = JDBCUtil.getConnection();
+            String sql = "select * from PhanQuyen where " + condition;
+            Statement statement = c.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                String maQuyen = rs.getString("MaPhanQuyen");
+                String tenQuyen = rs.getString("TenQuyen");
+                boolean khachhang = rs.getBoolean("QuyenKhachHang");
+                boolean banhang = rs.getBoolean("QuyenBanHang");
+                boolean nhaphang = rs.getBoolean("QuyenNhapHang");
+                boolean mon = rs.getBoolean("QuyenMon");
+                boolean nguyenlieu = rs.getBoolean("QuyenNguyenLieu");
+                boolean lichlam = rs.getBoolean("QuyenLichLam");
+                boolean kmud = rs.getBoolean("QuyenKhuyenMaiUuDai");
+                boolean nhacc = rs.getBoolean("QuyenNhaCungCap");
+                boolean nhanvien = rs.getBoolean("QuyenNhanVien");
+                boolean thongke = rs.getBoolean("QuyenThongKe");
+                boolean trangThai = rs.getBoolean("TrangThaiPhanQuyen");
+                PhanQuyenDTO phanQuyen = new PhanQuyenDTO(maQuyen, tenQuyen, khachhang, banhang,
+                        nhaphang, mon, nguyenlieu, lichlam, kmud, nhacc, nhanvien, thongke, trangThai);
+                phanQuyens.add(phanQuyen);
+            }
+            JDBCUtil.closeConnection(c);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return phanQuyens;
     }
 
     public String LayMaPhanQuyenCuoiCung() {

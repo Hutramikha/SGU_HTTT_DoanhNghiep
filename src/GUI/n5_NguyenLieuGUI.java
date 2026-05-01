@@ -89,7 +89,7 @@ public class n5_NguyenLieuGUI extends javax.swing.JPanel {
         lb_QuanLyNL.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
         lb_QuanLyNL.setMaximumSize(new java.awt.Dimension(206, 42));
         lb_QuanLyNL.setMinimumSize(new java.awt.Dimension(206, 42));
-        lb_QuanLyNL.setText("QUẢN LÝ NGUYÊN LIỆU");
+        lb_QuanLyNL.setVisible(false);
 
         jPanel2.setBackground(new java.awt.Color(219, 189, 142));
 
@@ -309,7 +309,7 @@ public class n5_NguyenLieuGUI extends javax.swing.JPanel {
         });
 
         LabelAnhTimKiem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        LabelAnhTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/search.png"))); // NOI18N
+        LabelAnhTimKiem.setIcon(Util.UIHelper.getSearchIcon());
 
         javax.swing.GroupLayout PanelTimKiemLayout = new javax.swing.GroupLayout(PanelTimKiem);
         PanelTimKiem.setLayout(PanelTimKiemLayout);

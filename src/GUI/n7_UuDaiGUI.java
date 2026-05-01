@@ -159,7 +159,7 @@ public class n7_UuDaiGUI extends javax.swing.JPanel {
         LabelTieuDe.setText("Thông Tin Ưu Đãi");
 
         PanelInput.setBackground(new java.awt.Color(255, 255, 255));
-        PanelInput.setPreferredSize(new java.awt.Dimension(307, 290));
+        PanelInput.setPreferredSize(new java.awt.Dimension(307, 380));
 
         LblMa.setBackground(new java.awt.Color(255, 255, 255));
         LblMa.setText("Mã Ưu Đãi");
@@ -423,14 +423,14 @@ public class n7_UuDaiGUI extends javax.swing.JPanel {
                                 .addComponent(LabelTieuDe, javax.swing.GroupLayout.PREFERRED_SIZE, 32,
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(PanelInput, javax.swing.GroupLayout.PREFERRED_SIZE, 292,
+                                .addComponent(PanelInput, javax.swing.GroupLayout.PREFERRED_SIZE, 380,
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)));
 
         PanelThongTinUuDai_Cam.add(PanelThongTinUuDai);
 
         LabelTenBang.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
-        LabelTenBang.setText("Ưu Đãi Thành Viên");
+        LabelTenBang.setVisible(false);
 
         btn_Them.setBackground(new java.awt.Color(0, 0, 0));
         btn_Them.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
@@ -463,7 +463,7 @@ public class n7_UuDaiGUI extends javax.swing.JPanel {
 
         TextFieldTimKiem.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        LabelAnhTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/search.png"))); // NOI18N
+        LabelAnhTimKiem.setIcon(Util.UIHelper.getSearchIcon());
 
         javax.swing.GroupLayout PanelTimKiemLayout = new javax.swing.GroupLayout(PanelTimKiem);
         PanelTimKiem.setLayout(PanelTimKiemLayout);

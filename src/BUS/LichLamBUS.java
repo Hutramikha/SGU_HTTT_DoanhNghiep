@@ -48,23 +48,54 @@ public class LichLamBUS {
     }
 
     public ArrayList<String> getAllTenCaLam() {
-        return n6_LichLamDAO.getInstance().combobox_TenCaLam();
+        return n6_LichLamDAO.getInstance().combobox_CaLamDisplay();
     }
 
     public ArrayList<String> getAllTenNhanVien() {
-        return n6_LichLamDAO.getInstance().combobox_TenNhanVien();
+        return n6_LichLamDAO.getInstance().combobox_NhanVienDisplay();
     }
 
-    public void Dieu_chinh(String TenCaLam, String TenNhanVien, String Ngay) {
+    public void Dieu_chinh(String maCaLam, String maNhanVien, String Ngay) {
         n6_LichLamDAO dao = n6_LichLamDAO.getInstance();
 
-        String MaCaLam = dao.tim_maCaLam_theo_TenCaLam(TenCaLam);
-        String MaNhanVien = dao.tim_maNhanVien_theo_TenNhanVien(TenNhanVien);
-        System.out.println(MaCaLam + " " + MaNhanVien);
-        Date NgayDate = Date.valueOf(Ngay);
-        System.out.println(Ngay);
+        if (maCaLam == null || maCaLam.isEmpty() || maNhanVien == null || maNhanVien.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Không xác định được ca làm hoặc nhân viên để điều chỉnh");
+            return;
+        }
 
-        LichLamDTO dto = new LichLamDTO(MaCaLam, MaNhanVien, NgayDate);
+        Date NgayDate = Date.valueOf(Ngay);
+
+        int soBanGhi = dao.demLichTheoNhanVienNgay(maNhanVien, NgayDate);
+        if (soBanGhi == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Chưa có lịch làm cho nhân viên trong ngày này. Vui lòng khởi tạo tuần làm trước.");
+            return;
+        }
+        if (soBanGhi > 1) {
+            JOptionPane.showMessageDialog(null,
+                    "Dữ liệu lịch làm đang bị trùng cho nhân viên trong ngày này. Vui lòng kiểm tra dữ liệu trước khi điều chỉnh.");
+            return;
+        }
+
+        String maCaHienTai = dao.timMaCaLamTheoNhanVienNgay(maNhanVien, NgayDate);
+        if (maCaHienTai == null) {
+            JOptionPane.showMessageDialog(null,
+                    "Không đọc được lịch làm hiện tại. Vui lòng thử lại.");
+            return;
+        }
+        if (maCaHienTai.equals(maCaLam)) {
+            JOptionPane.showMessageDialog(null,
+                    "Nhân viên đã được xếp ca này trong ngày đã chọn.");
+            return;
+        }
+        if (!maCaHienTai.equals("CL000")) {
+            JOptionPane.showMessageDialog(null,
+                    "Nhân viên đã có ca " + maCaHienTai
+                            + " trong ngày này. Vui lòng tắt ca hiện tại trước khi điều chỉnh để tránh ghi đè nhầm.");
+            return;
+        }
+
+        LichLamDTO dto = new LichLamDTO(maCaLam, maNhanVien, NgayDate);
 
         Boolean dao_update = dao.update(dto);
         if (dao_update) {
@@ -74,13 +105,41 @@ public class LichLamBUS {
         }
     }
 
-    public void Xoa(String TenNhanVien, String Ngay) {
+    public void Xoa(String maNhanVien, String Ngay) {
         n6_LichLamDAO dao = n6_LichLamDAO.getInstance();
 
-        String MaNhanVien = dao.tim_maNhanVien_theo_TenNhanVien(TenNhanVien);
+        if (maNhanVien == null || maNhanVien.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Không xác định được nhân viên để tắt ca làm");
+            return;
+        }
+
         Date NgayDate = Date.valueOf(Ngay);
 
-        LichLamDTO dto = new LichLamDTO("", MaNhanVien, NgayDate);
+        int soBanGhi = dao.demLichTheoNhanVienNgay(maNhanVien, NgayDate);
+        if (soBanGhi == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Chưa có lịch làm cho nhân viên trong ngày này.");
+            return;
+        }
+        if (soBanGhi > 1) {
+            JOptionPane.showMessageDialog(null,
+                    "Dữ liệu lịch làm đang bị trùng cho nhân viên trong ngày này. Vui lòng kiểm tra dữ liệu trước khi tắt ca.");
+            return;
+        }
+
+        String maCaHienTai = dao.timMaCaLamTheoNhanVienNgay(maNhanVien, NgayDate);
+        if (maCaHienTai == null) {
+            JOptionPane.showMessageDialog(null,
+                    "Không đọc được lịch làm hiện tại. Vui lòng thử lại.");
+            return;
+        }
+        if (maCaHienTai.equals("CL000")) {
+            JOptionPane.showMessageDialog(null,
+                    "Nhân viên hiện đang ở trạng thái off trong ngày đã chọn.");
+            return;
+        }
+
+        LichLamDTO dto = new LichLamDTO("", maNhanVien, NgayDate);
 
         Boolean dao_update = dao.delete(dto);
         if (dao_update) {
@@ -91,8 +150,13 @@ public class LichLamBUS {
     }
 
     public String TimKiem(String Ngay_Str_preformatted) {
+        if (Ngay_Str_preformatted == null) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đúng định dạng. Ví dụ: 01-01-2024");
+            return null;
+        }
+
         Ngay_Str_preformatted = Ngay_Str_preformatted.replaceAll("[/\\.,]", "-");
-        if (Ngay_Str_preformatted == null || !Ngay_Str_preformatted.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
+        if (!Ngay_Str_preformatted.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đúng định dạng. Ví dụ: 01-01-2024");
             return null;
         }

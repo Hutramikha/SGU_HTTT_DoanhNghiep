@@ -486,7 +486,7 @@ public class n2_KhachHangGUI extends javax.swing.JPanel {
         ScrollPane.setViewportView(Table);
 
         LabelTenBang.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
-        LabelTenBang.setText("Khách Hàng");
+        LabelTenBang.setVisible(false);
 
         BtnTimKiem.setBackground(new java.awt.Color(0, 0, 0));
         BtnTimKiem.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -511,7 +511,7 @@ public class n2_KhachHangGUI extends javax.swing.JPanel {
         TextFieldTimKiem.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         TextFieldTimKiem.setMaximumSize(new java.awt.Dimension(64, 18));
 
-        LabelAnhTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/search.png"))); // NOI18N
+        LabelAnhTimKiem.setIcon(Util.UIHelper.getSearchIcon());
 
         javax.swing.GroupLayout PanelTimKiemLayout = new javax.swing.GroupLayout(PanelTimKiem);
         PanelTimKiem.setLayout(PanelTimKiemLayout);

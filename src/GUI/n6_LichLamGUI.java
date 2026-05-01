@@ -5,6 +5,7 @@ import Util.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -471,7 +472,7 @@ public class n6_LichLamGUI extends javax.swing.JPanel {
                                                                                 Short.MAX_VALUE)));
 
                 LabelTenBang.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
-                LabelTenBang.setText("LỊCH LÀM");
+                LabelTenBang.setVisible(false);
 
                 PanelTimKiem.setBackground(new java.awt.Color(219, 189, 142));
                 PanelTimKiem.setMaximumSize(new java.awt.Dimension(161, 32));
@@ -649,6 +650,7 @@ public class n6_LichLamGUI extends javax.swing.JPanel {
         }// </editor-fold>//GEN-END:initComponents
 
         private void combobox_TenCaLam() {
+                comboboxCaLam.removeAllItems();
 
                 ArrayList<String> list = LichLamBUS.getInstance().getAllTenCaLam();
                 for (String ca : list) {
@@ -657,11 +659,30 @@ public class n6_LichLamGUI extends javax.swing.JPanel {
         }
 
         private void combobox_TenNhanVien() {
+                comboboxNhanVien.removeAllItems();
 
                 ArrayList<String> list = LichLamBUS.getInstance().getAllTenNhanVien();
                 for (String nv : list) {
                         comboboxNhanVien.addItem(nv);
                 }
+        }
+
+        private String extractMaFromDisplay(Object selectedItem) {
+                if (selectedItem == null) {
+                        return "";
+                }
+                String text = selectedItem.toString().trim();
+                int idx = text.indexOf(" - ");
+                if (idx <= 0) {
+                        return text;
+                }
+                return text.substring(0, idx).trim();
+        }
+
+        private boolean isPastDay(Date selectedDate) {
+                LocalDate selected = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate today = LocalDate.now();
+                return selected.isBefore(today);
         }
 
         public void setHeader(JTable table, String date) {
@@ -735,9 +756,7 @@ public class n6_LichLamGUI extends javax.swing.JPanel {
                                 Date selectedDate = datechooser.getDate();
                                 String Ngay_formatted = Util.LichLam_CaLam.datechooser_cast_dangChuan(selectedDate);
                                 String Ngay_TimKiem = Util.LichLam_CaLam.yyyy_mm_dd__to__dd_mm_yyyy(Ngay_formatted);
-                                Date currentDate = new Date();
-
-                                if (selectedDate.before(currentDate)) {
+                                if (isPastDay(selectedDate)) {
                                         JOptionPane.showMessageDialog(null,
                                                         "Không thể tạo lịch làm cho ngày trong quá khứ!", "FAIL",
                                                         JOptionPane.ERROR_MESSAGE);
@@ -778,9 +797,7 @@ public class n6_LichLamGUI extends javax.swing.JPanel {
                                                         JOptionPane.ERROR_MESSAGE);
                                         return;
                                 }
-                                Date currentDate = new Date();
-
-                                if (selectedDate.before(currentDate)) {
+                                if (isPastDay(selectedDate)) {
                                         JOptionPane.showMessageDialog(null,
                                                         "Không thể điều chỉnh lịch làm cho ngày trong quá khứ!", "FAIL",
                                                         JOptionPane.ERROR_MESSAGE);
@@ -788,13 +805,19 @@ public class n6_LichLamGUI extends javax.swing.JPanel {
                                 }
                                 String Ngay_formatted = Util.LichLam_CaLam.datechooser_cast_dangChuan(selectedDate);
 
-                                String TenCa = (String) comboboxCaLam.getSelectedItem();
+                                String MaCa = extractMaFromDisplay(comboboxCaLam.getSelectedItem());
+                                String MaNhanVien = extractMaFromDisplay(comboboxNhanVien.getSelectedItem());
 
-                                String TenNhanVien = (String) comboboxNhanVien.getSelectedItem();
+                                if (MaCa.isEmpty() || MaNhanVien.isEmpty()) {
+                                        JOptionPane.showMessageDialog(null,
+                                                        "Vui lòng chọn đủ ca làm và nhân viên để điều chỉnh lịch!",
+                                                        "FAIL", JOptionPane.ERROR_MESSAGE);
+                                        return;
+                                }
 
                                 String Ngay_TimKiem = Util.LichLam_CaLam.yyyy_mm_dd__to__dd_mm_yyyy(Ngay_formatted);
 
-                                LichLamBUS.getInstance().Dieu_chinh(TenCa, TenNhanVien, Ngay_formatted);
+                                LichLamBUS.getInstance().Dieu_chinh(MaCa, MaNhanVien, Ngay_formatted);
 
                                 getData(Table, Ngay_formatted);
                                 LabelNgay.setText(LichLamBUS.getInstance().TimKiem(Ngay_TimKiem));
@@ -822,9 +845,7 @@ public class n6_LichLamGUI extends javax.swing.JPanel {
                                                         JOptionPane.ERROR_MESSAGE);
                                         return;
                                 }
-                                Date currentDate = new Date();
-
-                                if (selectedDate.before(currentDate)) {
+                                if (isPastDay(selectedDate)) {
                                         JOptionPane.showMessageDialog(null,
                                                         "Không thể sửa ca làm cho ngày trong quá khứ!", "FAIL",
                                                         JOptionPane.ERROR_MESSAGE);
@@ -832,11 +853,18 @@ public class n6_LichLamGUI extends javax.swing.JPanel {
                                 }
                                 String Ngay_formatted = Util.LichLam_CaLam.datechooser_cast_dangChuan(selectedDate);
 
-                                String TenNhanVien = (String) comboboxNhanVien.getSelectedItem();
+                                String MaNhanVien = extractMaFromDisplay(comboboxNhanVien.getSelectedItem());
+
+                                if (MaNhanVien.isEmpty()) {
+                                        JOptionPane.showMessageDialog(null,
+                                                        "Vui lòng chọn nhân viên để tắt ca làm!", "FAIL",
+                                                        JOptionPane.ERROR_MESSAGE);
+                                        return;
+                                }
 
                                 String Ngay_TimKiem = Util.LichLam_CaLam.yyyy_mm_dd__to__dd_mm_yyyy(Ngay_formatted);
 
-                                LichLamBUS.getInstance().Xoa(TenNhanVien, Ngay_formatted);
+                                LichLamBUS.getInstance().Xoa(MaNhanVien, Ngay_formatted);
                                 getData(Table, Ngay_formatted);
                                 LabelNgay.setText(LichLamBUS.getInstance().TimKiem(Ngay_TimKiem));
                         }
@@ -847,6 +875,9 @@ public class n6_LichLamGUI extends javax.swing.JPanel {
                                 if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
                                         String Ngay_String = TextFieldTimKiem.getText();
                                         String period = LichLamBUS.getInstance().TimKiem(Ngay_String);
+                                        if (period == null) {
+                                                return;
+                                        }
                                         String ngay = Util.LichLam_CaLam.dd_mm_yyyy__to__yyyy_mm_dd(Ngay_String);
                                         getData(Table, ngay);
                                         LabelNgay.setText(period);
@@ -861,6 +892,9 @@ public class n6_LichLamGUI extends javax.swing.JPanel {
                                 TextFieldTimKiem.setText(formattedDate);
                                 // String Ngay_String = TextFieldTimKiem.getText();
                                 String period = LichLamBUS.getInstance().TimKiem(formattedDate);
+                                if (period == null) {
+                                        return;
+                                }
                                 String ngay = Util.LichLam_CaLam.dd_mm_yyyy__to__yyyy_mm_dd(formattedDate);
                                 getData(Table, ngay);
                                 LabelNgay.setText(period);

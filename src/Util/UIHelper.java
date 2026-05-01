@@ -30,7 +30,7 @@ public class UIHelper {
     public static final Color APP_BACKGROUND = PRIMARY_GREEN;
     public static final Color SURFACE = new Color(251, 253, 251);
     public static final Color SURFACE_ALT = new Color(242, 247, 243);
-    public static final Color BORDER_COLOR = new Color(205, 220, 209);
+    public static final Color BORDER_COLOR = new Color(120, 140, 125); // Màu viền đậm hơn
     public static final Color DISABLED_BG = new Color(225, 232, 227);
     public static final Color DISABLED_TEXT = new Color(145, 158, 148);
     public static final Color DANGER = new Color(210, 85, 80);
@@ -112,7 +112,8 @@ public class UIHelper {
     }
 
     private static void installUiDefaults() {
-        UIManager.put("Panel.background", APP_BACKGROUND);
+        UIManager.put("Panel.background", SURFACE);
+        UIManager.put("OptionPane.background", SURFACE);
         UIManager.put("Label.foreground", DARK_TEXT);
         UIManager.put("Button.background", PRIMARY_GREEN);
         UIManager.put("Button.foreground", WHITE);
@@ -195,7 +196,7 @@ public class UIHelper {
             return APP_BACKGROUND;
         }
         if (matches(color, OLD_SURFACE)) {
-            return SURFACE_ALT;
+            return BORDER_COLOR;
         }
         if (matches(color, OLD_SURFACE_HOVER)) {
             return LIGHTER_GREEN;
@@ -467,19 +468,10 @@ public class UIHelper {
     }
 
     private static Border createSoftRaisedBorder(Color base) {
-        Color highlightOuter = lighten(base, 0.42f);
-        Color highlightInner = lighten(base, 0.22f);
-        Color shadowInner = darken(base, 0.18f);
-        Color shadowOuter = darken(base, 0.34f);
-
-        Border bevel = new SoftBevelBorder(
-                SoftBevelBorder.RAISED,
-                highlightOuter,
-                highlightInner,
-                shadowOuter,
-                shadowInner);
-        Border padding = new EmptyBorder(7, 14, 7, 14);
-        return new CompoundBorder(bevel, padding);
+        Color borderColor = darken(base, 0.40f);
+        Border line = BorderFactory.createLineBorder(borderColor, 2);
+        Border margin = BorderFactory.createEmptyBorder(6, 14, 6, 14);
+        return BorderFactory.createCompoundBorder(line, margin);
     }
 
     private static Color lighten(Color color, float ratio) {
@@ -507,5 +499,26 @@ public class UIHelper {
     private static boolean isDarkColor(Color color) {
         double luma = 0.2126 * color.getRed() + 0.7152 * color.getGreen() + 0.0722 * color.getBlue();
         return luma < 150;
+    }
+
+    public static Icon getSearchIcon() {
+        return new Icon() {
+            @Override
+            public void paintIcon(Component c, Graphics g, int x, int y) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(DARK_TEXT);
+                g2.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                g2.drawOval(x + 3, y + 3, 10, 10);
+                g2.drawLine(x + 11, y + 11, x + 17, y + 17);
+                g2.dispose();
+            }
+
+            @Override
+            public int getIconWidth() { return 20; }
+
+            @Override
+            public int getIconHeight() { return 20; }
+        };
     }
 }

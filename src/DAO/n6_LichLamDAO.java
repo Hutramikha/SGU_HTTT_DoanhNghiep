@@ -138,6 +138,39 @@ public class n6_LichLamDAO {
         }
     }
 
+    public int demLichTheoNhanVienNgay(String maNhanVien, Date ngayLam) {
+        String sql = "SELECT COUNT(*) AS tong FROM LichLam WHERE MaNhanVien = ? AND NgayLam = ?";
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql)) {
+            st.setString(1, maNhanVien);
+            st.setDate(2, ngayLam);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("tong");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return 0;
+    }
+
+    public String timMaCaLamTheoNhanVienNgay(String maNhanVien, Date ngayLam) {
+        String sql = "SELECT TOP 1 MaCaLam FROM LichLam WHERE MaNhanVien = ? AND NgayLam = ? "
+                + "ORDER BY CASE WHEN MaCaLam = 'CL000' THEN 1 ELSE 0 END, MaCaLam";
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql)) {
+            st.setString(1, maNhanVien);
+            st.setDate(2, ngayLam);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getString("MaCaLam");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
     public ArrayList<String> showAll(Date Ngay) {
         ArrayList<String> list = new ArrayList<>();
         String sql = "DECLARE @start DATE = ?;\n"
@@ -248,7 +281,7 @@ public class n6_LichLamDAO {
 
     public String tim_maNhanVien_theo_TenNhanVien(String TenNhanVien) {
         String Ma = null;
-        String sql = "select MaNhanVien from NhanVien where TenNhanVien = ? and TrangThaiNhanvien = 1";
+        String sql = "select MaNhanVien from NhanVien where TenNhanVien = ? and TrangThaiNhanVien = 1";
 
         try {
             Connection c = JDBCUtil.getConnection();
@@ -366,6 +399,26 @@ public class n6_LichLamDAO {
         return list;
     }
 
+    public ArrayList<String> combobox_CaLamDisplay() {
+        ArrayList<String> list = new ArrayList<>();
+        String sql = "select MaCaLam, TenCaLam from CaLam where TrangThaiCaLam = 1 and MaCaLam <> 'CL000' order by ThoiGianVaoCaLam";
+
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql);
+                ResultSet rs = st.executeQuery()) {
+            while (rs.next()) {
+                String ma = rs.getString("MaCaLam");
+                String ten = rs.getString("TenCaLam");
+                list.add(ma + " - " + ten);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("không tìm được ds ca làm!");
+        }
+
+        return list;
+    }
+
     public ArrayList<String> combobox_TenNhanVien() {
         ArrayList<String> list = new ArrayList<>();
 
@@ -381,6 +434,26 @@ public class n6_LichLamDAO {
                 list.add(Ten);
             }
             JDBCUtil.closeConnection(c);
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("không tìm được ds tên nhân viên!");
+        }
+
+        return list;
+    }
+
+    public ArrayList<String> combobox_NhanVienDisplay() {
+        ArrayList<String> list = new ArrayList<>();
+        String sql = "select MaNhanVien, TenNhanVien from NhanVien where TrangThaiNhanVien = 1 order by MaNhanVien";
+
+        try (Connection c = JDBCUtil.getConnection();
+                PreparedStatement st = c.prepareStatement(sql);
+                ResultSet rs = st.executeQuery()) {
+            while (rs.next()) {
+                String ma = rs.getString("MaNhanVien");
+                String ten = rs.getString("TenNhanVien");
+                list.add(ma + " - " + ten);
+            }
         } catch (SQLException e) {
             System.out.println(e);
             System.out.println("không tìm được ds tên nhân viên!");

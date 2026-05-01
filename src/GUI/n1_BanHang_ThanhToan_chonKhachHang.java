@@ -177,7 +177,7 @@ public class n1_BanHang_ThanhToan_chonKhachHang extends javax.swing.JFrame {
                 TimKiem.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
                 LabelAnhTimKiem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                LabelAnhTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/search.png"))); // NOI18N
+                LabelAnhTimKiem.setIcon(Util.UIHelper.getSearchIcon());
 
                 javax.swing.GroupLayout PanelTimKiemLayout = new javax.swing.GroupLayout(PanelTimKiem);
                 PanelTimKiem.setLayout(PanelTimKiemLayout);

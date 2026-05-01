@@ -65,7 +65,7 @@ public class n3_PNQuanLyNhapHang extends javax.swing.JPanel {
 
         jL_NhapHang.setBackground(UIHelper.PRIMARY_GREEN);
         jL_NhapHang.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        jL_NhapHang.setForeground(UIHelper.WHITE);
+        jL_NhapHang.setForeground(UIHelper.DARK_TEXT);
         jL_NhapHang.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jL_NhapHang.setText("Nhập Hàng");
         jL_NhapHang.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);

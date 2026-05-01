@@ -83,7 +83,7 @@ public class n3_PNPhieuNhap extends javax.swing.JPanel {
 
         jL_ThongTinPhieuNhap.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
         jL_ThongTinPhieuNhap.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jL_ThongTinPhieuNhap.setText("Thông Tin Phiếu Nhập");
+        jL_ThongTinPhieuNhap.setVisible(false);
 
         jP_NoiDungNhap.setBackground(new java.awt.Color(219, 189, 142));
         jP_NoiDungNhap.setMaximumSize(new java.awt.Dimension(1100, 570));
