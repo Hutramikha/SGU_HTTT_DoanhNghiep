@@ -247,10 +247,11 @@ public class n1_BanHangKeoTha extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTimKiemLayout.createSequentialGroup()
                                 .addGap(4, 4, 4)
                                 .addGroup(PanelTimKiemLayout
-                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
                                         .addComponent(LabelAnhTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(TimKiem))
+                                        .addComponent(TimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 24,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(4, 4, 4)));
 
         javax.swing.GroupLayout PanelNoiDungLayout = new javax.swing.GroupLayout(PanelNoiDung);

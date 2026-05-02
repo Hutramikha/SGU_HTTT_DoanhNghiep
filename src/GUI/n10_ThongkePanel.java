@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import java.util.concurrent.CompletableFuture;
 
 import org.knowm.xchart.*;
 
@@ -50,6 +51,10 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         Date date = new Date(System.currentTimeMillis());
         n5_NguyenLieuBUS NLBUS = new n5_NguyenLieuBUS();
 
+        // Selected year for statistics (user-selectable)
+        private int selectedYear = java.time.LocalDate.now().getYear();
+        private javax.swing.JComboBox<Integer> CbboxNam;
+
         // Cache statistics data so EDT only renders UI.
         private int cachedTongTienHoaDonNgay = Integer.MIN_VALUE;
         private int cachedSoLuongHoaDon = Integer.MIN_VALUE;
@@ -80,6 +85,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         public n10_ThongkePanel() {
                 initComponents();
                 applyUnifiedGreenTheme();
+                setupYearSelector();
                 refreshStatisticsData(false);
         }
 
@@ -121,7 +127,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                                 jTextField16, jTextField17, jTextField18, jTextField19, jTextField20);
 
                 styleComboBoxes(Combobox_TK, CbboxDefault, CbboxDthu, CbboxChiphi, CbboxLoinhuan, CbboxLuong,
-                                CbboxKhohang);
+                                CbboxKhohang, CbboxNam);
                 styleScrollPanes(DefaultTK, TK_doanhthu, TK_chiphi, TK_loinhuan, TK_luong, TK_khohang);
 
                 if (ThongkePanel != null) {
@@ -210,9 +216,33 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                         resetStatisticsCache();
                 }
                 setStatisticsLoading(true);
-                System.out.println("Starting statistics loader...");
+                System.out.println("Starting statistics loader for year: " + selectedYear);
                 StatisticsLoadWorker2_fixed worker = new StatisticsLoadWorker2_fixed(this);
                 worker.execute();
+        }
+
+        private void setupYearSelector() {
+                // Year ComboBox is already laid out in initComponents; just wire the logic here
+                if (CbboxNam == null) return;
+                int currentYear = java.time.LocalDate.now().getYear();
+                int startYear = 2020;
+                int count = currentYear - startYear + 1;
+                Integer[] years = new Integer[count];
+                for (int i = 0; i < count; i++) {
+                        years[i] = currentYear - i; // newest first
+                }
+                CbboxNam.setModel(new javax.swing.DefaultComboBoxModel<>(years));
+                CbboxNam.setSelectedItem(selectedYear);
+                CbboxNam.addActionListener(e -> {
+                        Object sel = CbboxNam.getSelectedItem();
+                        if (sel instanceof Integer) {
+                                int chosenYear = (Integer) sel;
+                                if (chosenYear != selectedYear) {
+                                        selectedYear = chosenYear;
+                                        refreshStatisticsData(true);
+                                }
+                        }
+                });
         }
 
         private void applyBackground(Color background, JPanel... panels) {
@@ -269,34 +299,49 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                         list = getNhanVienListCached();
                 }
 
-                getTongTienHoaDonNgayCached();
-                getSoLuongHoaDonCached();
-                getSoLuongKhachHangCached();
-                getSoLuongMonCached();
-                getTongTienHoaDonThangCached();
-                getTongDoanhThuNamCached();
-                getTongTienPhieuNhapThangCached();
-                getTongTienLuongThangCached();
-                getTongLuongNhanVienNamCached();
-                getTongPhieuNhapNamCached();
-                getSoLuongNhanVienCached();
-                getSoLuongPhieuNhapCached();
-                getSoLuongNguyenLieuCached();
-                getSoLuongNccCached();
+                System.out.println("🚀 [Parallel Preload] Starting parallel statistics data fetch...");
+                long startTime = System.currentTimeMillis();
 
-                getArrayDoanhthuTuanCached();
-                getArrayDoanhthuNamCached();
-                getArrayDoanhthuQuyCached();
-                getArrayPhieuNhapNamCached();
-                getArrayPhieuNhapNamTheoQuyCached();
-                getArrayTongLuongTheoThangCached();
-                getArrayTongLuongTheoQuyCached();
-                getKhoiLuongNLCached();
-                getNguyenLieuListCached();
-
-                for (NhanVienDTO nv : list) {
-                        getLuongNhanVienCached(nv.getMaNhanVien());
+                // 1. Fetch batch salary data first (biggest optimization)
+                java.util.Map<String, int[]> batchSalaries = TK.getBatchSalaryStatistics(selectedYear);
+                for (java.util.Map.Entry<String, int[]> entry : batchSalaries.entrySet()) {
+                        ArrayList<Integer> salaryList = new ArrayList<>();
+                        for (int s : entry.getValue())
+                                salaryList.add(s);
+                        cachedLuongNhanVienByMa.put(entry.getKey(), salaryList);
                 }
+
+                // 2. Parallelize independent queries
+                CompletableFuture<?>[] futures = {
+                                CompletableFuture.runAsync(this::getTongTienHoaDonNgayCached),
+                                CompletableFuture.runAsync(this::getSoLuongHoaDonCached),
+                                CompletableFuture.runAsync(this::getSoLuongKhachHangCached),
+                                CompletableFuture.runAsync(this::getSoLuongMonCached),
+                                CompletableFuture.runAsync(this::getTongTienHoaDonThangCached),
+                                CompletableFuture.runAsync(this::getTongDoanhThuNamCached),
+                                CompletableFuture.runAsync(this::getTongTienPhieuNhapThangCached),
+                                CompletableFuture.runAsync(this::getTongTienLuongThangCached),
+                                CompletableFuture.runAsync(this::getTongLuongNhanVienNamCached),
+                                CompletableFuture.runAsync(this::getTongPhieuNhapNamCached),
+                                CompletableFuture.runAsync(this::getSoLuongNhanVienCached),
+                                CompletableFuture.runAsync(this::getSoLuongPhieuNhapCached),
+                                CompletableFuture.runAsync(this::getSoLuongNguyenLieuCached),
+                                CompletableFuture.runAsync(this::getSoLuongNccCached),
+                                CompletableFuture.runAsync(this::getArrayDoanhthuTuanCached),
+                                CompletableFuture.runAsync(this::getArrayDoanhthuNamCached),
+                                CompletableFuture.runAsync(this::getArrayDoanhthuQuyCached),
+                                CompletableFuture.runAsync(this::getArrayPhieuNhapNamCached),
+                                CompletableFuture.runAsync(this::getArrayPhieuNhapNamTheoQuyCached),
+                                CompletableFuture.runAsync(this::getArrayTongLuongTheoThangCached),
+                                CompletableFuture.runAsync(this::getArrayTongLuongTheoQuyCached),
+                                CompletableFuture.runAsync(this::getKhoiLuongNLCached),
+                                CompletableFuture.runAsync(this::getNguyenLieuListCached)
+                };
+
+                CompletableFuture.allOf(futures).join();
+
+                long endTime = System.currentTimeMillis();
+                System.out.println("✅ [Parallel Preload] Finished in " + (endTime - startTime) + "ms");
         }
 
         private ArrayList<NhanVienDTO> getNhanVienListCached() {
@@ -336,42 +381,42 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
         private int getTongTienHoaDonThangCached() {
                 if (cachedTongTienHoaDonThang == Integer.MIN_VALUE) {
-                        cachedTongTienHoaDonThang = TK.getTongTienHoaDonthang();
+                        cachedTongTienHoaDonThang = TK.getTongTienHoaDonthang(selectedYear);
                 }
                 return cachedTongTienHoaDonThang;
         }
 
         private int getTongDoanhThuNamCached() {
                 if (cachedTongDoanhThuNam == Integer.MIN_VALUE) {
-                        cachedTongDoanhThuNam = TK.getTongDthunam();
+                        cachedTongDoanhThuNam = TK.getTongDthunam(selectedYear);
                 }
                 return cachedTongDoanhThuNam;
         }
 
         private int getTongTienPhieuNhapThangCached() {
                 if (cachedTongTienPhieuNhapThang == Integer.MIN_VALUE) {
-                        cachedTongTienPhieuNhapThang = TK.getTongTienPhieunhapthang();
+                        cachedTongTienPhieuNhapThang = TK.getTongTienPhieunhapthang(selectedYear);
                 }
                 return cachedTongTienPhieuNhapThang;
         }
 
         private int getTongTienLuongThangCached() {
                 if (cachedTongTienLuongThang == Integer.MIN_VALUE) {
-                        cachedTongTienLuongThang = TK.getTongTienLuongthang();
+                        cachedTongTienLuongThang = TK.getTongTienLuongthang(selectedYear);
                 }
                 return cachedTongTienLuongThang;
         }
 
         private int getTongLuongNhanVienNamCached() {
                 if (cachedTongLuongNhanVienNam == Integer.MIN_VALUE) {
-                        cachedTongLuongNhanVienNam = TK.getTongLuongnhanviennam();
+                        cachedTongLuongNhanVienNam = TK.getTongLuongnhanviennam(selectedYear);
                 }
                 return cachedTongLuongNhanVienNam;
         }
 
         private int getTongPhieuNhapNamCached() {
                 if (cachedTongPhieuNhapNam == Integer.MIN_VALUE) {
-                        cachedTongPhieuNhapNam = TK.getTongphieunhapnam();
+                        cachedTongPhieuNhapNam = TK.getTongphieunhapnam(selectedYear);
                 }
                 return cachedTongPhieuNhapNam;
         }
@@ -385,7 +430,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
         private int getSoLuongPhieuNhapCached() {
                 if (cachedSoLuongPhieuNhap == Integer.MIN_VALUE) {
-                        cachedSoLuongPhieuNhap = TK.getsoluongPN();
+                        cachedSoLuongPhieuNhap = TK.getsoluongPN(selectedYear);
                 }
                 return cachedSoLuongPhieuNhap;
         }
@@ -413,42 +458,42 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
         private ArrayList<Integer> getArrayDoanhthuNamCached() {
                 if (cachedArrayDoanhthuNam == null) {
-                        cachedArrayDoanhthuNam = TK.getArrayDoanhthunam();
+                        cachedArrayDoanhthuNam = TK.getArrayDoanhthunam(selectedYear);
                 }
                 return cachedArrayDoanhthuNam;
         }
 
         private ArrayList<Integer> getArrayDoanhthuQuyCached() {
                 if (cachedArrayDoanhthuQuy == null) {
-                        cachedArrayDoanhthuQuy = TK.getArrayDoanhthuquy();
+                        cachedArrayDoanhthuQuy = TK.getArrayDoanhthuquy(selectedYear);
                 }
                 return cachedArrayDoanhthuQuy;
         }
 
         private ArrayList<Integer> getArrayPhieuNhapNamCached() {
                 if (cachedArrayPhieuNhapNam == null) {
-                        cachedArrayPhieuNhapNam = TK.getArrayphieunhapnam();
+                        cachedArrayPhieuNhapNam = TK.getArrayphieunhapnam(selectedYear);
                 }
                 return cachedArrayPhieuNhapNam;
         }
 
         private ArrayList<Integer> getArrayPhieuNhapNamTheoQuyCached() {
                 if (cachedArrayPhieuNhapNamTheoQuy == null) {
-                        cachedArrayPhieuNhapNamTheoQuy = TK.getArrayphieunhapnamtheoquy();
+                        cachedArrayPhieuNhapNamTheoQuy = TK.getArrayphieunhapnamtheoquy(selectedYear);
                 }
                 return cachedArrayPhieuNhapNamTheoQuy;
         }
 
         private ArrayList<Integer> getArrayTongLuongTheoThangCached() {
                 if (cachedArrayTongLuongTheoThang == null) {
-                        cachedArrayTongLuongTheoThang = TK.getArrayTongLuongnhanvientheothang();
+                        cachedArrayTongLuongTheoThang = TK.getArrayTongLuongnhanvientheothang(selectedYear);
                 }
                 return cachedArrayTongLuongTheoThang;
         }
 
         private ArrayList<Integer> getArrayTongLuongTheoQuyCached() {
                 if (cachedArrayTongLuongTheoQuy == null) {
-                        cachedArrayTongLuongTheoQuy = TK.getArrayTongLuongnhanvientheoquy();
+                        cachedArrayTongLuongTheoQuy = TK.getArrayTongLuongnhanvientheoquy(selectedYear);
                 }
                 return cachedArrayTongLuongTheoQuy;
         }
@@ -456,7 +501,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         private ArrayList<Integer> getLuongNhanVienCached(String maNhanVien) {
                 ArrayList<Integer> cached = cachedLuongNhanVienByMa.get(maNhanVien);
                 if (cached == null) {
-                        cached = TK.getArrayLuongnhanvien(maNhanVien);
+                        cached = TK.getArrayLuongnhanvien(maNhanVien, selectedYear);
                         cachedLuongNhanVienByMa.put(maNhanVien, cached);
                 }
                 return cached;
@@ -532,6 +577,18 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 SoluongKH.setEditable(false);
                 Dthuthanghientai.setEditable(false);
 
+                // Update dynamic labels to reflect selected year
+                jLabel8.setText("Doanh thu năm " + selectedYear);
+                jLabel39.setText("Tổng lợi nhuận năm " + selectedYear);
+                jLabel42.setText("Tổng lương nhân viên năm " + selectedYear);
+                // Also update month labels for clarity in historical view
+                jLabel7.setText("Doanh thu tháng " + date.toLocalDate().getMonthValue() + " (" + selectedYear + ")");
+                jLabel38.setText("Lợi nhuận tháng " + date.toLocalDate().getMonthValue() + " (" + selectedYear + ")");
+                jLabel41.setText("Tổng lương nhân viên tháng " + date.toLocalDate().getMonthValue() + " (" + selectedYear + ")");
+                jLabel9.setText("Chi phi nhập hàng tháng " + date.toLocalDate().getMonthValue() + " (" + selectedYear + ")");
+                jLabel10.setText("Chi phí luong nhân viên tháng " + date.toLocalDate().getMonthValue() + " (" + selectedYear + ")");
+                jLabel36.setText("Tổng chi phí tháng " + date.toLocalDate().getMonthValue() + " (" + selectedYear + ")");
+
                 //////////////////////////////// biểu đồ đường mặc định
                 List<Integer> xData = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
                 // List<Integer> yData = Arrays.asList(1.0, 4.0, 3.0, 5.0, 4.0, 3.0, 5.0, 4.0,
@@ -559,7 +616,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 List<String> seriesNamedthu = List.of("doanh thu");
                 List<Integer> ydataDthu = getArrayDoanhthuNamCached();
                 XYChart ChartDthu = n10_ChartCreator.createLineChart(xIndexDThu, ydataDthu, seriesNamedthu,
-                                "Biểu đồ doanh thu năm theo Tháng",
+                                "Biểu đồ doanh thu năm " + selectedYear + " theo Tháng",
                                 "tháng", "doanh thu");
 
                 XChartPanel<XYChart> ChartPanelDthu = new XChartPanel<XYChart>(ChartDthu);
@@ -573,7 +630,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 List<Integer> ydataDthuQUy = getArrayDoanhthuQuyCached();
                 List<String> seriesNamedthuquy = List.of("doanh thu");
                 XYChart ChartDthuquy = n10_ChartCreator.createLineChart(xdataDthuQuy, ydataDthuQUy, seriesNamedthuquy,
-                                "Biểu đồ doanh thu năm theo quý", "Quý", "doanh thu (Triệu)");
+                                "Biểu đồ doanh thu năm " + selectedYear + " theo Quý", "Quý", "doanh thu (Triệu)");
 
                 XChartPanel<XYChart> ChartPanelDthuquy = new XChartPanel<XYChart>(ChartDthuquy);
 
@@ -589,7 +646,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 List<String> seriesName = List.of("lương nhân viên", "nhập hàng");
 
                 CategoryChart ChartChiphi = n10_ChartCreator.createBarChart(xdataCphi, yDataList, seriesName,
-                                "Biểu đồ chi phí",
+                                "Biểu đồ chi phí năm " + selectedYear,
                                 "Tháng", "Chi phí");
                 XChartPanel<CategoryChart> ChartChiphipanel = new XChartPanel<CategoryChart>(ChartChiphi);
                 ContentCphi1.setLayout(new BorderLayout());
@@ -604,7 +661,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 CategoryChart ChartChiphiQuy = n10_ChartCreator.createBarChart(xdataCphiquy, yDataListQuy,
                                 seriesNameQuy,
-                                "Biểu đồ chi phí", "Tháng", "Chi phí ");
+                                "Biểu đồ chi phí năm " + selectedYear + " theo Quý", "Tháng", "Chi phí ");
                 XChartPanel<CategoryChart> ChartChiphipanelQuy = new XChartPanel<CategoryChart>(ChartChiphiQuy);
                 ContentCphi2.setLayout(new BorderLayout());
                 ContentCphi2.add(ChartChiphipanelQuy, BorderLayout.NORTH);
@@ -624,7 +681,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 List<List<Integer>> yDataList1 = List.of(LoiNhuan);
                 List<String> seriesName1 = List.of("Lợi nhuận");
                 CategoryChart ChartLoinhuan = n10_ChartCreator.createBarChart(xdataLoinhuan, yDataList1, seriesName1,
-                                "Biểu đồ lợi nhuận", "Tháng", "lợi nhuận");
+                                "Biểu đồ lợi nhuận năm " + selectedYear, "Tháng", "lợi nhuận");
                 XChartPanel<CategoryChart> ChartLoinhuanpanel = new XChartPanel<CategoryChart>(ChartLoinhuan);
                 contentTKLnhuan1.setLayout(new BorderLayout());
                 contentTKLnhuan1.add(ChartLoinhuanpanel, BorderLayout.NORTH);
@@ -645,7 +702,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 List<String> seriesName2 = List.of("Lợi nhuận");
                 CategoryChart ChartLoinhuanQuy = n10_ChartCreator.createBarChart(xdataLoinhuanquy, yDataList2,
                                 seriesName2,
-                                "Biểu đồ lợi nhuận", "Quý", "lợi nhuận");
+                                "Biểu đồ lợi nhuận năm " + selectedYear + " theo Quý", "Quý", "lợi nhuận");
                 XChartPanel<CategoryChart> ChartLoinhuanpanelquy = new XChartPanel<CategoryChart>(ChartLoinhuanQuy);
                 contentTKLnhuan2.setLayout(new BorderLayout());
                 contentTKLnhuan2.add(ChartLoinhuanpanelquy, BorderLayout.NORTH);
@@ -677,7 +734,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 }
 
                 CategoryChart ChartLuong = n10_ChartCreator.createBarChart(xdataCLuong, yDataList3, seriesName3,
-                                "Biểu đồ lương", "Tháng", "Chi phí");
+                                "Biểu đồ lương năm " + selectedYear, "Tháng", "Chi phí");
                 XChartPanel<CategoryChart> ChartLuongPn = new XChartPanel<CategoryChart>(ChartLuong);
                 ContentLuong1.setLayout(new BorderLayout());
                 ContentLuong1.add(ChartLuongPn, BorderLayout.NORTH);
@@ -717,9 +774,11 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
         public void addControl() {
 
-                String[] columnNames = { "Tháng", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
-                                "tổng năm" + date.toLocalDate().getYear() };
-                String[] columnNamesquy = { "Quý", "1", "2", "3", "4", "tổng năm" + date.toLocalDate().getYear() };
+                String[] columnNames = { "Danh mục", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+                                "tổng năm " + selectedYear };
+                String[] columnNamesLuong = { "Mã NV", "Tên Nhân Viên", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+                                "Tổng năm " + selectedYear };
+                String[] columnNamesquy = { "Danh mục", "1", "2", "3", "4", "tổng năm " + selectedYear };
 
                 ArrayList<Integer> dataDthu = getArrayDoanhthuNamCached(); // Doanh thu
                 ArrayList<Integer> dataDthuquy = getArrayDoanhthuQuyCached(); // Doanh thu
@@ -820,7 +879,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                         stringArrayloinhuanquy[0][5] = String.valueOf(Sumloinhuanquy);
                 }
                 //////////// lương nhân viên
-                String[][] stringArrayluongnv = new String[list.size()][14];
+                String[][] stringArrayluongnv = new String[list.size()][15];
 
                 // FIX: Cache all salary data before loop to avoid N+1 queries
                 java.util.Map<String, ArrayList<Integer>> employeeSalaryCache2 = new java.util.HashMap<>();
@@ -829,14 +888,16 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 }
 
                 for (int i = 0; i < list.size(); i++) {
-                        ArrayList<Integer> a = employeeSalaryCache2.get(list.get(i).getMaNhanVien()); // Use cached data
-                        stringArrayluongnv[i][0] = list.get(i).getTenNhanVien();
+                        NhanVienDTO nv = list.get(i);
+                        ArrayList<Integer> a = employeeSalaryCache2.get(nv.getMaNhanVien()); // Use cached data
+                        stringArrayluongnv[i][0] = nv.getMaNhanVien();
+                        stringArrayluongnv[i][1] = nv.getTenNhanVien();
                         sumluongnv = 0.0;
                         for (int j = 0; j < 12; j++) {
-                                stringArrayluongnv[i][j + 1] = String.valueOf(a.get(j));
+                                stringArrayluongnv[i][j + 2] = String.valueOf(a.get(j));
                                 sumluongnv += a.get(j);
                         }
-                        stringArrayluongnv[i][13] = String.valueOf(sumluongnv);
+                        stringArrayluongnv[i][14] = String.valueOf(sumluongnv);
 
                 }
                 ////////////////kho
@@ -882,7 +943,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 DefaultTableModel tableModelchiphiquy = new DefaultTableModel(stringArrayChiphiquy, columnNamesquy);
                 DefaultTableModel tableModelloinhuan = new DefaultTableModel(stringArrayloinhuan, columnNames);
                 DefaultTableModel tableModelloinhuanquy = new DefaultTableModel(stringArrayloinhuanquy, columnNamesquy);
-                DefaultTableModel tableModelluongnv = new DefaultTableModel(stringArrayluongnv, columnNames);
+                DefaultTableModel tableModelluongnv = new DefaultTableModel(stringArrayluongnv, columnNamesLuong);
                 DefaultTableModel tableModelmDefaul = new DefaultTableModel(stringArrayDefault, columnNames);
                 DefaultTableModel tableModelmDefaulQuy = new DefaultTableModel(stringArrayDefaultquy, columnNamesquy);
 
@@ -1120,6 +1181,14 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 CbboxDefault.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tháng", "Quý" }));
                 CbboxDefault.setToolTipText("Kiểu báo cáo tab Mặc định");
 
+                CbboxNam = new javax.swing.JComboBox<>();
+                CbboxNam.setModel(new javax.swing.DefaultComboBoxModel<>(new Integer[]{2026})); // populated in setupYearSelector
+                CbboxNam.setFont(new java.awt.Font("Segoe UI Semibold", 0, 13)); // NOI18N
+                CbboxNam.setBackground(UIHelper.SURFACE);
+                CbboxNam.setForeground(UIHelper.DARK_TEXT);
+                CbboxNam.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                CbboxNam.setToolTipText("Chọn năm thống kê");
+
                 javax.swing.GroupLayout HeaderTkLayout = new javax.swing.GroupLayout(HeaderTk);
                 HeaderTk.setLayout(HeaderTkLayout);
                 HeaderTkLayout.setHorizontalGroup(
@@ -1130,14 +1199,19 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                 180,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(18, 18, 18)
+                                                                .addGap(12, 12, 12)
                                                                 .addComponent(CbboxDefault,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                 120,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(CbboxNam,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                100,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addPreferredGap(
                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                                                568,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                 Short.MAX_VALUE)
                                                                 .addComponent(BtnRefresh,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -1168,6 +1242,10 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                                                                                                 32,
                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                 .addComponent(CbboxDefault,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                32,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addComponent(CbboxNam,
                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                 32,
                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE))

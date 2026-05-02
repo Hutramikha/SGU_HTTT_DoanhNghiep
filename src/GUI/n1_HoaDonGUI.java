@@ -532,7 +532,7 @@ public class n1_HoaDonGUI extends javax.swing.JPanel {
                                 PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTongLayout
                                                                 .createSequentialGroup()
-                                                                .addContainerGap(41, Short.MAX_VALUE)
+                                                                .addGap(29, 29, 29)
                                                                 .addGroup(PanelTongLayout
                                                                                 .createParallelGroup(
                                                                                                 javax.swing.GroupLayout.Alignment.LEADING,
@@ -545,8 +545,7 @@ public class n1_HoaDonGUI extends javax.swing.JPanel {
                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                .addPreferredGap(
-                                                                                javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                 .addComponent(PanelThongTinHoaDon,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,

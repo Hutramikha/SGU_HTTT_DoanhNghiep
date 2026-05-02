@@ -215,4 +215,19 @@ public class LichLamBUS {
                     JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
+    public boolean capNhatDiemDanh(String maNV, String maCa, Date ngay, int trangThai) {
+        return n6_LichLamDAO.getInstance().updateTrangThaiDiemDanh(maNV, maCa, ngay, trangThai);
+    }
+
+    public void capNhatTrangThaiNghi(String maNV, Date ngayBatDau, Date ngayKetThuc, int trangThai) {
+        n6_LichLamDAO dao = n6_LichLamDAO.getInstance();
+        LocalDate start = ngayBatDau.toLocalDate();
+        LocalDate end = ngayKetThuc.toLocalDate();
+
+        for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
+            // Cập nhật tất cả các ca làm trong ngày đó của nhân viên
+            dao.updateTrangThaiDiemDanhNgay(maNV, Date.valueOf(date), trangThai);
+        }
+    }
 }

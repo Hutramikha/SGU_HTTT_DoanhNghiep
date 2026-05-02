@@ -243,6 +243,22 @@ public class n6_CaLamDAO {
     }
 
 
+    public CaLamDTO getById(String ma) {
+        String sql = "SELECT * FROM CaLam WHERE MaCaLam = ?";
+        try (Connection c = JDBCUtil.getConnection(); PreparedStatement st = c.prepareStatement(sql)) {
+            st.setString(1, ma);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return new CaLamDTO(rs.getString("MaCaLam"), rs.getString("TenCaLam"),
+                        rs.getString("ThoiGianVaoCaLam"), rs.getString("ThoiGianRaCaLam"),
+                        rs.getBoolean("TrangThaiCaLam"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void main(String args[]) {
         // Test
     }

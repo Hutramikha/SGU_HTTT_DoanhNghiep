@@ -94,6 +94,11 @@ public class YeuCauNhanSuBUS {
         if (chapNhan && LOAI_NGHI_VIEC.equals(yc.getLoaiYeuCau())) {
             nhanVienDAO.updateTrangThaiNhanVien(yc.getMaNhanVien(), 0);
             taiKhoanDAO.capNhatNgayNghiViec(yc.getMaNhanVien(), ngayDuyet);
+            // Mark all future shifts as unpaid leave/resigned
+            LichLamBUS.getInstance().capNhatTrangThaiNghi(yc.getMaNhanVien(), yc.getTuNgay(), yc.getDenNgay(), 3);
+        } else if (chapNhan && LOAI_NGHI_PHEP.equals(yc.getLoaiYeuCau())) {
+            // Mark shifts as paid leave
+            LichLamBUS.getInstance().capNhatTrangThaiNghi(yc.getMaNhanVien(), yc.getTuNgay(), yc.getDenNgay(), 2);
         }
 
         new dialog(chapNhan ? "Đã duyệt yêu cầu." : "Đã từ chối yêu cầu.", dialog.SUCCESS_DIALOG);

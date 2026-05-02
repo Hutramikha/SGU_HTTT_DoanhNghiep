@@ -23,21 +23,27 @@ public class ThongkeBUS {
     }
 
     public int getTongTienHoaDonthang() {
-        int Tong = 0;
-        Tong = TK.TongtienHoadonThangHienTai();
-        return Tong;
+        return getTongTienHoaDonthang(java.time.LocalDate.now().getYear());
+    }
+
+    public int getTongTienHoaDonthang(int year) {
+        return TK.TongtienHoadonThang(year);
     }
 
     public int getTongTienPhieunhapthang() {
-        int Tong = 0;
-        Tong = TK.getTongTienPhieunhapthang();
-        return Tong;
+        return getTongTienPhieunhapthang(java.time.LocalDate.now().getYear());
+    }
+
+    public int getTongTienPhieunhapthang(int year) {
+        return TK.getTongTienPhieunhapthang(year);
     }
 
     public int getTongTienLuongthang() {
-        int Tong = 0;
-        Tong = TK.getTongLuongnhanvienthang();
-        return Tong;
+        return getTongTienLuongthang(java.time.LocalDate.now().getYear());
+    }
+
+    public int getTongTienLuongthang(int year) {
+        return TK.getTongLuongnhanvienthang(year);
     }
 
     public int getsoluongKH() {
@@ -53,9 +59,11 @@ public class ThongkeBUS {
     }
 
     public int getsoluongPN() {
-        int Soluong = 0;
-        Soluong = TK.SoluongPhieuNhapTrongThangHienTai();
-        return Soluong;
+        return getsoluongPN(java.time.LocalDate.now().getYear());
+    }
+
+    public int getsoluongPN(int year) {
+        return TK.SoluongPhieuNhapTrongThang(year);
     }
 
     public int getsluongNL() {
@@ -175,4 +183,57 @@ public class ThongkeBUS {
     public String[][] getkhoiluongNL() {
         return TK.getkhoiluongNL();
     }
+
+    // ==================== YEAR-PARAMETERIZED OVERLOADS ====================
+
+    public ArrayList<Integer> getArrayDoanhthunam(int year) {
+        ArrayList<Integer> result = new ArrayList<>();
+        int[] a = TK.getTongTienTheoThang(year);
+        for (int d : a) result.add(d);
+        return result;
+    }
+
+    public ArrayList<Integer> getArrayDoanhthuquy(int year) {
+        ArrayList<Integer> result = new ArrayList<>();
+        int[] a = TK.getTongtienHoadonTheoQuy(year);
+        for (int d : a) result.add(d);
+        return result;
+    }
+
+    public ArrayList<Integer> getArrayphieunhapnam(int year) {
+        return TK.getArrayphieunhapnam(year);
+    }
+
+    public ArrayList<Integer> getArrayphieunhapnamtheoquy(int year) {
+        return TK.getArrayphieunhapnamtheoquy(year);
+    }
+
+    public ArrayList<Integer> getArrayTongLuongnhanvientheothang(int year) {
+        return TK.getArrayTongLuongnhanvientheothang(year);
+    }
+
+    public ArrayList<Integer> getArrayTongLuongnhanvientheoquy(int year) {
+        return TK.getArrayTongLuongnhanvientheoquy(year);
+    }
+
+    public ArrayList<Integer> getArrayLuongnhanvien(String MaNV, int year) {
+        return TK.getArrayLuongnhanvien(MaNV, year);
+    }
+
+    public int getTongDthunam(int year) {
+        return TK.getTongDthunam(year);
+    }
+
+    public int getTongLuongnhanviennam(int year) {
+        return TK.getTongLuongnhanviennam(year);
+    }
+
+    public int getTongphieunhapnam(int year) {
+        return TK.getTongphieunhapnam(year);
+    }
+
+    public java.util.Map<String, int[]> getBatchSalaryStatistics(int year) {
+        return TK.getBatchSalaryStatistics(year);
+    }
 }
+

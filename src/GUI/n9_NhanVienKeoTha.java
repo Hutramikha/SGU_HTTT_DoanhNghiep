@@ -58,6 +58,29 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
         nhomNutChucNang();
         configureYeuCauButtons();
         TableCustom.apply(ScrTable, TableCustom.TableType.MULTI_LINE);
+        // Đặt tab Nhân viên là tab mặc định được active
+        setActiveTab(BtnQLNhanVien);
+        // Fix layout bị lệch lần đầu hiển thị
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            PanelNhanVien.revalidate();
+            PanelNhanVien.repaint();
+            JScrNhanVien.revalidate();
+            JScrNhanVien.repaint();
+        });
+    }
+
+    private javax.swing.JPanel currentActiveTab = null;
+
+    private void setActiveTab(javax.swing.JPanel activeBtn) {
+        // Reset cả 2 nút về màu mặc định (giống trang bán hàng)
+        BtnQLNhanVien.setBackground(Util.UIHelper.SURFACE_ALT);
+        BtnQLPhanQuyen.setBackground(Util.UIHelper.SURFACE_ALT);
+        if (!canAccessPermissionManagement) {
+            BtnQLPhanQuyen.setBackground(new java.awt.Color(230, 230, 230));
+        }
+        // Highlight nút đang active
+        activeBtn.setBackground(Util.UIHelper.ACCENT_GREEN);
+        currentActiveTab = activeBtn;
     }
 
     @SuppressWarnings("unchecked")
@@ -142,12 +165,13 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
         JScrNhanVien.setPreferredSize(new java.awt.Dimension(1113, 646));
 
         PanelNhanVien.setBackground(new java.awt.Color(255, 255, 255));
-        PanelNhanVien.setMaximumSize(new java.awt.Dimension(1114, 1100));
-        PanelNhanVien.setMinimumSize(new java.awt.Dimension(1114, 1100));
+        // Loại bỏ kích thước cố định gây ra scroll ngang và lệch layout
+        PanelNhanVien.setPreferredSize(new java.awt.Dimension(1100, 1100));
 
         BtnQLNhanVien.setBackground(new java.awt.Color(219, 189, 142));
         BtnQLNhanVien.setMaximumSize(new java.awt.Dimension(195, 44));
         BtnQLNhanVien.setMinimumSize(new java.awt.Dimension(195, 44));
+        BtnQLNhanVien.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         LbNhanVien.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         LbNhanVien.setText("Nhân viên");
@@ -170,6 +194,7 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
         BtnQLPhanQuyen.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         BtnQLPhanQuyen.setMaximumSize(new java.awt.Dimension(195, 44));
         BtnQLPhanQuyen.setMinimumSize(new java.awt.Dimension(195, 44));
+        BtnQLPhanQuyen.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         LbPhanQuyen.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         LbPhanQuyen.setText("Phân quyền");
@@ -192,6 +217,7 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
 
         BtnThongTinTK.setBackground(new java.awt.Color(0, 0, 0));
         BtnThongTinTK.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        BtnThongTinTK.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnThongTinTK.setPreferredSize(new java.awt.Dimension(130, 35));
 
         LblThongTinTK.setBackground(new java.awt.Color(255, 255, 255));
@@ -201,6 +227,7 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
         BtnThongTinTK.add(LblThongTinTK);
 
         BtnThem.setBackground(new java.awt.Color(0, 0, 0));
+        BtnThem.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnThem.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         BtnThem.setPreferredSize(new java.awt.Dimension(100, 35));
 
@@ -211,6 +238,7 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
         BtnThem.add(LblThem);
 
         BtnSua.setBackground(new java.awt.Color(0, 0, 0));
+        BtnSua.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnSua.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         BtnSua.setPreferredSize(new java.awt.Dimension(100, 35));
 
@@ -221,8 +249,9 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
         BtnSua.add(LblSua);
 
         BtnKhoaTK.setBackground(new java.awt.Color(0, 0, 0));
+        BtnKhoaTK.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnKhoaTK.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        BtnKhoaTK.setPreferredSize(new java.awt.Dimension(100, 35));
+        BtnKhoaTK.setPreferredSize(new java.awt.Dimension(110, 35));
 
         LblKhoaTK.setBackground(new java.awt.Color(255, 255, 255));
         LblKhoaTK.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -231,6 +260,7 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
         BtnKhoaTK.add(LblKhoaTK);
 
         BtnXuat.setBackground(new java.awt.Color(0, 0, 0));
+        BtnXuat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnXuat.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         BtnXuat.setPreferredSize(new java.awt.Dimension(100, 35));
 
@@ -241,6 +271,7 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
         BtnXuat.add(LblXuat);
 
         BtnGuiNghi.setBackground(new java.awt.Color(0, 0, 0));
+        BtnGuiNghi.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnGuiNghi.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         BtnGuiNghi.setPreferredSize(new java.awt.Dimension(110, 35));
 
@@ -251,6 +282,7 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
         BtnGuiNghi.add(LblGuiNghi);
 
         BtnDuyetNghi.setBackground(new java.awt.Color(0, 0, 0));
+        BtnDuyetNghi.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BtnDuyetNghi.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         BtnDuyetNghi.setPreferredSize(new java.awt.Dimension(110, 35));
 
@@ -260,59 +292,14 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
         LblDuyetNghi.setText("Duyệt nghỉ");
         BtnDuyetNghi.add(LblDuyetNghi);
 
-        javax.swing.GroupLayout PanelChuaNutLayout = new javax.swing.GroupLayout(PanelChuaNut);
-        PanelChuaNut.setLayout(PanelChuaNutLayout);
-        PanelChuaNutLayout.setHorizontalGroup(
-                PanelChuaNutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(PanelChuaNutLayout.createSequentialGroup()
-                                .addGap(143, 143, 143)
-                                .addGroup(PanelChuaNutLayout
-                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(BtnThongTinTK, javax.swing.GroupLayout.PREFERRED_SIZE, 100,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(PanelChuaNutLayout.createSequentialGroup()
-                                                .addGap(150, 150, 150)
-                                                .addComponent(BtnThem, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50,
-                                        Short.MAX_VALUE)
-                                .addComponent(BtnSua, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(50, 50, 50)
-                                .addComponent(BtnKhoaTK, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(50, 50, 50)
-                                .addComponent(BtnXuat, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25)
-                                .addComponent(BtnGuiNghi, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25)
-                                .addComponent(BtnDuyetNghi, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(20, 20, 20)));
-        PanelChuaNutLayout.setVerticalGroup(
-                PanelChuaNutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(PanelChuaNutLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(PanelChuaNutLayout
-                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(BtnKhoaTK, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(BtnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(BtnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 29,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(BtnThongTinTK, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(BtnXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(BtnGuiNghi, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(BtnDuyetNghi, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(20, Short.MAX_VALUE)));
+        PanelChuaNut.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 15, 10));
+        PanelChuaNut.add(BtnThongTinTK);
+        PanelChuaNut.add(BtnThem);
+        PanelChuaNut.add(BtnSua);
+        PanelChuaNut.add(BtnKhoaTK);
+        PanelChuaNut.add(BtnXuat);
+        PanelChuaNut.add(BtnGuiNghi);
+        PanelChuaNut.add(BtnDuyetNghi);
 
         PanelInput.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -426,10 +413,11 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTimKiemLayout.createSequentialGroup()
                                 .addGap(4, 4, 4)
                                 .addGroup(PanelTimKiemLayout
-                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
                                         .addComponent(btnTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtTimKiem))
+                                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 24,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap()));
 
         txtMa.setEditable(false);
@@ -637,11 +625,11 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
         PanelInputLayout.setHorizontalGroup(
                 PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(PanelInputLayout.createSequentialGroup()
-                                .addGap(466, 466, 466)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(LblTieuDe)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInputLayout.createSequentialGroup()
-                                .addContainerGap(239, Short.MAX_VALUE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(PanelTruongThongTin, javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(74, 74, 74)
@@ -657,7 +645,7 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
                                                 .addComponent(BtnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(189, 189, 189)));
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
         PanelInputLayout.setVerticalGroup(
                 PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInputLayout.createSequentialGroup()
@@ -729,10 +717,10 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
                                 javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
                                 Short.MAX_VALUE)
                         .addGroup(PanelNhanVienLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(PanelNhanVienLayout
                                         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(PanelNhanVienLayout.createSequentialGroup()
-                                                .addGap(50, 50, 50)
                                                 .addComponent(BtnQLNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -740,16 +728,12 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
                                                 .addComponent(BtnQLPhanQuyen, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(PanelNhanVienLayout.createSequentialGroup()
-                                                .addGap(72, 72, 72)
-                                                .addComponent(PanelChuaNut, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(PanelNhanVienLayout.createSequentialGroup()
-                                                .addGap(63, 63, 63)
-                                                .addComponent(ScrTable, javax.swing.GroupLayout.PREFERRED_SIZE, 967,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(170, Short.MAX_VALUE)));
+                                        .addComponent(PanelChuaNut, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(ScrTable, javax.swing.GroupLayout.PREFERRED_SIZE, 967,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
         PanelNhanVienLayout.setVerticalGroup(
                 PanelNhanVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(PanelNhanVienLayout.createSequentialGroup()
@@ -775,22 +759,8 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
 
         JScrNhanVien.setViewportView(PanelNhanVien);
 
-        javax.swing.GroupLayout PanelTongLayout = new javax.swing.GroupLayout(PanelTong);
-        PanelTong.setLayout(PanelTongLayout);
-        PanelTongLayout.setHorizontalGroup(
-                PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTongLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(JScrNhanVien, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addContainerGap()));
-        PanelTongLayout.setVerticalGroup(
-                PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(PanelTongLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(JScrNhanVien, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addContainerGap()));
+        PanelTong.setLayout(new java.awt.BorderLayout());
+        PanelTong.add(JScrNhanVien, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -811,11 +781,29 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
     public void nhomNutChucNang() {
         BtnQLNhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                BtnQLNhanVien.setBackground(Util.UIHelper.ACCENT_GREEN);
+                // Chỉ highlight hover nếu đây không phải tab đang active
+                if (currentActiveTab != BtnQLNhanVien) {
+                    BtnQLNhanVien.setBackground(Util.UIHelper.ACCENT_GREEN);
+                }
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                BtnQLNhanVien.setBackground(Util.UIHelper.LIGHT_GREEN);
+                // Chỉ reset màu nếu đây không phải tab đang active
+                if (currentActiveTab != BtnQLNhanVien) {
+                    BtnQLNhanVien.setBackground(Util.UIHelper.SURFACE_ALT);
+                }
+            }
+
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (currentActiveTab == BtnQLNhanVien)
+                    return;
+                setActiveTab(BtnQLNhanVien);
+                // Hiện lại panel nhân viên
+                PanelTong.removeAll();
+                PanelTong.setLayout(new java.awt.BorderLayout());
+                PanelTong.add(JScrNhanVien, java.awt.BorderLayout.CENTER);
+                PanelTong.revalidate();
+                PanelTong.repaint();
             }
         });
 
@@ -829,14 +817,20 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
                 if (!canAccessPermissionManagement) {
                     return;
                 }
-                BtnQLPhanQuyen.setBackground(Util.UIHelper.ACCENT_GREEN);
+                // Chỉ highlight hover nếu đây không phải tab đang active
+                if (currentActiveTab != BtnQLPhanQuyen) {
+                    BtnQLPhanQuyen.setBackground(Util.UIHelper.ACCENT_GREEN);
+                }
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 if (!canAccessPermissionManagement) {
                     return;
                 }
-                BtnQLPhanQuyen.setBackground(Util.UIHelper.LIGHT_GREEN);
+                // Chỉ reset màu nếu đây không phải tab đang active
+                if (currentActiveTab != BtnQLPhanQuyen) {
+                    BtnQLPhanQuyen.setBackground(Util.UIHelper.SURFACE_ALT);
+                }
             }
 
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -846,10 +840,11 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
                             "Không đủ quyền", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
+                setActiveTab(BtnQLPhanQuyen);
                 PanelTong.removeAll();
                 n9_PhanQuyenGUI lich = new n9_PhanQuyenGUI();
                 PanelTong.setLayout(new BorderLayout());
-                PanelTong.add(lich, BorderLayout.CENTER); // Adjust the layout constraint as needed
+                PanelTong.add(lich, BorderLayout.CENTER);
                 PanelTong.revalidate();
                 PanelTong.repaint();
             }
@@ -1055,8 +1050,7 @@ public class n9_NhanVienKeoTha extends javax.swing.JPanel {
     }
 
     private void configureYeuCauButtons() {
-        boolean hasUser = currentMaNhanVien != null && !currentMaNhanVien.trim().isEmpty();
-        BtnGuiNghi.setVisible(hasUser);
+        BtnGuiNghi.setVisible(false);
         BtnDuyetNghi.setVisible(canAccessPermissionManagement);
     }
 

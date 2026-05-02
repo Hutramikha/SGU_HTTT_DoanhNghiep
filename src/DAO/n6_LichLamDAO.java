@@ -84,15 +84,16 @@ public class n6_LichLamDAO {
 
     public boolean update(LichLamDTO lichLam) {
         String sql = "UPDATE LichLam\n"
-                + "   SET MaCaLam = ?\n"
+                + "   SET MaCaLam = ?, TrangThaiDiemDanh = ?\n"
                 + " WHERE MaNhanVien = ? and NgayLam = ?";
         try {
             Connection c = JDBCUtil.getConnection();
             PreparedStatement st = c.prepareStatement(sql);
 
             st.setString(1, lichLam.getMaCaLam());
-            st.setString(2, lichLam.getMaNhanVien());
-            st.setDate(3, lichLam.getNgayLam());
+            st.setInt(2, lichLam.getTrangThaiDiemDanh());
+            st.setString(3, lichLam.getMaNhanVien());
+            st.setDate(4, lichLam.getNgayLam());
             int kq = st.executeUpdate();
             JDBCUtil.closeConnection(c);
             if (kq == 0) {
@@ -106,6 +107,33 @@ public class n6_LichLamDAO {
         } catch (SQLException e) {
             System.out.println(e);
             System.out.println("Sửa thất bại lịch làm, lịch làm không tồn tại (DAO) !");
+            return false;
+        }
+    }
+
+    public boolean updateTrangThaiDiemDanh(String maNhanVien, String maCaLam, Date ngayLam, int trangThai) {
+        String sql = "UPDATE LichLam SET TrangThaiDiemDanh = ? WHERE MaNhanVien = ? AND MaCaLam = ? AND NgayLam = ?";
+        try (Connection c = JDBCUtil.getConnection(); PreparedStatement st = c.prepareStatement(sql)) {
+            st.setInt(1, trangThai);
+            st.setString(2, maNhanVien);
+            st.setString(3, maCaLam);
+            st.setDate(4, ngayLam);
+            return st.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateTrangThaiDiemDanhNgay(String maNhanVien, Date ngayLam, int trangThai) {
+        String sql = "UPDATE LichLam SET TrangThaiDiemDanh = ? WHERE MaNhanVien = ? AND NgayLam = ?";
+        try (Connection c = JDBCUtil.getConnection(); PreparedStatement st = c.prepareStatement(sql)) {
+            st.setInt(1, trangThai);
+            st.setString(2, maNhanVien);
+            st.setDate(3, ngayLam);
+            return st.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -136,6 +164,24 @@ public class n6_LichLamDAO {
             System.out.println("Sửa thất bại lịch làm, lịch làm không tồn tại (DAO) !");
             return false;
         }
+    }
+
+    public LichLamDTO timLichLamHienTai(String maNhanVien) {
+        String sql = "SELECT ll.* FROM LichLam ll "
+                + "JOIN CaLam cl ON ll.MaCaLam = cl.MaCaLam "
+                + "WHERE ll.MaNhanVien = ? AND ll.NgayLam = CAST(GETDATE() AS DATE) "
+                + "AND CAST(GETDATE() AS TIME) BETWEEN cl.ThoiGianVaoCaLam AND cl.ThoiGianRaCalam";
+        try (Connection c = JDBCUtil.getConnection(); PreparedStatement st = c.prepareStatement(sql)) {
+            st.setString(1, maNhanVien);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return new LichLamDTO(rs.getString("MaCaLam"), rs.getString("MaNhanVien"),
+                        rs.getDate("NgayLam"), rs.getInt("TrangThaiDiemDanh"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public int demLichTheoNhanVienNgay(String maNhanVien, Date ngayLam) {
@@ -364,7 +410,7 @@ public class n6_LichLamDAO {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 LichLamDTO lichLam = new LichLamDTO(rs.getString("MaCaLam"), rs.getString("MaNhanVien"),
-                        rs.getDate("NgayLam"));
+                        rs.getDate("NgayLam"), rs.getInt("TrangThaiDiemDanh"));
                 list.add(lichLam);
             }
             JDBCUtil.closeConnection(c);

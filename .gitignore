@@ -50,3 +50,8 @@ gradlew.bat
 # Cache
 .cache/
 *.cache
+
+# Always include DB folder and its contents
+!DB/
+!DB/*.sql
+!DB/*.bacpac

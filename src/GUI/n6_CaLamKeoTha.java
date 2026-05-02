@@ -72,17 +72,18 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
                 PanelTong.setMinimumSize(new java.awt.Dimension(1125, 658));
                 PanelTong.setPreferredSize(new java.awt.Dimension(1125, 658));
 
-                PanelLichLam.setBackground(new java.awt.Color(219, 189, 142));
+                PanelLichLam.setBackground(Util.UIHelper.SURFACE_ALT);
                 PanelLichLam.setMaximumSize(new java.awt.Dimension(195, 44));
                 PanelLichLam.setMinimumSize(new java.awt.Dimension(195, 44));
                 PanelLichLam.setPreferredSize(new java.awt.Dimension(195, 44));
                 PanelLichLam.setLayout(new java.awt.GridBagLayout());
 
                 LichLam.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+                LichLam.setForeground(Util.UIHelper.DARK_TEXT);
                 LichLam.setText("LỊCH LÀM");
                 PanelLichLam.add(LichLam, new java.awt.GridBagConstraints());
 
-                PanelCaLam.setBackground(new java.awt.Color(219, 189, 142));
+                PanelCaLam.setBackground(Util.UIHelper.ACCENT_GREEN);
                 PanelCaLam.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
                 PanelCaLam.setMaximumSize(new java.awt.Dimension(195, 44));
                 PanelCaLam.setMinimumSize(new java.awt.Dimension(195, 44));
@@ -90,6 +91,7 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
                 PanelCaLam.setLayout(new java.awt.GridBagLayout());
 
                 CaLam.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+                CaLam.setForeground(Util.UIHelper.WHITE);
                 CaLam.setText("CA LÀM");
                 PanelCaLam.add(CaLam, new java.awt.GridBagConstraints());
 
@@ -542,6 +544,7 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
                 TextFieldTimKiem.setPreferredSize(new java.awt.Dimension(120, 18));
 
                 LabelAnhTimKiem.setIcon(Util.UIHelper.getSearchIcon());
+                LabelAnhTimKiem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
                 javax.swing.GroupLayout PanelTimKiem1Layout = new javax.swing.GroupLayout(PanelTimKiem1);
                 PanelTimKiem1.setLayout(PanelTimKiem1Layout);
@@ -559,24 +562,22 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
                                                                                 Short.MAX_VALUE)));
                 PanelTimKiem1Layout.setVerticalGroup(
                                 PanelTimKiem1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-                                                                PanelTimKiem1Layout.createSequentialGroup()
-                                                                                .addGap(4, 4, 4)
-                                                                                .addGroup(PanelTimKiem1Layout
-                                                                                                .createParallelGroup(
-                                                                                                                javax.swing.GroupLayout.Alignment.LEADING,
-                                                                                                                false)
-                                                                                                .addComponent(LabelAnhTimKiem,
-                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                Short.MAX_VALUE)
-                                                                                                .addComponent(TextFieldTimKiem,
-                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                Short.MAX_VALUE))
-                                                                                .addContainerGap(
+                                                .addGroup(PanelTimKiem1Layout.createSequentialGroup()
+                                                                .addGap(4, 4, 4)
+                                                                .addGroup(PanelTimKiem1Layout
+                                                                                .createParallelGroup(
+                                                                                                javax.swing.GroupLayout.Alignment.CENTER,
+                                                                                                false)
+                                                                                .addComponent(LabelAnhTimKiem,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                Short.MAX_VALUE)));
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                Short.MAX_VALUE)
+                                                                                .addComponent(TextFieldTimKiem,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                24,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)));
 
                 PanelTaiLai.setBackground(new java.awt.Color(0, 0, 0));
                 PanelTaiLai.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -912,16 +913,18 @@ public class n6_CaLamKeoTha extends javax.swing.JPanel {
                         }
 
                         public void mouseExited(java.awt.event.MouseEvent evt) {
-                                PanelCaLam.setBackground(Util.UIHelper.LIGHT_GREEN);
+                                PanelCaLam.setBackground(Util.UIHelper.ACCENT_GREEN);
                         }
                 });
                 PanelLichLam.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
-                                PanelLichLam.setBackground(Util.UIHelper.ACCENT_GREEN);
+                                PanelLichLam.setBackground(Util.UIHelper.LIGHT_GREEN);
+                                LichLam.setForeground(Util.UIHelper.WHITE);
                         }
 
                         public void mouseExited(java.awt.event.MouseEvent evt) {
-                                PanelLichLam.setBackground(Util.UIHelper.LIGHT_GREEN);
+                                PanelLichLam.setBackground(Util.UIHelper.SURFACE_ALT);
+                                LichLam.setForeground(Util.UIHelper.DARK_TEXT);
                         }
 
                         public void mouseClicked(java.awt.event.MouseEvent evt) {

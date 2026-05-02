@@ -9,6 +9,7 @@ import DTO.PhanQuyenDTO;
 import DTO.TaiKhoanDTO;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -37,6 +38,10 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                 PanelCalendar = new Util.PanelRound();
                 LabelCalendarIcon = new javax.swing.JLabel();
                 LabelDate = new javax.swing.JLabel();
+                PanelGuiNghi = new Util.PanelRound();
+                LabelGuiNghi = new javax.swing.JLabel();
+                PanelDiemDanh = new Util.PanelRound();
+                LabelDiemDanh = new javax.swing.JLabel();
                 PanelDangXuat = new Util.PanelRound();
                 PanelTen = new javax.swing.JLabel();
                 ButtonDangXuat = new javax.swing.JButton();
@@ -75,10 +80,12 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                 LabelCaPheSGU.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
                 LabelCaPheSGU.setText("CÀ PHÊ XANH");
 
-                LabelXinChao.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-                LabelXinChao.setText("xin chào");
+                LabelXinChao.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+                LabelXinChao.setText("XIN CHÀO");
 
-                LabelIcon.setIcon(Util.IconGenerator.generateGreenCoffeeLogoIcon(56, 56)); // NOI18N
+                LabelIcon.setIcon(new javax.swing.ImageIcon(
+                                new javax.swing.ImageIcon(getClass().getResource("/IMAGE/logochinh.png")).getImage()
+                                                .getScaledInstance(56, 56, java.awt.Image.SCALE_SMOOTH))); // NOI18N
                 LabelIcon.setText("");
                 LabelIcon.setPreferredSize(new java.awt.Dimension(56, 56));
 
@@ -97,15 +104,10 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                                                                                 28,
                                                                                 Short.MAX_VALUE)
                                                                 .addGroup(PanelLogoLayout.createParallelGroup(
-                                                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-                                                                                                PanelLogoLayout.createSequentialGroup()
-                                                                                                                .addComponent(LabelXinChao)
-                                                                                                                .addGap(56, 56, 56))
-                                                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-                                                                                                PanelLogoLayout.createSequentialGroup()
-                                                                                                                .addComponent(LabelCaPheSGU)
-                                                                                                                .addGap(26, 26, 26)))));
+                                                                                javax.swing.GroupLayout.Alignment.CENTER)
+                                                                                .addComponent(LabelXinChao)
+                                                                                .addComponent(LabelCaPheSGU))
+                                                                .addGap(26, 26, 26)));
                 PanelLogoLayout.setVerticalGroup(
                                 PanelLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelLogoLayout
@@ -168,44 +170,110 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                                                                                 .addComponent(LabelCalendarIcon))
                                                                 .addContainerGap(10, Short.MAX_VALUE)));
 
-                PanelDangXuat.setBackground(new java.awt.Color(219, 189, 142));
+                PanelGuiNghi.setBackground(new java.awt.Color(219, 189, 142));
+                PanelGuiNghi.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                PanelGuiNghi.setPreferredSize(new java.awt.Dimension(160, 52));
+                PanelGuiNghi.setRoundBottomRight(20);
+                PanelGuiNghi.setRoundTopLeft(20);
+                PanelGuiNghi.setRoundTopRight(20);
+                PanelGuiNghi.setRoundBottomLeft(20);
+
+                LabelGuiNghi.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+                LabelGuiNghi.setText("Gửi đơn nghỉ");
+                LabelGuiNghi.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+                javax.swing.GroupLayout PanelGuiNghiLayout = new javax.swing.GroupLayout(PanelGuiNghi);
+                PanelGuiNghi.setLayout(PanelGuiNghiLayout);
+                PanelGuiNghiLayout.setHorizontalGroup(
+                                PanelGuiNghiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(PanelGuiNghiLayout.createSequentialGroup()
+                                                                .addGap(30, 30, 30)
+                                                                .addComponent(LabelGuiNghi)
+                                                                .addContainerGap(30, Short.MAX_VALUE)));
+                PanelGuiNghiLayout.setVerticalGroup(
+                                PanelGuiNghiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(PanelGuiNghiLayout.createSequentialGroup()
+                                                                .addGap(14, 14, 14)
+                                                                .addComponent(LabelGuiNghi)
+                                                                .addContainerGap(14, Short.MAX_VALUE)));
+
+                PanelDiemDanh.setBackground(new java.awt.Color(219, 189, 142));
+                PanelDiemDanh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                PanelDiemDanh.setPreferredSize(new java.awt.Dimension(160, 52));
+                PanelDiemDanh.setRoundBottomRight(20);
+                PanelDiemDanh.setRoundTopLeft(20);
+                PanelDiemDanh.setRoundTopRight(20);
+                PanelDiemDanh.setRoundBottomLeft(20);
+
+                LabelDiemDanh.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+                LabelDiemDanh.setText("Chấm công");
+                LabelDiemDanh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                LabelDiemDanh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+                javax.swing.GroupLayout PanelDiemDanhLayout = new javax.swing.GroupLayout(PanelDiemDanh);
+                PanelDiemDanh.setLayout(PanelDiemDanhLayout);
+                PanelDiemDanhLayout.setHorizontalGroup(
+                                PanelDiemDanhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(PanelDiemDanhLayout.createSequentialGroup()
+                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)
+                                                                .addComponent(LabelDiemDanh)
+                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)));
+                PanelDiemDanhLayout.setVerticalGroup(
+                                PanelDiemDanhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(PanelDiemDanhLayout.createSequentialGroup()
+                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)
+                                                                .addComponent(LabelDiemDanh)
+                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)));
+
+                PanelDangXuat.setBackground(Util.UIHelper.PRIMARY_GREEN);
                 PanelDangXuat.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-                PanelDangXuat.setPreferredSize(new java.awt.Dimension(390, 54));
+                PanelDangXuat.setPreferredSize(new java.awt.Dimension(350, 54));
                 PanelDangXuat.setRoundBottomRight(20);
                 PanelDangXuat.setRoundTopLeft(20);
                 PanelDangXuat.setRoundTopRight(20);
                 PanelDangXuat.setRoundBottomLeft(20);
 
-                PanelTen.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+                PanelTen.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+                PanelTen.setForeground(Util.UIHelper.WHITE);
                 PanelTen.setText("DƯƠNG VĂN PHƯỚC");
 
-                ButtonDangXuat.setBackground(new java.awt.Color(239, 219, 203));
-                ButtonDangXuat.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-                ButtonDangXuat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/DangXuat.png"))); // NOI18N
-                ButtonDangXuat.setText(" Đăng Xuất");
+                ButtonDangXuat.putClientProperty("uihelper.ignore", true);
+                ButtonDangXuat.setBackground(Util.UIHelper.EMERALD);
+                ButtonDangXuat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+                ButtonDangXuat.setForeground(Util.UIHelper.WHITE);
+                ButtonDangXuat.setText("Đăng Xuất");
                 ButtonDangXuat.setAlignmentY(0.0F);
-                ButtonDangXuat.setBorder(null);
+                ButtonDangXuat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
                 ButtonDangXuat.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-                ButtonDangXuat.setIconTextGap(10);
-                ButtonDangXuat.setPreferredSize(new java.awt.Dimension(138, 28));
+                ButtonDangXuat.setPreferredSize(new java.awt.Dimension(120, 30));
+                ButtonDangXuat.setFocusPainted(false);
+                ButtonDangXuat.setOpaque(true);
+                ButtonDangXuat.setContentAreaFilled(true);
+                ButtonDangXuat.setBorder(new javax.swing.border.LineBorder(Util.UIHelper.WHITE, 1, true));
+                Util.UIHelper.addHoverEffect(ButtonDangXuat, Util.UIHelper.EMERALD.darker(), Util.UIHelper.WHITE);
 
                 javax.swing.GroupLayout PanelDangXuatLayout = new javax.swing.GroupLayout(PanelDangXuat);
                 PanelDangXuat.setLayout(PanelDangXuatLayout);
                 PanelDangXuatLayout.setHorizontalGroup(
                                 PanelDangXuatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(PanelDangXuatLayout.createSequentialGroup()
-                                                                .addGap(18, 18, 18)
+                                                                .addGap(15, 15, 15)
                                                                 .addComponent(PanelTen,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                210,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(
-                                                                                javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addComponent(ButtonDangXuat,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addContainerGap(12, Short.MAX_VALUE)));
+                                                                .addPreferredGap(
+                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                                                15, Short.MAX_VALUE)
+                                                                .addComponent(ButtonDangXuat,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                120,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(15, 15, 15)));
                 PanelDangXuatLayout.setVerticalGroup(
                                 PanelDangXuatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(PanelDangXuatLayout.createSequentialGroup()
@@ -221,11 +289,11 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                                                                 .addContainerGap(10, Short.MAX_VALUE)));
 
                 PanelThongTin.setBackground(new java.awt.Color(255, 255, 255));
-                PanelThongTin.setPreferredSize(new java.awt.Dimension(172, 159));
-                PanelThongTin.setRoundBottomRight(20);
-                PanelThongTin.setRoundTopLeft(20);
-                PanelThongTin.setRoundTopRight(20);
-                PanelThongTin.setRoundBottomLeft(20);
+                PanelThongTin.setPreferredSize(new java.awt.Dimension(172, 165));
+                PanelThongTin.setRoundBottomRight(45);
+                PanelThongTin.setRoundTopLeft(45);
+                PanelThongTin.setRoundTopRight(45);
+                PanelThongTin.setRoundBottomLeft(45);
 
                 LabelChucVu.setFont(new java.awt.Font("Segoe UI Black", 0, 13)); // NOI18N
                 LabelChucVu.setText("Quản Lý");
@@ -242,92 +310,97 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                 PanelThongTinLayout.setHorizontalGroup(
                                 PanelThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(PanelThongTinLayout.createSequentialGroup()
-                                                                .addGap(20, 20, 20) // Padding bên trái để đẩy các thành
-                                                                                    // phần sang phải
+                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)
                                                                 .addGroup(PanelThongTinLayout
                                                                                 .createParallelGroup(
                                                                                                 javax.swing.GroupLayout.Alignment.CENTER)
                                                                                 .addComponent(LabelTitle)
                                                                                 .addComponent(LabelThongTinIcon)
                                                                                 .addComponent(LabelTen)
-                                                                                .addComponent(LabelChucVu,
-                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                .addComponent(LabelChucVu))
                                                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                Short.MAX_VALUE)) // Padding bên
-                                                                                                  // phải tự động
-                );
+                                                                                Short.MAX_VALUE)));
                 PanelThongTinLayout.setVerticalGroup(
                                 PanelThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(PanelThongTinLayout.createSequentialGroup()
-                                                                .addGap(6, 6, 6)
+                                                                .addGap(10, 10, 10)
                                                                 .addComponent(LabelTitle)
-                                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                                .addGap(5, 5, 5)
                                                                 .addComponent(LabelThongTinIcon)
-                                                                .addGap(8, 8, 8)
+                                                                .addGap(5, 5, 5)
                                                                 .addComponent(LabelTen)
                                                                 .addPreferredGap(
                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                 .addComponent(LabelChucVu)
-                                                                .addGap(10, 10, 10)));
+                                                                .addGap(5, 5, 5)));
 
-                PanelChucNang.setBackground(new java.awt.Color(255, 255, 255));
-                PanelChucNang.setPreferredSize(new java.awt.Dimension(173, 463));
-                PanelChucNang.setRoundBottomRight(20);
-                PanelChucNang.setRoundTopLeft(20);
-                PanelChucNang.setRoundTopRight(20);
-                PanelChucNang.setRoundBottomLeft(20);
+                PanelChucNang.setBackground(Util.UIHelper.PRIMARY_GREEN);
+                PanelChucNang.setPreferredSize(new java.awt.Dimension(173, 460));
+                PanelChucNang.setRoundBottomRight(15);
+                PanelChucNang.setRoundTopLeft(15);
+                PanelChucNang.setRoundTopRight(15);
+                PanelChucNang.setRoundBottomLeft(15);
 
                 LabelBanHang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/Cart.png"))); // NOI18N
                 LabelBanHang.setText("Bán Hàng");
                 LabelBanHang.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
                 LabelBanHang.setIconTextGap(15);
+                LabelBanHang.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
                 LabelKhachHang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/KhachHang.png"))); // NOI18N
                 LabelKhachHang.setText("Khách Hàng");
                 LabelKhachHang.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
                 LabelKhachHang.setIconTextGap(15);
+                LabelKhachHang.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
                 LabelNhapHang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/NhapHang.png"))); // NOI18N
                 LabelNhapHang.setText("Nhập Hàng");
                 LabelNhapHang.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
                 LabelNhapHang.setIconTextGap(15);
+                LabelNhapHang.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
                 LabelMon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/CoffeeMug.png"))); // NOI18N
                 LabelMon.setText("Món");
                 LabelMon.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
                 LabelMon.setIconTextGap(15);
+                LabelMon.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
                 LabelNguyenLieu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/NguyenLieu.png"))); // NOI18N
                 LabelNguyenLieu.setText("Nguyên Liệu");
                 LabelNguyenLieu.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
                 LabelNguyenLieu.setIconTextGap(15);
+                LabelNguyenLieu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
                 LabelLichLam.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/LichLam.png"))); // NOI18N
                 LabelLichLam.setText("Lịch Làm");
                 LabelLichLam.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
                 LabelLichLam.setIconTextGap(15);
+                LabelLichLam.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
                 LabelKhuyenMai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/GiamGia.png"))); // NOI18N
                 LabelKhuyenMai.setText("Khuyến Mãi-Ưu Đãi");
                 LabelKhuyenMai.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
                 LabelKhuyenMai.setIconTextGap(15);
+                LabelKhuyenMai.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
                 LabelNhaCungCap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/NhaCungCap.png"))); // NOI18N
                 LabelNhaCungCap.setText("Nhà Cung Cấp");
                 LabelNhaCungCap.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
                 LabelNhaCungCap.setIconTextGap(15);
+                LabelNhaCungCap.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
                 LabelNhanVien.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/NhanVien.png"))); // NOI18N
                 LabelNhanVien.setText("Nhân Viên");
                 LabelNhanVien.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
                 LabelNhanVien.setIconTextGap(15);
+                LabelNhanVien.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
                 LabelThongKe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGE/ThongKe.png"))); // NOI18N
                 LabelThongKe.setText("Thống Kê");
                 LabelThongKe.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
                 LabelThongKe.setIconTextGap(15);
+                LabelThongKe.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
                 javax.swing.GroupLayout PanelChucNangLayout = new javax.swing.GroupLayout(PanelChucNang);
                 PanelChucNang.setLayout(PanelChucNangLayout);
@@ -362,7 +435,7 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                 PanelChucNangLayout.setVerticalGroup(
                                 PanelChucNangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(PanelChucNangLayout.createSequentialGroup()
-                                                                .addContainerGap()
+                                                                .addGap(5, 5, 5)
                                                                 .addComponent(LabelBanHang,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                 45,
@@ -370,48 +443,49 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                                                                 .addGap(0, 0, 0)
                                                                 .addComponent(LabelKhachHang,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                48,
+                                                                                45,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(0, 0, 0)
                                                                 .addComponent(LabelNhapHang,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                48,
+                                                                                45,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(0, 0, 0)
                                                                 .addComponent(LabelMon,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                48,
+                                                                                45,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(0, 0, 0)
                                                                 .addComponent(LabelNguyenLieu,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                48,
+                                                                                45,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(0, 0, 0)
                                                                 .addComponent(LabelLichLam,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                48,
+                                                                                45,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(0, 0, 0)
                                                                 .addComponent(LabelKhuyenMai,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                48,
+                                                                                45,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(0, 0, 0)
                                                                 .addComponent(LabelNhaCungCap,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                48,
+                                                                                45,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(0, 0, 0)
                                                                 .addComponent(LabelNhanVien,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                48,
+                                                                                45,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(0, 0, 0)
                                                                 .addComponent(LabelThongKe,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                45, Short.MAX_VALUE)
-                                                                .addContainerGap()));
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                45,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(15, 15, 15)));
 
                 PanelNoiDung.setBackground(new java.awt.Color(255, 255, 255));
                 PanelNoiDung.setPreferredSize(new java.awt.Dimension(1125, 657));
@@ -434,7 +508,7 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                 PanelTongLayout.setHorizontalGroup(
                                 PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(PanelTongLayout.createSequentialGroup()
-                                                                .addGap(22, 22, 22)
+                                                                .addGap(30, 30, 30)
                                                                 .addGroup(PanelTongLayout.createParallelGroup(
                                                                                 javax.swing.GroupLayout.Alignment.LEADING)
                                                                                 .addGroup(PanelTongLayout
@@ -448,9 +522,19 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addGap(16, 16, 16)
+                                                                                                .addComponent(PanelGuiNghi,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addGap(16, 16, 16)
+                                                                                                .addComponent(PanelDiemDanh,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                 .addPreferredGap(
                                                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                                                                                338,
+                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                 Short.MAX_VALUE)
                                                                                                 .addComponent(PanelDangXuat,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -481,26 +565,33 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                 PanelTongLayout.setVerticalGroup(
                                 PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(PanelTongLayout.createSequentialGroup()
+                                                                .addGap(25, 25, 25)
                                                                 .addGroup(PanelTongLayout.createParallelGroup(
-                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                false)
+                                                                                .addComponent(PanelLogo,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                Short.MAX_VALUE)
                                                                                 .addGroup(PanelTongLayout
                                                                                                 .createSequentialGroup()
-                                                                                                .addGap(15, 15, 15)
-                                                                                                .addComponent(PanelLogo,
-                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                                .addGroup(PanelTongLayout
-                                                                                                .createSequentialGroup()
-                                                                                                .addGap(23, 23, 23)
+                                                                                                .addGap(8, 8, 8)
                                                                                                 .addGroup(PanelTongLayout
                                                                                                                 .createParallelGroup(
                                                                                                                                 javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                                                .addComponent(PanelDangXuat,
+                                                                                                                .addComponent(PanelCalendar,
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                                .addComponent(PanelCalendar,
+                                                                                                                .addComponent(PanelGuiNghi,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                .addComponent(PanelDiemDanh,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                .addComponent(PanelDangXuat,
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -514,17 +605,16 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                .addPreferredGap(
-                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                                                .addGap(7, 7, 7)
                                                                                                 .addComponent(PanelChucNang,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                                486,
+                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                                 .addComponent(PanelNoiDung,
                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                 657,
                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                .addContainerGap(14, Short.MAX_VALUE)));
+                                                                .addContainerGap(50, Short.MAX_VALUE)));
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
                 getContentPane().setLayout(layout);
@@ -569,6 +659,12 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                 // Calendar panel - accent green
                 PanelCalendar.setBackground(Util.UIHelper.ACCENT_GREEN);
                 LabelDate.setForeground(Util.UIHelper.WHITE);
+
+                PanelGuiNghi.setBackground(Util.UIHelper.PRIMARY_GREEN);
+                LabelGuiNghi.setForeground(Util.UIHelper.WHITE);
+
+                PanelDiemDanh.setBackground(Util.UIHelper.PRIMARY_GREEN);
+                LabelDiemDanh.setForeground(Util.UIHelper.WHITE);
 
                 // Menu buttons hover effects
                 addMenuButtonHoverEffect(LabelBanHang);
@@ -738,102 +834,12 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
         }
 
         private void openDefaultModuleByPermission() {
-                if (phanQuyen.getQuyenBanHang()) {
-                        if (banhang == null) {
-                                banhang = new n1_BanHangKeoTha(MaNhanVien);
-                        }
-                        banhang.listCart = list;
-                        setActiveMenuButton(LabelBanHang);
-                        showContentPanel(banhang);
-                        return;
-                }
-
-                if (phanQuyen.getQuyenKhachHang()) {
-                        if (khachHangGUI == null) {
-                                khachHangGUI = new n2_KhachHangGUI();
-                        }
-                        setActiveMenuButton(LabelKhachHang);
-                        showContentPanel(khachHangGUI);
-                        return;
-                }
-
-                if (phanQuyen.getQuyenNhapHang()) {
-                        if (nhapHangGUI == null) {
-                                nhapHangGUI = new n3_PNQuanLyNhapHang(userLogin.getMaNhanVien());
-                        }
-                        setActiveMenuButton(LabelNhapHang);
-                        showContentPanel(nhapHangGUI);
-                        return;
-                }
-
-                if (phanQuyen.getQuyenMon()) {
-                        if (monGUI == null) {
-                                monGUI = new n4_MonGUI();
-                        }
-                        setActiveMenuButton(LabelMon);
-                        showContentPanel(monGUI);
-                        return;
-                }
-
-                if (phanQuyen.getQuyenNguyenLieu()) {
-                        if (nguyenLieuGUI == null) {
-                                nguyenLieuGUI = new n5_NguyenLieuGUI();
-                        }
-                        setActiveMenuButton(LabelNguyenLieu);
-                        showContentPanel(nguyenLieuGUI);
-                        return;
-                }
-
-                if (phanQuyen.getQuyenLichLam()) {
-                        if (lichLamGUI == null) {
-                                lichLamGUI = new n6_LichLamGUI();
-                        }
-                        setActiveMenuButton(LabelLichLam);
-                        showContentPanel(lichLamGUI);
-                        return;
-                }
-
-                if (phanQuyen.getQuyenKhuyenMaiUuDai()) {
-                        if (khuyenMaiGUI == null) {
-                                khuyenMaiGUI = new n7_KhuyenMaiGUI();
-                        }
-                        setActiveMenuButton(LabelKhuyenMai);
-                        showContentPanel(khuyenMaiGUI);
-                        return;
-                }
-
-                if (phanQuyen.getQuyenNhaCungCap()) {
-                        if (nhaCungCapGUI == null) {
-                                nhaCungCapGUI = new n8_NhaCungCapGUI();
-                        }
-                        setActiveMenuButton(LabelNhaCungCap);
-                        showContentPanel(nhaCungCapGUI);
-                        return;
-                }
-
-                if (phanQuyen.getQuyenNhanVien()) {
-                        if (nhanVienGUI == null) {
-                                nhanVienGUI = new n9_NhanVienKeoTha(canAccessPermissionManagement(),
-                                                userLogin != null ? userLogin.getMaNhanVien() : null);
-                        }
-                        setActiveMenuButton(LabelNhanVien);
-                        showContentPanel(nhanVienGUI);
-                        return;
-                }
-
-                if (phanQuyen.getQuyenThongKe()) {
-                        if (thongKeGUI == null) {
-                                thongKeGUI = new n10_ThongkePanel();
-                        }
-                        setActiveMenuButton(LabelThongKe);
-                        showContentPanel(thongKeGUI);
-                        return;
-                }
-
                 PanelNoiDung.removeAll();
                 PanelNoiDung.setLayout(new BorderLayout());
-                PanelNoiDung.add(new JLabel("Tài khoản chưa được cấp quyền truy cập chức năng nào.", JLabel.CENTER),
-                                BorderLayout.CENTER);
+                JLabel welcomeLabel = new JLabel("CHÀO MỪNG ĐẾN VỚI HỆ THỐNG QUẢN LÝ", JLabel.CENTER);
+                welcomeLabel.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 36));
+                welcomeLabel.setForeground(Util.UIHelper.PRIMARY_GREEN);
+                PanelNoiDung.add(welcomeLabel, BorderLayout.CENTER);
                 PanelNoiDung.revalidate();
                 PanelNoiDung.repaint();
         }
@@ -1055,6 +1061,44 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                                         }
                                 });
 
+                PanelGuiNghi.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mousePressed(java.awt.event.MouseEvent evt) {
+                                n9_GuiYeuCauNghiDialog dialog = new n9_GuiYeuCauNghiDialog(n0_TrangChuGUI.this,
+                                                MaNhanVien);
+                                dialog.setVisible(true);
+                        }
+
+                        public void mouseEntered(java.awt.event.MouseEvent evt) {
+                                PanelGuiNghi.setBackground(Util.UIHelper.ACCENT_GREEN);
+                        }
+
+                        public void mouseExited(java.awt.event.MouseEvent evt) {
+                                PanelGuiNghi.setBackground(Util.UIHelper.PRIMARY_GREEN);
+                        }
+                });
+
+                PanelDiemDanh.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mousePressed(java.awt.event.MouseEvent evt) {
+                                n11_DiemDanhDialog dialog = new n11_DiemDanhDialog(n0_TrangChuGUI.this, MaNhanVien);
+                                dialog.setVisible(true);
+                        }
+
+                        public void mouseEntered(java.awt.event.MouseEvent evt) {
+                                PanelDiemDanh.setBackground(Util.UIHelper.ACCENT_GREEN);
+                        }
+
+                        public void mouseExited(java.awt.event.MouseEvent evt) {
+                                PanelDiemDanh.setBackground(Util.UIHelper.PRIMARY_GREEN);
+                        }
+                });
+
+                LabelGuiNghi.addMouseListener(new java.awt.event.MouseAdapter() {
+                        @Override
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                moDialogGuiYeuCau();
+                        }
+                });
+
                 this.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosing(WindowEvent e) {
@@ -1070,6 +1114,16 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
                 });
         }
 
+        private void moDialogGuiYeuCau() {
+                if (userLogin == null || userLogin.getMaNhanVien() == null) {
+                        JOptionPane.showMessageDialog(null, "Không xác định nhân viên hiện tại.", "Thiếu dữ liệu",
+                                        JOptionPane.WARNING_MESSAGE);
+                        return;
+                }
+                n9_GuiYeuCauNghiDialog dialog = new n9_GuiYeuCauNghiDialog(this, userLogin.getMaNhanVien());
+                dialog.setVisible(true);
+        }
+
         // Khai báo
         private javax.swing.JButton ButtonDangXuat;
         private javax.swing.JLabel LabelBanHang;
@@ -1077,6 +1131,7 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
         private javax.swing.JLabel LabelCalendarIcon;
         private javax.swing.JLabel LabelChucVu;
         private javax.swing.JLabel LabelDate;
+        private javax.swing.JLabel LabelGuiNghi;
         private javax.swing.JLabel LabelIcon;
         private javax.swing.JLabel LabelKhachHang;
         private javax.swing.JLabel LabelKhuyenMai;
@@ -1094,6 +1149,9 @@ public class n0_TrangChuGUI extends javax.swing.JFrame {
         private Util.PanelRound PanelCalendar;
         private Util.PanelRound PanelChucNang;
         private Util.PanelRound PanelDangXuat;
+        private Util.PanelRound PanelGuiNghi;
+        private Util.PanelRound PanelDiemDanh;
+        private javax.swing.JLabel LabelDiemDanh;
         private Util.PanelRound PanelLogo;
         private Util.PanelRound PanelNoiDung;
         private javax.swing.JLabel PanelTen;

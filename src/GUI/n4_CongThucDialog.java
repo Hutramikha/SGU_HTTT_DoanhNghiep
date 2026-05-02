@@ -79,7 +79,6 @@ public class n4_CongThucDialog extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(955, 610));
 
         jPanel8.setBackground(new java.awt.Color(240, 214, 173));
-        jPanel8.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 3, 0, new java.awt.Color(68, 0, 0)));
         jPanel8.setPreferredSize(new java.awt.Dimension(800, 50));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
@@ -124,7 +123,7 @@ public class n4_CongThucDialog extends javax.swing.JFrame {
         jScrollPane3.setViewportView(dsNguyenLieu);
 
         jPanel11.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel11.setBorder(javax.swing.BorderFactory.createLineBorder(Util.UIHelper.BORDER_COLOR));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Món");
@@ -467,15 +466,26 @@ public class n4_CongThucDialog extends javax.swing.JFrame {
         fillTableCongThuc();
     }
     public void initActionListener() {
+        // Apply UI styling
+        jPanel8.setBackground(Util.UIHelper.ACCENT_GREEN);
+        jLabel4.setForeground(Util.UIHelper.WHITE);
+        jPanel1.setBackground(Util.UIHelper.SURFACE_ALT);
+        jPanel11.setBackground(Util.UIHelper.SURFACE);
+        
+        Util.UIHelper.styleButton(btn_Luu);
+        Util.UIHelper.styleButton(btn_Sua);
+        Util.UIHelper.styleButton(btn_Xoa);
+        Util.UIHelper.styleButton(btn_TimKiem);
+
         tf_Mon.setEditable(false);
         tf_Mon.setEnabled(false);
-        tf_Mon.setBackground(Color.WHITE);
-        tf_Mon.setDisabledTextColor(Color.BLACK);
+        tf_Mon.setBackground(Util.UIHelper.SURFACE);
+        tf_Mon.setDisabledTextColor(Util.UIHelper.DARK_TEXT);
         tf_Mon.setText(monBUS.getMonById(maMon).getTenMon());
         tf_NguyenLieu.setEditable(false);
         tf_NguyenLieu.setEnabled(false);
-        tf_NguyenLieu.setBackground(Color.WHITE);
-        tf_NguyenLieu.setDisabledTextColor(Color.BLACK);
+        tf_NguyenLieu.setBackground(Util.UIHelper.SURFACE);
+        tf_NguyenLieu.setDisabledTextColor(Util.UIHelper.DARK_TEXT);
         cb_TimKiem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã NL", "Tên NL" }));
         tf_TimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

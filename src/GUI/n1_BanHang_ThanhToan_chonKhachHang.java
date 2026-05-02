@@ -200,13 +200,16 @@ public class n1_BanHang_ThanhToan_chonKhachHang extends javax.swing.JFrame {
                                                                 .addGap(4, 4, 4)
                                                                 .addGroup(PanelTimKiemLayout
                                                                                 .createParallelGroup(
-                                                                                                javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                                javax.swing.GroupLayout.Alignment.CENTER,
                                                                                                 false)
                                                                                 .addComponent(LabelAnhTimKiem,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                 Short.MAX_VALUE)
-                                                                                .addComponent(TimKiem))
+                                                                                .addComponent(TimKiem,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                24,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                 .addGap(4, 4, 4)));
 
                 PanelTool.add(PanelTimKiem);

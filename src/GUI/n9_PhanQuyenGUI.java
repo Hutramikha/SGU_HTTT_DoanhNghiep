@@ -33,7 +33,18 @@ public class n9_PhanQuyenGUI extends javax.swing.JPanel {
                 TableCustom.apply(JScrollThongTinQuyen, TableCustom.TableType.MULTI_LINE);
                 loadData();
                 nhomNutChucNang();
+                setActiveTab(BtnQLPhanQuyen);
+        }
 
+        private javax.swing.JPanel currentActiveTab = null;
+
+        private void setActiveTab(javax.swing.JPanel activeBtn) {
+                // Reset cả 2 nút về màu mặc định (giống trang bán hàng)
+                BtnQLNhanVien.setBackground(Util.UIHelper.SURFACE_ALT);
+                BtnQLPhanQuyen.setBackground(Util.UIHelper.SURFACE_ALT);
+                // Highlight nút đang active
+                activeBtn.setBackground(Util.UIHelper.ACCENT_GREEN);
+                currentActiveTab = activeBtn;
         }
 
         @SuppressWarnings("unchecked")
@@ -90,6 +101,7 @@ public class n9_PhanQuyenGUI extends javax.swing.JPanel {
 
                 jPanel17.setBackground(new java.awt.Color(219, 189, 142));
                 jPanel17.setPreferredSize(new java.awt.Dimension(130, 40));
+                jPanel17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
                 jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
                 jLabel13.setText("Nhân viên");
@@ -116,6 +128,7 @@ public class n9_PhanQuyenGUI extends javax.swing.JPanel {
                 jPanel18.setBackground(new java.awt.Color(219, 189, 142));
                 jPanel18.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
                 jPanel18.setPreferredSize(new java.awt.Dimension(130, 40));
+                jPanel18.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
                 jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
                 jLabel14.setText("Phân quyền");
@@ -577,7 +590,6 @@ public class n9_PhanQuyenGUI extends javax.swing.JPanel {
                 ChBoxNhanVien1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
                 ChBoxNhanVien1.setText("Quản lý nhân viên");
                 PanelChuaCheckBox.add(ChBoxNhanVien1);
-                ChBoxNhanVien1.setEnabled(false);
 
                 CHBoxThongKe1.setBackground(new java.awt.Color(255, 255, 255));
                 CHBoxThongKe1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -617,33 +629,36 @@ public class n9_PhanQuyenGUI extends javax.swing.JPanel {
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                                 .addGroup(PanelPhanQuyenLayout
                                                                                                 .createSequentialGroup()
-                                                                                                .addGap(405, 405, 405)
+                                                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                                                 .addComponent(lblPhanQuyen)
                                                                                                 .addPreferredGap(
                                                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                                 .addComponent(cbPhanQuyen,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                 139,
-                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                                                 .addGroup(PanelPhanQuyenLayout
                                                                                                 .createSequentialGroup()
-                                                                                                .addGap(286, 286, 286)
+                                                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                                                 .addComponent(jPanel1,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                                                 .addGroup(PanelPhanQuyenLayout
                                                                                                 .createSequentialGroup()
-                                                                                                .addGap(226, 226, 226)
+                                                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                                                 .addComponent(PanelChuaCheckBox,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                                                 .addComponent(JScrollThongTinQuyen,
                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                 1107,
                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                .addContainerGap(72, Short.MAX_VALUE)));
+                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
                 PanelPhanQuyenLayout.setVerticalGroup(
                                 PanelPhanQuyenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(PanelPhanQuyenLayout.createSequentialGroup()
@@ -738,36 +753,46 @@ public class n9_PhanQuyenGUI extends javax.swing.JPanel {
         public void nhomNutChucNang() {
                 BtnQLNhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
-                                BtnQLNhanVien.setBackground(Util.UIHelper.ACCENT_GREEN);
+                                if (currentActiveTab != BtnQLNhanVien) {
+                                        BtnQLNhanVien.setBackground(Util.UIHelper.ACCENT_GREEN);
+                                }
                         }
 
                         public void mouseExited(java.awt.event.MouseEvent evt) {
-                                BtnQLNhanVien.setBackground(Util.UIHelper.LIGHT_GREEN);
+                                if (currentActiveTab != BtnQLNhanVien) {
+                                        BtnQLNhanVien.setBackground(Util.UIHelper.SURFACE_ALT);
+                                }
                         }
 
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                setActiveTab(BtnQLNhanVien);
                                 PanelTong.removeAll();
                                 n9_NhanVienKeoTha lich = new n9_NhanVienKeoTha(true, null);
                                 PanelTong.setLayout(new BorderLayout());
-                                PanelTong.add(lich, BorderLayout.CENTER); // Adjust the layout constraint as needed
+                                PanelTong.add(lich, BorderLayout.CENTER);
                                 PanelTong.revalidate();
                                 PanelTong.repaint();
                         }
                 });
                 BtnQLPhanQuyen.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
-                                BtnQLPhanQuyen.setBackground(Util.UIHelper.ACCENT_GREEN);
+                                if (currentActiveTab != BtnQLPhanQuyen) {
+                                        BtnQLPhanQuyen.setBackground(Util.UIHelper.ACCENT_GREEN);
+                                }
                         }
 
                         public void mouseExited(java.awt.event.MouseEvent evt) {
-                                BtnQLPhanQuyen.setBackground(Util.UIHelper.LIGHT_GREEN);
+                                if (currentActiveTab != BtnQLPhanQuyen) {
+                                        BtnQLPhanQuyen.setBackground(Util.UIHelper.SURFACE_ALT);
+                                }
                         }
 
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                setActiveTab(BtnQLPhanQuyen);
                                 PanelTong.removeAll();
                                 n9_PhanQuyenGUI lich = new n9_PhanQuyenGUI();
                                 PanelTong.setLayout(new BorderLayout());
-                                PanelTong.add(lich, BorderLayout.CENTER); // Adjust the layout constraint as needed
+                                PanelTong.add(lich, BorderLayout.CENTER);
                                 PanelTong.revalidate();
                                 PanelTong.repaint();
                         }

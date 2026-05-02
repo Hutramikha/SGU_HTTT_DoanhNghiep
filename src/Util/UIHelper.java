@@ -24,6 +24,7 @@ public class UIHelper {
     public static final Color LIGHTER_GREEN = new Color(160, 186, 168);
     public static final Color LIGHTEST_GREEN = new Color(236, 243, 238);
     public static final Color ACCENT_GREEN = new Color(127, 166, 140);
+    public static final Color EMERALD = new Color(0, 0, 0);
 
     // Semantic tones for consistent green-first UI composition
     // App background requested: #2e7d32
@@ -136,6 +137,10 @@ public class UIHelper {
     }
 
     private static void applyProjectThemeRecursive(Component component) {
+        if (component instanceof JComponent
+                && Boolean.TRUE.equals(((JComponent) component).getClientProperty("uihelper.ignore"))) {
+            return;
+        }
         remapThemeColors(component);
 
         if (component instanceof JButton) {
@@ -377,7 +382,8 @@ public class UIHelper {
     }
 
     private static void applySoftRaisedButtonStyle(JButton button) {
-        if (button == null || !isApplicationButton(button)) {
+        if (button == null || !isApplicationButton(button)
+                || Boolean.TRUE.equals(button.getClientProperty("uihelper.ignore"))) {
             return;
         }
 
@@ -515,10 +521,14 @@ public class UIHelper {
             }
 
             @Override
-            public int getIconWidth() { return 20; }
+            public int getIconWidth() {
+                return 20;
+            }
 
             @Override
-            public int getIconHeight() { return 20; }
+            public int getIconHeight() {
+                return 20;
+            }
         };
     }
 }

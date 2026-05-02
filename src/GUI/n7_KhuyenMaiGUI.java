@@ -59,17 +59,26 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         box = new javax.swing.JComboBox<>();
 
+        // Set HAND_CURSOR for buttons
+        btn_Them.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_Sua.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_TaiLai.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_TimKiem.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        LabelAnhTimKiem.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        PanelKhuyenMai.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        PanelUuDai.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
         setBackground(new java.awt.Color(122, 74, 74));
         setMaximumSize(new java.awt.Dimension(1125, 667));
         setMinimumSize(new java.awt.Dimension(1125, 667));
         setPreferredSize(new java.awt.Dimension(1125, 667));
 
-        PanelTong.setBackground(new java.awt.Color(255, 255, 255));
+        PanelTong.setBackground(Util.UIHelper.SURFACE);
         PanelTong.setMaximumSize(new java.awt.Dimension(1125, 658));
         PanelTong.setMinimumSize(new java.awt.Dimension(1125, 658));
         PanelTong.setPreferredSize(new java.awt.Dimension(1125, 658));
 
-        PanelKhuyenMai.setBackground(new java.awt.Color(219, 189, 142));
+        PanelKhuyenMai.setBackground(Util.UIHelper.ACCENT_GREEN); // Active color
         PanelKhuyenMai.setForeground(new java.awt.Color(255, 102, 102));
         PanelKhuyenMai.setMaximumSize(new java.awt.Dimension(195, 44));
         PanelKhuyenMai.setMinimumSize(new java.awt.Dimension(195, 44));
@@ -98,7 +107,7 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
                                         .addComponent(LblKhuyenMai)
                                         .addGap(0, 9, Short.MAX_VALUE))));
 
-        PanelUuDai.setBackground(new java.awt.Color(219, 189, 142));
+        PanelUuDai.setBackground(Util.UIHelper.SURFACE_ALT); // Inactive color (Faint green)
         PanelUuDai.setForeground(new java.awt.Color(255, 102, 102));
         PanelUuDai.setMaximumSize(new java.awt.Dimension(195, 44));
         PanelUuDai.setMinimumSize(new java.awt.Dimension(195, 44));
@@ -155,15 +164,15 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
 
         PanelThongTinKhuyenMai_Cam.setBackground(new java.awt.Color(219, 189, 142));
 
-        PanelThongTinKhuyenMai.setBackground(new java.awt.Color(255, 255, 255));
+        PanelThongTinKhuyenMai.setBackground(Util.UIHelper.SURFACE);
 
         LabelTieuDe.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         LabelTieuDe.setText("Thông Tin Khuyến Mãi");
 
-        PanelInput.setBackground(new java.awt.Color(255, 255, 255));
-        PanelInput.setPreferredSize(new java.awt.Dimension(307, 380));
+        PanelInput.setBackground(Util.UIHelper.SURFACE);
+        PanelInput.setPreferredSize(new java.awt.Dimension(307, 320));
 
-        LblMa.setBackground(new java.awt.Color(255, 255, 255));
+        LblMa.setBackground(Util.UIHelper.SURFACE);
         LblMa.setText("Mã Khuyến Mãi");
         LblMa.setMaximumSize(new java.awt.Dimension(100, 20));
         LblMa.setMinimumSize(new java.awt.Dimension(100, 20));
@@ -180,7 +189,7 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
         TextFieldMa.setOpaque(true);
         TextFieldMa.setPreferredSize(new java.awt.Dimension(120, 20));
 
-        LblTen.setBackground(new java.awt.Color(255, 255, 255));
+        LblTen.setBackground(Util.UIHelper.SURFACE);
         LblTen.setText("Tên Khuyến Mãi");
         LblTen.setMaximumSize(new java.awt.Dimension(100, 20));
         LblTen.setMinimumSize(new java.awt.Dimension(100, 20));
@@ -192,21 +201,21 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
         TextFieldTen.setMinimumSize(new java.awt.Dimension(120, 20));
         TextFieldTen.setPreferredSize(new java.awt.Dimension(120, 20));
 
-        LblNgayBatDau.setBackground(new java.awt.Color(255, 255, 255));
+        LblNgayBatDau.setBackground(Util.UIHelper.SURFACE);
         LblNgayBatDau.setText("Ngày bắt đầu");
         LblNgayBatDau.setMaximumSize(new java.awt.Dimension(100, 20));
         LblNgayBatDau.setMinimumSize(new java.awt.Dimension(100, 20));
         LblNgayBatDau.setOpaque(true);
         LblNgayBatDau.setPreferredSize(new java.awt.Dimension(100, 20));
 
-        LblNgayKetThuc.setBackground(new java.awt.Color(255, 255, 255));
+        LblNgayKetThuc.setBackground(Util.UIHelper.SURFACE);
         LblNgayKetThuc.setText("Ngày kết thúc");
         LblNgayKetThuc.setMaximumSize(new java.awt.Dimension(100, 20));
         LblNgayKetThuc.setMinimumSize(new java.awt.Dimension(100, 20));
         LblNgayKetThuc.setOpaque(true);
         LblNgayKetThuc.setPreferredSize(new java.awt.Dimension(100, 20));
 
-        LblPhanTram.setBackground(new java.awt.Color(255, 255, 255));
+        LblPhanTram.setBackground(Util.UIHelper.SURFACE);
         LblPhanTram.setText("% Khuyến Mãi");
         LblPhanTram.setMaximumSize(new java.awt.Dimension(100, 20));
         LblPhanTram.setMinimumSize(new java.awt.Dimension(100, 20));
@@ -218,7 +227,7 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
         TextFieldPhanTram.setMinimumSize(new java.awt.Dimension(120, 20));
         TextFieldPhanTram.setPreferredSize(new java.awt.Dimension(120, 20));
 
-        LblDieuKien.setBackground(new java.awt.Color(255, 255, 255));
+        LblDieuKien.setBackground(Util.UIHelper.SURFACE);
         LblDieuKien.setText("Điều kiện");
         LblDieuKien.setMaximumSize(new java.awt.Dimension(100, 20));
         LblDieuKien.setMinimumSize(new java.awt.Dimension(100, 20));
@@ -328,7 +337,7 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
         PanelInputLayout.setVerticalGroup(
                 PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(PanelInputLayout.createSequentialGroup()
-                                .addGap(16, 16, 16)
+                                .addGap(12, 12, 12)
                                 .addGroup(PanelInputLayout
                                         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(LblMa, javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -342,7 +351,7 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
                                                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(21, 21, 21)
+                                .addGap(15, 15, 15)
                                 .addGroup(PanelInputLayout
                                         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(LblTen, javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -356,7 +365,7 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
                                                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(21, 21, 21)
+                                .addGap(15, 15, 15)
                                 .addGroup(
                                         PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(LblNgayBatDau, javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -365,7 +374,7 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
                                                 .addComponent(NgayBatDau, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(24, 24, 24)
+                                .addGap(15, 15, 15)
                                 .addGroup(
                                         PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                 .addComponent(LblNgayKetThuc, javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -374,7 +383,7 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
                                                 .addComponent(NgayKetThuc, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(28, 28, 28)
+                                .addGap(15, 15, 15)
                                 .addGroup(PanelInputLayout
                                         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(LblPhanTram, javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -388,19 +397,20 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
                                                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(20, 20, 20)
-                                .addGroup(
-                                        PanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(LblDieuKien, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15)
+                                .addGroup(PanelInputLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(LblDieuKien, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(PanelInputLayout.createSequentialGroup()
                                                 .addComponent(TextFieldDieuKien, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(3, 3, 3)
+                                                .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap()));
 
         javax.swing.GroupLayout PanelThongTinKhuyenMaiLayout = new javax.swing.GroupLayout(PanelThongTinKhuyenMai);
@@ -425,7 +435,7 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
                                 .addComponent(LabelTieuDe, javax.swing.GroupLayout.PREFERRED_SIZE, 32,
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(PanelInput, javax.swing.GroupLayout.PREFERRED_SIZE, 380,
+                                .addComponent(PanelInput, javax.swing.GroupLayout.PREFERRED_SIZE, 320,
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)));
 
@@ -458,7 +468,7 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
         btn_TaiLai.setMinimumSize(new java.awt.Dimension(100, 24));
         btn_TaiLai.setPreferredSize(new java.awt.Dimension(100, 24));
 
-        PanelTimKiem.setBackground(new java.awt.Color(219, 189, 142));
+        PanelTimKiem.setBackground(Util.UIHelper.SURFACE_ALT);
         PanelTimKiem.setMaximumSize(new java.awt.Dimension(306, 32));
         PanelTimKiem.setMinimumSize(new java.awt.Dimension(306, 32));
         PanelTimKiem.setPreferredSize(new java.awt.Dimension(306, 32));
@@ -483,10 +493,11 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTimKiemLayout.createSequentialGroup()
                                 .addGap(4, 4, 4)
                                 .addGroup(PanelTimKiemLayout
-                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
                                         .addComponent(LabelAnhTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(TextFieldTimKiem))
+                                        .addComponent(TextFieldTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 24,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
         btn_TimKiem.setBackground(new java.awt.Color(0, 0, 0));
@@ -581,7 +592,7 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
         PanelTongLayout.setVerticalGroup(
                 PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(PanelTongLayout.createSequentialGroup()
-                                .addGap(30, 30, 30)
+                                .addGap(20, 20, 20)
                                 .addGroup(PanelTongLayout
                                         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(PanelUuDai, javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -589,9 +600,9 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
                                         .addComponent(PanelKhuyenMai, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(LabelTenBang)
-                                .addGap(26, 26, 26)
+                                .addGap(15, 15, 15)
                                 .addGroup(PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(PanelTimKiem, javax.swing.GroupLayout.Alignment.TRAILING,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -606,30 +617,29 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
                                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(2, 2, 2)
+                                .addGap(10, 10, 10)
                                 .addGroup(PanelTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(PanelTongLayout.createSequentialGroup()
-                                                .addGap(4, 4, 4)
                                                 .addComponent(PanelThongTinKhuyenMai_Cam,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(22, 22, 22)
+                                                .addGap(15, 15, 15)
                                                 .addGroup(PanelTongLayout
                                                         .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(btn_Them, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                30,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(btn_Sua, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                30,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(22, 22, 22)
+                                                .addGap(15, 15, 15)
                                                 .addComponent(btn_TimKiem, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        30,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(ScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 447,
+                                        .addComponent(ScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 460,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(33, Short.MAX_VALUE)));
+                                .addContainerGap(20, Short.MAX_VALUE)));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -672,7 +682,8 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                PanelUuDai.setBackground(Util.UIHelper.LIGHT_GREEN);
+                // Keep background consistent if it's inactive (SURFACE_ALT)
+                PanelUuDai.setBackground(Util.UIHelper.SURFACE_ALT);
             }
 
             @Override
@@ -692,7 +703,8 @@ public class n7_KhuyenMaiGUI extends javax.swing.JPanel {
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                PanelKhuyenMai.setBackground(Util.UIHelper.LIGHT_GREEN);
+                // Keep background consistent if it's active
+                PanelKhuyenMai.setBackground(Util.UIHelper.ACCENT_GREEN);
             }
 
             @Override

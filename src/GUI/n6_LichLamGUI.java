@@ -75,17 +75,18 @@ public class n6_LichLamGUI extends javax.swing.JPanel {
                 PanelTong.setMinimumSize(new java.awt.Dimension(1125, 658));
                 PanelTong.setPreferredSize(new java.awt.Dimension(1125, 658));
 
-                PanelLichLam.setBackground(new java.awt.Color(219, 189, 142));
+                PanelLichLam.setBackground(Util.UIHelper.ACCENT_GREEN);
                 PanelLichLam.setMaximumSize(new java.awt.Dimension(195, 44));
                 PanelLichLam.setMinimumSize(new java.awt.Dimension(195, 44));
                 PanelLichLam.setPreferredSize(new java.awt.Dimension(195, 44));
                 PanelLichLam.setLayout(new java.awt.GridBagLayout());
 
                 LichLam.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+                LichLam.setForeground(Util.UIHelper.WHITE);
                 LichLam.setText("LỊCH LÀM");
                 PanelLichLam.add(LichLam, new java.awt.GridBagConstraints());
 
-                PanelCaLam.setBackground(new java.awt.Color(219, 189, 142));
+                PanelCaLam.setBackground(Util.UIHelper.SURFACE_ALT);
                 PanelCaLam.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
                 PanelCaLam.setMaximumSize(new java.awt.Dimension(195, 44));
                 PanelCaLam.setMinimumSize(new java.awt.Dimension(195, 44));
@@ -93,6 +94,7 @@ public class n6_LichLamGUI extends javax.swing.JPanel {
                 PanelCaLam.setLayout(new java.awt.GridBagLayout());
 
                 CaLam.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+                CaLam.setForeground(Util.UIHelper.DARK_TEXT);
                 CaLam.setText("CA LÀM");
                 PanelCaLam.add(CaLam, new java.awt.GridBagConstraints());
 
@@ -707,11 +709,13 @@ public class n6_LichLamGUI extends javax.swing.JPanel {
                 combobox_TenNhanVien();
                 PanelCaLam.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mouseEntered(java.awt.event.MouseEvent evt) {
-                                PanelCaLam.setBackground(Util.UIHelper.ACCENT_GREEN);
+                                PanelCaLam.setBackground(Util.UIHelper.LIGHT_GREEN);
+                                CaLam.setForeground(Util.UIHelper.WHITE);
                         }
 
                         public void mouseExited(java.awt.event.MouseEvent evt) {
-                                PanelCaLam.setBackground(Util.UIHelper.LIGHT_GREEN);
+                                PanelCaLam.setBackground(Util.UIHelper.SURFACE_ALT);
+                                CaLam.setForeground(Util.UIHelper.DARK_TEXT);
                         }
 
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -729,7 +733,7 @@ public class n6_LichLamGUI extends javax.swing.JPanel {
                         }
 
                         public void mouseExited(java.awt.event.MouseEvent evt) {
-                                PanelLichLam.setBackground(Util.UIHelper.LIGHT_GREEN);
+                                PanelLichLam.setBackground(Util.UIHelper.ACCENT_GREEN);
                         }
                 });
 

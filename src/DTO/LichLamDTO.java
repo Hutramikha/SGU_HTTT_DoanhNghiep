@@ -7,11 +7,20 @@ public class LichLamDTO {
     private String maCaLam;
     private String maNhanVien;
     private Date ngayLam;
+    private int trangThaiDiemDanh;
 
     public LichLamDTO(String maCaLam, String maNhanVien, Date ngayLam) {
         this.maCaLam = maCaLam;
         this.maNhanVien = maNhanVien;
         this.ngayLam = ngayLam;
+        this.trangThaiDiemDanh = 0;
+    }
+
+    public LichLamDTO(String maCaLam, String maNhanVien, Date ngayLam, int trangThaiDiemDanh) {
+        this.maCaLam = maCaLam;
+        this.maNhanVien = maNhanVien;
+        this.ngayLam = ngayLam;
+        this.trangThaiDiemDanh = trangThaiDiemDanh;
     }
 
     public String getMaCaLam() {
@@ -36,6 +45,14 @@ public class LichLamDTO {
 
     public void setNgayLam(Date ngayLam) {
         this.ngayLam = ngayLam;
+    }
+
+    public int getTrangThaiDiemDanh() {
+        return trangThaiDiemDanh;
+    }
+
+    public void setTrangThaiDiemDanh(int trangThaiDiemDanh) {
+        this.trangThaiDiemDanh = trangThaiDiemDanh;
     }
 
     @Override

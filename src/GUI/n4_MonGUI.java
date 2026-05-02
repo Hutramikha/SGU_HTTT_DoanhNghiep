@@ -126,10 +126,11 @@ public class n4_MonGUI extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTimKiemLayout.createSequentialGroup()
                                 .addGap(4, 4, 4)
                                 .addGroup(PanelTimKiemLayout
-                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
                                         .addComponent(LabelAnhTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(TextFieldTimKiem))
+                                        .addComponent(TextFieldTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 24,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(4, 4, 4)));
 
         lb_QuanLyMon.setAlignment(java.awt.Label.CENTER);
