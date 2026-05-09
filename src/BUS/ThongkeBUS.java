@@ -235,5 +235,16 @@ public class ThongkeBUS {
     public java.util.Map<String, int[]> getBatchSalaryStatistics(int year) {
         return TK.getBatchSalaryStatistics(year);
     }
+    public ArrayList<Object[]> getTopSanPhamTheoThang(int month, int year) {
+        return TK.getTopSanPhamTheoThang(month, year);
+    }
+
+    public ArrayList<Object[]> getTopSanPhamTheoNam(int year) {
+        return TK.getTopSanPhamTheoNam(year);
+    }
+
+    public ArrayList<Object[]> getTopSanPhamTheoQuy(int quy, int year) {
+        return TK.getTopSanPhamTheoQuy(quy, year);
+    }
 }
 

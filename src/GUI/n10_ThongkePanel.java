@@ -45,6 +45,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         CardLayout cardLayout2 = new CardLayout();
         CardLayout cardLayout3 = new CardLayout();
         CardLayout cardLayout4 = new CardLayout();
+        CardLayout cardLayout5 = new CardLayout();
         ThongkeBUS TK = new ThongkeBUS();
         NhanVienBUS listnv = new NhanVienBUS();
         ArrayList<NhanVienDTO> list = new ArrayList<>();
@@ -127,8 +128,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                                 jTextField16, jTextField17, jTextField18, jTextField19, jTextField20);
 
                 styleComboBoxes(Combobox_TK, CbboxDefault, CbboxDthu, CbboxChiphi, CbboxLoinhuan, CbboxLuong,
-                                CbboxKhohang, CbboxNam);
-                styleScrollPanes(DefaultTK, TK_doanhthu, TK_chiphi, TK_loinhuan, TK_luong, TK_khohang);
+                                CbboxKhohang, CbboxSanpham, CbboxSanphamThang, CbboxSanphamQuy, CbboxNam);
+                styleScrollPanes(DefaultTK, TK_doanhthu, TK_chiphi, TK_loinhuan, TK_luong, TK_khohang, TK_sanpham);
 
                 if (ThongkePanel != null) {
                         ThongkePanel.setBackground(UIHelper.SURFACE);
@@ -195,6 +196,9 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 contentTKLnhuan2.removeAll();
                 ContentLuong1.removeAll();
                 ContentKhohang1.removeAll();
+                ContentSanpham1.removeAll();
+                ContentSanpham2.removeAll();
+                ContentSanpham3.removeAll();
         }
 
         private void updateDefaultModeVisibility() {
@@ -223,7 +227,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
         private void setupYearSelector() {
                 // Year ComboBox is already laid out in initComponents; just wire the logic here
-                if (CbboxNam == null) return;
+                if (CbboxNam == null)
+                        return;
                 int currentYear = java.time.LocalDate.now().getYear();
                 int startYear = 2020;
                 int count = currentYear - startYear + 1;
@@ -584,10 +589,14 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 // Also update month labels for clarity in historical view
                 jLabel7.setText("Doanh thu tháng " + date.toLocalDate().getMonthValue() + " (" + selectedYear + ")");
                 jLabel38.setText("Lợi nhuận tháng " + date.toLocalDate().getMonthValue() + " (" + selectedYear + ")");
-                jLabel41.setText("Tổng lương nhân viên tháng " + date.toLocalDate().getMonthValue() + " (" + selectedYear + ")");
-                jLabel9.setText("Chi phi nhập hàng tháng " + date.toLocalDate().getMonthValue() + " (" + selectedYear + ")");
-                jLabel10.setText("Chi phí luong nhân viên tháng " + date.toLocalDate().getMonthValue() + " (" + selectedYear + ")");
-                jLabel36.setText("Tổng chi phí tháng " + date.toLocalDate().getMonthValue() + " (" + selectedYear + ")");
+                jLabel41.setText("Tổng lương nhân viên tháng " + date.toLocalDate().getMonthValue() + " ("
+                                + selectedYear + ")");
+                jLabel9.setText("Chi phi nhập hàng tháng " + date.toLocalDate().getMonthValue() + " (" + selectedYear
+                                + ")");
+                jLabel10.setText("Chi phí luong nhân viên tháng " + date.toLocalDate().getMonthValue() + " ("
+                                + selectedYear + ")");
+                jLabel36.setText(
+                                "Tổng chi phí tháng " + date.toLocalDate().getMonthValue() + " (" + selectedYear + ")");
 
                 //////////////////////////////// biểu đồ đường mặc định
                 List<Integer> xData = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
@@ -770,13 +779,81 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 ContentKhohang1.add(ChartpnKho, BorderLayout.NORTH);
                 ContentKhohang1.revalidate();
                 ContentKhohang1.repaint();
+
+                //////////////////////////////// biểu đồ sản phẩm
+                ArrayList<Object[]> topSP = TK.getTopSanPhamTheoNam(selectedYear);
+                List<String> xDataSP = new ArrayList<>();
+                List<Integer> yDataSP = new ArrayList<>();
+                for (int i = 0; i < Math.min(topSP.size(), 10); i++) {
+                        xDataSP.add((String) topSP.get(i)[0]);
+                        yDataSP.add((Integer) topSP.get(i)[1]);
+                }
+
+                if (!xDataSP.isEmpty()) {
+                        CategoryChart chartSP = n10_ChartCreator.createBarChart(xDataSP, List.of(yDataSP),
+                                        List.of("Số lượng bán"),
+                                        "Top 10 sản phẩm bán chạy năm " + selectedYear, "Sản phẩm", "Số lượng");
+                        XChartPanel<CategoryChart> chartPanelSP = new XChartPanel<>(chartSP);
+                        ContentSanpham1.setLayout(new BorderLayout());
+                        ContentSanpham1.add(chartPanelSP, BorderLayout.NORTH);
+                        ContentSanpham1.revalidate();
+                        ContentSanpham1.repaint();
+                }
+
+                // Month
+                int selectedMonth = CbboxSanphamThang.getSelectedIndex() + 1;
+                ArrayList<Object[]> topSPThang = TK.getTopSanPhamTheoThang(selectedMonth, selectedYear);
+                List<String> xDataSPThang = new ArrayList<>();
+                List<Integer> yDataSPThang = new ArrayList<>();
+                for (int i = 0; i < Math.min(topSPThang.size(), 10); i++) {
+                        xDataSPThang.add((String) topSPThang.get(i)[0]);
+                        yDataSPThang.add((Integer) topSPThang.get(i)[1]);
+                }
+
+                if (!xDataSPThang.isEmpty()) {
+                        CategoryChart chartSPThang = n10_ChartCreator.createBarChart(xDataSPThang,
+                                        List.of(yDataSPThang),
+                                        List.of("Số lượng bán"),
+                                        "Top 10 sản phẩm bán chạy tháng " + selectedMonth + " (" + selectedYear + ")",
+                                        "Sản phẩm",
+                                        "Số lượng");
+                        XChartPanel<CategoryChart> chartPanelSPThang = new XChartPanel<>(chartSPThang);
+                        ContentSanpham2.setLayout(new BorderLayout());
+                        ContentSanpham2.add(chartPanelSPThang, BorderLayout.NORTH);
+                        ContentSanpham2.revalidate();
+                        ContentSanpham2.repaint();
+                }
+
+                // Quarter
+                int selectedQuarter = CbboxSanphamQuy.getSelectedIndex() + 1;
+                ArrayList<Object[]> topSPQuy = TK.getTopSanPhamTheoQuy(selectedQuarter, selectedYear);
+                List<String> xDataSPQuy = new ArrayList<>();
+                List<Integer> yDataSPQuy = new ArrayList<>();
+                for (int i = 0; i < Math.min(topSPQuy.size(), 10); i++) {
+                        xDataSPQuy.add((String) topSPQuy.get(i)[0]);
+                        yDataSPQuy.add((Integer) topSPQuy.get(i)[1]);
+                }
+
+                if (!xDataSPQuy.isEmpty()) {
+                        CategoryChart chartSPQuy = n10_ChartCreator.createBarChart(xDataSPQuy, List.of(yDataSPQuy),
+                                        List.of("Số lượng bán"),
+                                        "Top 10 sản phẩm bán chạy Quý " + selectedQuarter + " (" + selectedYear + ")",
+                                        "Sản phẩm",
+                                        "Số lượng");
+                        XChartPanel<CategoryChart> chartPanelSPQuy = new XChartPanel<>(chartSPQuy);
+                        ContentSanpham3.setLayout(new BorderLayout());
+                        ContentSanpham3.add(chartPanelSPQuy, BorderLayout.NORTH);
+                        ContentSanpham3.revalidate();
+                        ContentSanpham3.repaint();
+                }
         }
 
         public void addControl() {
 
                 String[] columnNames = { "Danh mục", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
                                 "tổng năm " + selectedYear };
-                String[] columnNamesLuong = { "Mã NV", "Tên Nhân Viên", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+                String[] columnNamesLuong = { "Mã NV", "Tên Nhân Viên", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+                                "10", "11", "12",
                                 "Tổng năm " + selectedYear };
                 String[] columnNamesquy = { "Danh mục", "1", "2", "3", "4", "tổng năm " + selectedYear };
 
@@ -958,6 +1035,35 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 tableKho.setModel(tableModeldsnl);
                 tableDf.setModel(tableModelmDefaul);
                 tableDfquy.setModel(tableModelmDefaulQuy);
+
+                //////////////// San pham
+                String[] columnNamesSP = { "Tên Sản Phẩm", "Số Lượng Bán", "Doanh Thu" };
+                DefaultTableModel tableModelSPthang = new DefaultTableModel(columnNamesSP, 0);
+                int selectedMonthTable = CbboxSanphamThang.getSelectedIndex() + 1;
+                ArrayList<Object[]> listSPthang = TK.getTopSanPhamTheoThang(selectedMonthTable,
+                                selectedYear);
+                for (Object[] row : listSPthang) {
+                        tableModelSPthang.addRow(
+                                        new Object[] { row[0], row[1], toCurrency(((Long) row[2]).intValue()) });
+                }
+                tableSP.setModel(tableModelSPthang);
+
+                DefaultTableModel tableModelSPnamMod = new DefaultTableModel(columnNamesSP, 0);
+                ArrayList<Object[]> listSPnam = TK.getTopSanPhamTheoNam(selectedYear);
+                for (Object[] row : listSPnam) {
+                        tableModelSPnamMod.addRow(
+                                        new Object[] { row[0], row[1], toCurrency(((Long) row[2]).intValue()) });
+                }
+                tableSPnam.setModel(tableModelSPnamMod);
+
+                DefaultTableModel tableModelSPquyMod = new DefaultTableModel(columnNamesSP, 0);
+                int selectedQuarterTable = CbboxSanphamQuy.getSelectedIndex() + 1;
+                ArrayList<Object[]> listSPquy = TK.getTopSanPhamTheoQuy(selectedQuarterTable, selectedYear);
+                for (Object[] row : listSPquy) {
+                        tableModelSPquyMod.addRow(
+                                        new Object[] { row[0], row[1], toCurrency(((Long) row[2]).intValue()) });
+                }
+                tableSPquy.setModel(tableModelSPquyMod);
 
                 ThongkePanel.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
                         @Override
@@ -1158,6 +1264,14 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                                         } else {
                                                 ex.xuatExcel(tableDf);
                                         }
+                                } else if (Combobox_TK.getSelectedItem().equals("Sản phẩm")) {
+                                        if (CbboxSanpham.getSelectedItem().equals("Tháng")) {
+                                                ex.xuatExcel(tableSP);
+                                        } else if (CbboxSanpham.getSelectedItem().equals("Quý")) {
+                                                ex.xuatExcel(tableSPquy);
+                                        } else {
+                                                ex.xuatExcel(tableSPnam);
+                                        }
                                 } else {
                                         ex.xuatExcel(tableKho);
                                 }
@@ -1167,7 +1281,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 Combobox_TK.setBackground(new java.awt.Color(219, 189, 142));
                 Combobox_TK.setModel(new javax.swing.DefaultComboBoxModel<>(
-                                new String[] { "Mặc định", "Doanh Thu", "Chi phí", "Lợi nhuận", "Lương", "Kho hàng" }));
+                                new String[] { "Mặc định", "Doanh Thu", "Chi phí", "Lợi nhuận", "Lương", "Kho hàng",
+                                                "Sản phẩm" }));
                 Combobox_TK.setToolTipText("");
                 Combobox_TK.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
                 Combobox_TK.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -1182,7 +1297,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 CbboxDefault.setToolTipText("Kiểu báo cáo tab Mặc định");
 
                 CbboxNam = new javax.swing.JComboBox<>();
-                CbboxNam.setModel(new javax.swing.DefaultComboBoxModel<>(new Integer[]{2026})); // populated in setupYearSelector
+                CbboxNam.setModel(new javax.swing.DefaultComboBoxModel<>(new Integer[] { 2026 })); // populated in
+                                                                                                   // setupYearSelector
                 CbboxNam.setFont(new java.awt.Font("Segoe UI Semibold", 0, 13)); // NOI18N
                 CbboxNam.setBackground(UIHelper.SURFACE);
                 CbboxNam.setForeground(UIHelper.DARK_TEXT);
@@ -1480,7 +1596,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 headerPanel.add(KhMoiPn);
 
-                /////
+                ///
                 jTextField6.setText("jTextField6");
                 jTextField6.setMinimumSize(new java.awt.Dimension(200, 22));
                 jTextField6.setPreferredSize(new java.awt.Dimension(195, 50));
@@ -2044,7 +2160,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 TK_chiphi.setBackground(new java.awt.Color(219, 189, 142));
                 TK_chiphi.setPreferredSize(new java.awt.Dimension(1120, 450));
 
-                //////
+                ////
                 jTextField9.setText("jTextField6");
                 jTextField9.setMinimumSize(new java.awt.Dimension(200, 22));
                 jTextField9.setPreferredSize(new java.awt.Dimension(195, 50));
@@ -2322,7 +2438,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 TK_loinhuan.setBackground(new java.awt.Color(219, 189, 142));
                 TK_loinhuan.setPreferredSize(new java.awt.Dimension(1120, 450));
 
-                //////
+                ////
                 jTextField18.setText("jTextField18");
                 jTextField18.setPreferredSize(new java.awt.Dimension(195, 50));
                 jTextField19.setText("jTextField18");
@@ -2589,7 +2705,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 TK_luong.setBackground(new java.awt.Color(219, 189, 142));
                 TK_luong.setPreferredSize(new java.awt.Dimension(1120, 450));
-                //////////
+                ////////
                 jTextField12.setText("jTextField12");
                 jTextField12.setMinimumSize(new java.awt.Dimension(195, 50));
                 jTextField12.setPreferredSize(new java.awt.Dimension(195, 55));
@@ -2857,7 +2973,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 TK_khohang.setBackground(new java.awt.Color(219, 189, 142));
                 TK_khohang.setPreferredSize(new java.awt.Dimension(1120, 450));
-                ////////////
+                //////////
                 jTextField15.setText("jTextField15");
                 jTextField15.setMinimumSize(new java.awt.Dimension(195, 50));
                 jTextField15.setPreferredSize(new java.awt.Dimension(195, 55));
@@ -3127,6 +3243,167 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
 
                 ThongkePanel.addTab("", TK_khohang);
 
+                TK_sanpham = new javax.swing.JScrollPane();
+                jPanel90 = new javax.swing.JPanel();
+                jPanel91 = new javax.swing.JPanel();
+                detailSanpham = new javax.swing.JPanel();
+                ContentSanpham = new javax.swing.JPanel();
+                ContentSanpham1 = new javax.swing.JPanel();
+                ContentSanpham2 = new javax.swing.JPanel();
+                selectSanpham = new javax.swing.JPanel();
+                CbboxSanpham = new javax.swing.JComboBox<>();
+
+                TK_sanpham.setBackground(new java.awt.Color(219, 189, 142));
+                TK_sanpham.setPreferredSize(new java.awt.Dimension(1120, 450));
+
+                jPanel90.setBackground(new java.awt.Color(204, 0, 51));
+                jPanel90.setLayout(new javax.swing.BoxLayout(jPanel90, javax.swing.BoxLayout.Y_AXIS));
+
+                jPanel91.setBackground(new java.awt.Color(219, 189, 142));
+                jPanel91.setPreferredSize(new java.awt.Dimension(1120, 1000));
+
+                detailSanpham.setBackground(new java.awt.Color(219, 189, 142));
+                detailSanpham.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 50, 5));
+                detailSanpham.setPreferredSize(new java.awt.Dimension(1125, 120));
+
+                ContentSanpham.setBackground(new java.awt.Color(219, 189, 142));
+                ContentSanpham.setLayout(cardLayout5);
+                ContentSanpham.setPreferredSize(new java.awt.Dimension(1090, 450));
+
+                ContentSanpham1.setBackground(new java.awt.Color(219, 189, 142));
+                ContentSanpham2.setBackground(new java.awt.Color(219, 189, 142));
+                ContentSanpham3 = new javax.swing.JPanel();
+                ContentSanpham3.setBackground(new java.awt.Color(219, 189, 142));
+
+                ContentSanpham.add(ContentSanpham1, "Năm");
+                ContentSanpham.add(ContentSanpham2, "Tháng");
+                ContentSanpham.add(ContentSanpham3, "Quý");
+
+                selectSanpham.setBackground(new java.awt.Color(219, 189, 142));
+                CbboxSanpham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Năm", "Tháng", "Quý" }));
+                CbboxSanpham.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                CbboxSanphamActionPerformed(evt);
+                        }
+                });
+
+                CbboxSanphamThang = new javax.swing.JComboBox<>();
+                CbboxSanphamThang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12" }));
+                CbboxSanphamThang.setSelectedIndex(date.toLocalDate().getMonthValue() - 1);
+                CbboxSanphamThang.setVisible(false);
+                CbboxSanphamThang.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                refreshStatisticsData(false);
+                        }
+                });
+
+                CbboxSanphamQuy = new javax.swing.JComboBox<>();
+                CbboxSanphamQuy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Quý 1", "Quý 2", "Quý 3", "Quý 4" }));
+                CbboxSanphamQuy.setSelectedIndex((date.toLocalDate().getMonthValue() - 1) / 3);
+                CbboxSanphamQuy.setVisible(false);
+                CbboxSanphamQuy.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                refreshStatisticsData(false);
+                        }
+                });
+
+                javax.swing.GroupLayout selectSanphamLayout = new javax.swing.GroupLayout(selectSanpham);
+                selectSanpham.setLayout(selectSanphamLayout);
+                selectSanphamLayout.setHorizontalGroup(
+                                selectSanphamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                selectSanphamLayout
+                                                                                .createSequentialGroup()
+                                                                                .addContainerGap(10, Short.MAX_VALUE)
+                                                                                .addComponent(CbboxSanphamThang,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                110,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(CbboxSanphamQuy,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                110,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(CbboxSanpham,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                137,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addContainerGap()));
+                selectSanphamLayout.setVerticalGroup(
+                                selectSanphamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(selectSanphamLayout.createSequentialGroup()
+                                                                .addContainerGap()
+                                                                .addGroup(selectSanphamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                .addComponent(CbboxSanpham,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                42,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addComponent(CbboxSanphamThang,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                42,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addComponent(CbboxSanphamQuy,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                42,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)));
+
+                javax.swing.GroupLayout jPanel91Layout = new javax.swing.GroupLayout(jPanel91);
+                jPanel91.setLayout(jPanel91Layout);
+                jPanel91Layout.setHorizontalGroup(
+                                jPanel91Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(jPanel91Layout.createSequentialGroup()
+                                                                .addContainerGap()
+                                                                .addGroup(jPanel91Layout
+                                                                                .createParallelGroup(
+                                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                .addComponent(ContentSanpham,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addGroup(jPanel91Layout
+                                                                                                .createSequentialGroup()
+                                                                                                .addComponent(detailSanpham,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                797,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addPreferredGap(
+                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                .addComponent(selectSanpham,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                .addContainerGap()));
+                jPanel91Layout.setVerticalGroup(
+                                jPanel91Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(jPanel91Layout.createSequentialGroup()
+                                                                .addContainerGap()
+                                                                .addGroup(jPanel91Layout
+                                                                                .createParallelGroup(
+                                                                                                javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                                false)
+                                                                                .addComponent(detailSanpham,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                120,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addComponent(selectSanpham,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                Short.MAX_VALUE))
+                                                                .addPreferredGap(
+                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(ContentSanpham,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)
+                                                                .addContainerGap()));
+
+                jPanel90.add(jPanel91);
+                TK_sanpham.setViewportView(jPanel90);
+                ThongkePanel.addTab("", TK_sanpham);
+
                 javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
                 jPanel1.setLayout(jPanel1Layout);
                 jPanel1Layout.setHorizontalGroup(
@@ -3250,6 +3527,18 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
                 cardLayout3.show(ContentLuong, selectedCard);
         }// GEN-LAST:event_CbboxLuongActionPerformed
 
+        private void CbboxSanphamActionPerformed(java.awt.event.ActionEvent evt) {
+                String selectedCard = (String) CbboxSanpham.getSelectedItem();
+                // Chuyển sang trang tương ứng
+                cardLayout5.show(ContentSanpham, selectedCard);
+
+                // Hiển thị combo box tương ứng
+                CbboxSanphamThang.setVisible("Tháng".equals(selectedCard));
+                CbboxSanphamQuy.setVisible("Quý".equals(selectedCard));
+
+                refreshStatisticsData(false);
+        }
+
         public String toCurrency(int giaTien) {
                 // Sử dụng NumberFormat để định dạng tiền tệ
                 NumberFormat numberFormat = NumberFormat.getInstance(Locale.forLanguageTag("vi-VN"));
@@ -3267,6 +3556,9 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         private javax.swing.JComboBox<String> CbboxKhohang;
         private javax.swing.JComboBox<String> CbboxLoinhuan;
         private javax.swing.JComboBox<String> CbboxLuong;
+        private javax.swing.JComboBox<String> CbboxSanpham;
+        private javax.swing.JComboBox<String> CbboxSanphamThang;
+        private javax.swing.JComboBox<String> CbboxSanphamQuy;
         private javax.swing.JComboBox<String> Combobox_TK;
         private javax.swing.JPanel ContentCphi;
         private javax.swing.JPanel ContentCphi1;
@@ -3274,6 +3566,10 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         private javax.swing.JPanel ContentKhohang;
         private javax.swing.JPanel ContentKhohang1;
         private javax.swing.JPanel ContentKhohang3;
+        private javax.swing.JPanel ContentSanpham;
+        private javax.swing.JPanel ContentSanpham1;
+        private javax.swing.JPanel ContentSanpham2;
+        private javax.swing.JPanel ContentSanpham3;
         private javax.swing.JPanel ContentLuong;
         private javax.swing.JPanel ContentLuong1;
         private javax.swing.JPanel ContentLuong2;
@@ -3297,6 +3593,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         private javax.swing.JScrollPane TK_khohang;
         private javax.swing.JScrollPane TK_loinhuan;
         private javax.swing.JScrollPane TK_luong;
+        private javax.swing.JScrollPane TK_sanpham;
         private javax.swing.JTabbedPane ThongkePanel;
         private javax.swing.JPanel TongDThungay;
         private javax.swing.JPanel TongDtPn;
@@ -3307,6 +3604,7 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         private javax.swing.JPanel detailKhohang;
         private javax.swing.JPanel detailLoinhuan;
         private javax.swing.JPanel detailLuong;
+        private javax.swing.JPanel detailSanpham;
         private javax.swing.JPanel headerPanel;
         private javax.swing.JLabel jLabel1;
         private javax.swing.JLabel jLabel10;
@@ -3348,6 +3646,9 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         private javax.swing.JPanel TongLuongnvnam;
         private javax.swing.JPanel jPanel88;
         private javax.swing.JPanel jPanel89;
+        private javax.swing.JPanel jPanel90;
+        private javax.swing.JPanel jPanel91;
+        private javax.swing.JPanel selectSanpham;
         private javax.swing.JPanel SoluongPhieunhap;
         private javax.swing.JPanel SoluongNguyenlieu;
         private javax.swing.JPanel SoluongNcc;
@@ -3386,5 +3687,8 @@ public class n10_ThongkePanel extends javax.swing.JPanel {
         private final javax.swing.JTable tableLNquy = new javax.swing.JTable();
         private final javax.swing.JTable tableLuong = new javax.swing.JTable();
         private final javax.swing.JTable tableKho = new javax.swing.JTable();
+        private final javax.swing.JTable tableSP = new javax.swing.JTable();
+        private final javax.swing.JTable tableSPnam = new javax.swing.JTable();
+        private final javax.swing.JTable tableSPquy = new javax.swing.JTable();
         // End of variables declaration//GEN-END:variables
 }

@@ -621,5 +621,78 @@ public class n10_ThongKeDAO {
         }
         return resultMap;
     }
+    public ArrayList<Object[]> getTopSanPhamTheoThang(int month, int year) {
+        ArrayList<Object[]> list = new ArrayList<>();
+        String sql = "SELECT m.TenMon, SUM(ct.SoLuong) as TongSoLuong, SUM(ct.SoLuong * ct.DonGia) as DoanhThu "
+                + "FROM ChiTietHoaDon ct "
+                + "JOIN Mon m ON ct.MaMon = m.MaMon "
+                + "JOIN HoaDon hd ON ct.MaHoaDon = hd.MaHoaDon "
+                + "WHERE MONTH(hd.NgayLapHoaDon) = ? AND YEAR(hd.NgayLapHoaDon) = ? "
+                + "GROUP BY m.TenMon "
+                + "ORDER BY TongSoLuong DESC";
+        try (Connection conn = JDBCUtil.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, month);
+            pstmt.setInt(2, year);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Object[] { rs.getString("TenMon"), rs.getInt("TongSoLuong"), rs.getLong("DoanhThu") });
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public ArrayList<Object[]> getTopSanPhamTheoNam(int year) {
+        ArrayList<Object[]> list = new ArrayList<>();
+        String sql = "SELECT m.TenMon, SUM(ct.SoLuong) as TongSoLuong, SUM(ct.SoLuong * ct.DonGia) as DoanhThu "
+                + "FROM ChiTietHoaDon ct "
+                + "JOIN Mon m ON ct.MaMon = m.MaMon "
+                + "JOIN HoaDon hd ON ct.MaHoaDon = hd.MaHoaDon "
+                + "WHERE YEAR(hd.NgayLapHoaDon) = ? "
+                + "GROUP BY m.TenMon "
+                + "ORDER BY TongSoLuong DESC";
+        try (Connection conn = JDBCUtil.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, year);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Object[] { rs.getString("TenMon"), rs.getInt("TongSoLuong"), rs.getLong("DoanhThu") });
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public ArrayList<Object[]> getTopSanPhamTheoQuy(int quy, int year) {
+        ArrayList<Object[]> list = new ArrayList<>();
+        int startMonth = (quy - 1) * 3 + 1;
+        int endMonth = quy * 3;
+        String sql = "SELECT m.TenMon, SUM(ct.SoLuong) as TongSoLuong, SUM(ct.SoLuong * ct.DonGia) as DoanhThu "
+                + "FROM ChiTietHoaDon ct "
+                + "JOIN Mon m ON ct.MaMon = m.MaMon "
+                + "JOIN HoaDon hd ON ct.MaHoaDon = hd.MaHoaDon "
+                + "WHERE (MONTH(hd.NgayLapHoaDon) BETWEEN ? AND ?) AND YEAR(hd.NgayLapHoaDon) = ? "
+                + "GROUP BY m.TenMon "
+                + "ORDER BY TongSoLuong DESC";
+        try (Connection conn = JDBCUtil.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, startMonth);
+            pstmt.setInt(2, endMonth);
+            pstmt.setInt(3, year);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Object[] { rs.getString("TenMon"), rs.getInt("TongSoLuong"), rs.getLong("DoanhThu") });
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }
 
