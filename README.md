@@ -6,8 +6,6 @@
 
 <p align="center">
   <b>Hệ thống phần mềm quản lý vận hành quán cà phê toàn diện</b><br>
-  Đồ án môn học: <b>Hệ Thống Thông Tin Doanh Nghiệp</b><br>
-  <b>Trường Đại học Sài Gòn (SGU)</b> — Khoa Công Nghệ Thông Tin
 </p>
 
 <p align="center">
