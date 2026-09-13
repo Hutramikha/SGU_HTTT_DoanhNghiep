@@ -218,9 +218,9 @@ Dự án đã tích hợp sẵn script tự động biên dịch và chạy bằ
 
 ## 📈 Hướng Phát Triển Mở Rộng
 
-- [ ] **Nâng cấp nền tảng đa thiết bị:** Chuyển đổi kiến trúc Backend sang RESTful API (Spring Boot) và phát triển giao diện Web (React/Vue.js) & App điện thoại (Flutter).
-- [ ] **Cơ sở dữ liệu Cloud:** Triển khai CSDL lên nền tảng đám mây (AWS RDS hoặc Azure SQL) phục vụ quản lý chuỗi nhiều chi nhánh.
-- [ ] **Tích hợp thanh toán số:** Kết nối cổng thanh toán mã VietQR động, ví điện tử MoMo, VNPay, ZaloPay.
-- [ ] **Tương tác phần cứng bán hàng:** Kết nối máy in nhiệt bill POS qua cổng LAN/USB, máy quét mã vạch Barcode/QR và máy chấm công thẻ/vân tay.
-- [ ] **Ứng dụng Trí tuệ nhân tạo (AI/ML):** Phân tích xu hướng tiêu dùng khách hàng, dự báo doanh thu và tự động gợi ý đơn đặt hàng nguyên liệu thông minh.
+- **Nâng cấp nền tảng đa thiết bị:** Chuyển đổi kiến trúc Backend sang RESTful API (Spring Boot) và phát triển giao diện Web (React/Vue.js) & App điện thoại (Flutter).
+- **Cơ sở dữ liệu Cloud:** Triển khai CSDL lên nền tảng đám mây (AWS RDS hoặc Azure SQL) phục vụ quản lý chuỗi nhiều chi nhánh.
+- **Tích hợp thanh toán số:** Kết nối cổng thanh toán mã VietQR động, ví điện tử MoMo, VNPay, ZaloPay.
+- **Tương tác phần cứng bán hàng:** Kết nối máy in nhiệt bill POS qua cổng LAN/USB, máy quét mã vạch Barcode/QR và máy chấm công thẻ/vân tay.
+- **Ứng dụng Trí tuệ nhân tạo (AI/ML):** Phân tích xu hướng tiêu dùng khách hàng, dự báo doanh thu và tự động gợi ý đơn đặt hàng nguyên liệu thông minh.
 
