@@ -224,8 +224,3 @@ Dự án đã tích hợp sẵn script tự động biên dịch và chạy bằ
 - [ ] **Tương tác phần cứng bán hàng:** Kết nối máy in nhiệt bill POS qua cổng LAN/USB, máy quét mã vạch Barcode/QR và máy chấm công thẻ/vân tay.
 - [ ] **Ứng dụng Trí tuệ nhân tạo (AI/ML):** Phân tích xu hướng tiêu dùng khách hàng, dự báo doanh thu và tự động gợi ý đơn đặt hàng nguyên liệu thông minh.
 
----
-
-<p align="center">
-  <i>Đồ án môn học Hệ Thống Thông Tin Doanh Nghiệp — Trường Đại Học Sài Gòn (SGU)</i>
-</p>
